@@ -1,3 +1,3 @@
 package services
 
-// func (s *Service) 
+// func (s *Service)
