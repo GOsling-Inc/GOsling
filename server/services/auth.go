@@ -4,15 +4,42 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo"
 )
 
+type SignInInput struct {
+	username string
+	password string
+}
+
+type JWTClaims struct {
+	ID string `json:"id"`
+	jwt.StandardClaims
+}
+
+func CreateJWTToken() (string, error) {
+	claims := JWTClaims{
+		"userid",
+		jwt.StandardClaims{
+			Id:        "user_id",
+			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
+		},
+	}
+
+	rawToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token, err := rawToken.SignedString([]byte("a"))
+	if err != nil {
+		return "", err
+	}
+	return token, nil
+}
+
 func (s *Service) SignIn(c echo.Context) error {
 
-	username := c.QueryParam("Pavel")
-	password := c.QueryParam("1234")
-
-	if username == "Pavel" && password == "1234" {
+	var input SignInInput
+	//ref to DB...
+	if input.username == "Pavel" && input.password == "1234" {
 		cookie := &http.Cookie{}
 
 		cookie.Name = "sessionId"

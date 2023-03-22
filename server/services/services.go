@@ -1,6 +1,8 @@
 package services
 
-import "github.com/GOsling-Inc/GOsling/database"
+import (
+	"github.com/GOsling-Inc/GOsling/database"
+)
 
 type Service struct {
 	database *database.Database

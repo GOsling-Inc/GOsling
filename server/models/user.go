@@ -13,7 +13,7 @@ var (
 )
 
 type User struct {
-	ID       int    `json:"id"`
+	ID       string `json:"id"`
 	Name     string `json:"name"`
 	Surname  string `json:"surname"`
 	Email    string `json:"email"`
