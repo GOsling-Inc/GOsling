@@ -9,8 +9,8 @@ import (
 )
 
 type SignInInput struct {
-	username string
-	password string
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 type JWTClaims struct {
@@ -39,7 +39,7 @@ func (s *Service) SignIn(c echo.Context) error {
 
 	var input SignInInput
 	//ref to DB...
-	if input.username == "Pavel" && input.password == "1234" {
+	if input.Username == "Pavel" && input.Password == "1234" {
 		cookie := &http.Cookie{}
 
 		cookie.Name = "sessionId"
@@ -47,7 +47,13 @@ func (s *Service) SignIn(c echo.Context) error {
 		cookie.Expires = time.Now().Add(48 * time.Hour)
 		c.SetCookie(cookie)
 
-		return c.String(http.StatusOK, "ABOBA")
+		return c.String(http.StatusOK, "WelCUM")
 	}
 	return c.String(http.StatusUnauthorized, "Wrong username or password!")
 }
+
+// func (s *Service) SignUp(c echo.Context) error
+// {
+// 	u := new(models.User)
+
+// }

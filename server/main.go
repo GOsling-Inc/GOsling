@@ -14,7 +14,6 @@ import (
 
 func main() {
 	server := echo.New()
-
 	database := database.New(database.Connect())
 	services := services.New(database)
 	handlers := handlers.New(services)
