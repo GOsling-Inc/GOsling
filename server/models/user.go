@@ -2,6 +2,7 @@ package models
 
 import (
 	"crypto/sha256"
+	"math/rand"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
@@ -18,6 +19,15 @@ type User struct {
 	Surname  string `json:"surname"`
 	Email    string `json:"email"`
 	Password string `json:"password,omitempty"`
+}
+
+func (u *User) FormID() {
+	var charset = []byte("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	b := make([]byte, 7)
+	for i := range b {
+		b[i] = charset[rand.Intn(len(charset))]
+	}
+	u.ID = string(b)
 }
 
 func (u *User) Validate() error {
