@@ -10,11 +10,6 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-var (
-	hashed string
-	err    error
-)
-
 type User struct {
 	ID       string `json:"id"`
 	Name     string `json:"name"`
