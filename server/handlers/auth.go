@@ -16,21 +16,29 @@ func (h *Handler) POST_SignUp(c echo.Context) error {
 		c.JSON(401, err.Error())
 		return err
 	}
-	hashed, err := h.service.HashPass(user.Password)
-	if err != nil {
+	if err := user.HashPass(); err != nil {
 		c.JSON(401, err.Error())
 		return err
 	}
-	user.Password = hashed
 
+	return nil
 }
 
 func (h *Handler) POST_SignIn(c echo.Context) error {
-	user := models.SignInInput{
+	user := models.User{
 		Email: c.FormValue("Emaul"),
 		Password: c.FormValue("Password"),
 	}
+	if err := user.Validate(); err != nil {
+		c.JSON(401, err.Error())
+		return err
+	}
+	if err := user.HashPass(); err != nil {
+		c.JSON(401, err.Error())
+		return err
+	}
 
+	return nil
 }
 
 /*

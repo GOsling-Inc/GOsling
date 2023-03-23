@@ -1,8 +1,6 @@
 package services
 
 import (
-	"crypto/sha256"
-	"errors"
 	"time"
 
 	"github.com/GOsling-Inc/GOsling/models"
@@ -31,27 +29,6 @@ func (s *Service) SignIn() error {
 // 	u := new(models.User)
 
 // }
-
-func (s *Service) HashPass(password string) (string, error) {
-	if len(password) > 0 {
-		hashed, err := s.getHashedPassword(password)
-		if err != nil {
-			return "", err
-		}
-		return hashed, nil
-	}
-	return "", errors.New("length of password must be more than 0")
-}
-
-func (s *Service) getHashedPassword(str string) (string, error) {
-	hash := sha256.New()
-	_, err := hash.Write([]byte(str))
-	if err != nil {
-		return "", err
-	}
-
-	return string(str), nil
-}
 
 func CreateJWTToken(id string) (string, error) {
 	claims := models.JWTClaims{
