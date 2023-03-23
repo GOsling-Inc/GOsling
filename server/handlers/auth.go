@@ -9,7 +9,7 @@ func (h *Handler) POST_SignUp(c echo.Context) error {
 	user := models.User{
 		Name: c.FormValue("Name"),
 		Surname: c.FormValue("Surname"),
-		Email: c.FormValue("Emaul"),
+		Email: c.FormValue("Email"),
 		Password: c.FormValue("Password"),
 	}
 	if err := user.Validate(); err != nil {
@@ -26,7 +26,7 @@ func (h *Handler) POST_SignUp(c echo.Context) error {
 
 func (h *Handler) POST_SignIn(c echo.Context) error {
 	user := models.User{
-		Email: c.FormValue("Emaul"),
+		Email: c.FormValue("Email"),
 		Password: c.FormValue("Password"),
 	}
 	if err := user.Validate(); err != nil {

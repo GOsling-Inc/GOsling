@@ -6,5 +6,6 @@ import (
 )
 
 func Init(server *echo.Echo, handler *handlers.Handler) {
-	server.GET("/", handler.Home)
+	server.POST("/sign-in", handler.POST_SignIn)
+	server.POST("/sign-up", handler.POST_SignUp)
 }
