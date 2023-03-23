@@ -20,15 +20,6 @@ type User struct {
 	Password string `json:"password,omitempty"`
 }
 
-func (u *User) Init(name string, surname string, email string, password string) User {
-	return User{
-		Name:     name,
-		Surname:  surname,
-		Email:    email,
-		Password: password,
-	}
-}
-
 func (u *User) Validate() error {
 	return validation.ValidateStruct(u,
 		validation.Field(&u.Email, validation.Required, is.Email),
