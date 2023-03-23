@@ -1,48 +1,34 @@
 package services
 
 import (
-	"time"
+	"errors"
 
 	"github.com/GOsling-Inc/GOsling/models"
-	"github.com/golang-jwt/jwt"
 )
-/*
-func (s *Service) SignIn() error {
 
-	var input models.SignInInput
-	//ref to DB...
-	if input.Username == "Pavel" && input.Password == "1234" {
-		cookie := &http.Cookie{}
-
-		cookie.Name = "sessionId"
-		cookie.Value = "value"
-		cookie.Expires = time.Now().Add(48 * time.Hour)
-		c.SetCookie(cookie)
-
-		return c.String(http.StatusOK, "WelCUM")
-	}
-	return c.String(http.StatusUnauthorized, "Wrong username or password!")
-}
-*/
-// func (s *Service) SignUp(c echo.Context) error
-// {
-// 	u := new(models.User)
-
-// }
-
-func CreateJWTToken(id string) (string, error) {
-	claims := models.JWTClaims{
-		ID: id,
-		StandardClaims: jwt.StandardClaims{
-			Id:        "user_id",
-			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
-		},
-	}
-
-	rawToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token, err := rawToken.SignedString([]byte("a"))
+func (s *Service) SignIn(u *models.User) error {
+	user, err := s.database.GetUserByMail(u.Email)
 	if err != nil {
-		return "", err
+		return errors.New("wrong email or password")
 	}
-	return token, nil
+	if u.Password != user.Password {
+		return errors.New("wrong password")
+	}
+	return nil
+}
+
+func (s *Service) SignUp(u *models.User) error {
+	user, err := s.database.GetUserByMail(u.Email)
+	if err == nil {
+		return errors.New("the user has already registered")
+	}
+	for {
+		u.FormID()
+		_, err = s.database.GetUserById(user.ID)
+		if err != nil {
+			break
+		}
+	}
+	err = s.database.AddUser(u)
+	return err
 }
