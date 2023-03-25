@@ -9,10 +9,10 @@ import (
 func (s *Service) SignIn(u *models.User) error {
 	user, err := s.database.GetUserByMail(u.Email)
 	if err != nil {
-		return errors.New("wrong email or password")
+		return errors.New("incorrect email or password")
 	}
 	if u.Password != user.Password {
-		return errors.New("wrong password")
+		return errors.New("incorrect email or password")
 	}
 	return nil
 }
@@ -20,7 +20,7 @@ func (s *Service) SignIn(u *models.User) error {
 func (s *Service) SignUp(u *models.User) error {
 	user, err := s.database.GetUserByMail(u.Email)
 	if err == nil {
-		return errors.New("the user has already registered")
+		return errors.New("user with this email already registered")
 	}
 	for {
 		u.FormID()
