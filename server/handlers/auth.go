@@ -1,16 +1,9 @@
 package handlers
 
 import (
-	"time"
-
 	"github.com/GOsling-Inc/GOsling/models"
 	"github.com/GOsling-Inc/GOsling/services"
-	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
-)
-
-const (
-	salt = "GOsling"
 )
 
 type AuthHandler struct {
@@ -44,7 +37,7 @@ func (h *AuthHandler) POST_SignUp(c echo.Context) error {
 		c.JSON(401, err.Error())
 		return err
 	}
-	token, err := h.CreateJWT(user.Id)
+	token, err := h.service.CreateJWT(user.Id)
 	if err != nil {
 		c.JSON(401, err.Error())
 		return err
@@ -71,7 +64,7 @@ func (h *AuthHandler) POST_SignIn(c echo.Context) error {
 		c.JSON(401, err.Error())
 		return err
 	}
-	token, err := h.CreateJWT(user.Id)
+	token, err := h.service.CreateJWT(user.Id)
 	if err != nil {
 		c.JSON(401, err.Error())
 		return err
@@ -79,26 +72,4 @@ func (h *AuthHandler) POST_SignIn(c echo.Context) error {
 	return c.JSON(201, map[string]string{
 		"Token": token,
 	})
-}
-
-type JWTClaims struct {
-	ID string `json:"id"`
-	jwt.StandardClaims
-}
-
-func (h *AuthHandler) CreateJWT(id string) (string, error) {
-	claims := JWTClaims{
-		ID: id,
-		StandardClaims: jwt.StandardClaims{
-			Id:        "user_id",
-			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
-		},
-	}
-
-	rawToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token, err := rawToken.SignedString([]byte(salt))
-	if err != nil {
-		return "", err
-	}
-	return token, nil
 }

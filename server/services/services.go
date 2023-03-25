@@ -15,6 +15,7 @@ type IUserService interface {
 	Validate(*models.User) error
 	HashPassword(*models.User) error
 	getHashedPassword(string) (string, error)
+	CreateJWT(string) (string, error)
 }
 
 type Service struct {

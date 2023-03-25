@@ -8,7 +8,6 @@ import (
 type IAuthHandler interface {
 	POST_SignUp(echo.Context) error
 	POST_SignIn(echo.Context) error
-	CreateJWT(string) (string, error)
 }
 
 type Handler struct {

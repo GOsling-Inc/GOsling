@@ -5,17 +5,17 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type AuthDatabase struct {
+type UserDatabase struct {
 	db *sqlx.DB
 }
 
-func NewAuthDatabase(db *sqlx.DB) *AuthDatabase {
-	return &AuthDatabase{
+func NewUserDatabase(db *sqlx.DB) *UserDatabase {
+	return &UserDatabase{
 		db: db,
 	}
 }
 
-func (d *AuthDatabase) GetUserByMail(mail string) (*models.User, error) {
+func (d *UserDatabase) GetUserByMail(mail string) (*models.User, error) {
 	user := new(models.User)
 
 	query := "SELECT * FROM users WHERE email=$1"
@@ -26,7 +26,7 @@ func (d *AuthDatabase) GetUserByMail(mail string) (*models.User, error) {
 	return user, nil
 }
 
-func (d *AuthDatabase) GetUserById(id string) (*models.User, error) {
+func (d *UserDatabase) GetUserById(id string) (*models.User, error) {
 	user := new(models.User)
 
 	query := "SELECT * FROM users WHERE id=$1"
@@ -37,9 +37,16 @@ func (d *AuthDatabase) GetUserById(id string) (*models.User, error) {
 	return user, nil
 }
 
-func (d *AuthDatabase) AddUser(user *models.User) error {
+func (d *UserDatabase) AddUser(user *models.User) error {
 	var id string
 	query := "INSERT INTO users (id, name, surname, email, password) values ($1, $2, $3, $4, $5) RETURNING id"
 	err := d.db.Get(&id, query, user.Id, user.Name, user.Surname, user.Email, user.Password)
+	return err
+}
+
+func (d *UserDatabase) UpdateUser(id, key, value string) (error) {
+	var ID string
+	query := "UPDATE users SET " + key + "=" + value + " WHERE id=" + id + " RETURNING id";
+	err := d.db.Get(&ID, query)
 	return err
 }

@@ -6,12 +6,18 @@ import (
 	"errors"
 	"log"
 	"math/rand"
+	"time"
 
 	"github.com/GOsling-Inc/GOsling/database"
 	"github.com/GOsling-Inc/GOsling/models"
+	"github.com/golang-jwt/jwt"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/go-ozzo/ozzo-validation/is"
+)
+
+const (
+	salt = "GOsling"
 )
 
 type UserService struct {
@@ -67,4 +73,21 @@ func (s *UserService) getHashedPassword(str string) (string, error) {
 	}
 
 	return hex.EncodeToString(hash.Sum(nil)), nil
+}
+
+func (s *UserService) CreateJWT(id string) (string, error) {
+	claims := models.JWTClaims{
+		ID: id,
+		StandardClaims: jwt.StandardClaims{
+			Id:        "user_id",
+			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
+		},
+	}
+
+	rawToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token, err := rawToken.SignedString([]byte(salt))
+	if err != nil {
+		return "", err
+	}
+	return token, nil
 }

@@ -9,19 +9,19 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type IAuthDatabase interface {
+type IUserDatabase interface {
 	GetUserByMail(string) (*models.User, error)
 	GetUserById(string) (*models.User, error)
 	AddUser(*models.User) error
 }
 
 type Database struct {
-	IAuthDatabase
+	IUserDatabase
 }
 
 func New(db *sqlx.DB) *Database {
 	return &Database{
-		IAuthDatabase: NewAuthDatabase(db),
+		IUserDatabase: NewUserDatabase(db),
 	}
 }
 
