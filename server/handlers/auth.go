@@ -18,12 +18,13 @@ func (h *Handler) POST_SignUp(c echo.Context) error {
 		Surname:  c.FormValue("Surname"),
 		Email:    c.FormValue("Email"),
 		Password: c.FormValue("Password"),
+		Role:     "user",
 	}
-	if err := user.Validate(); err != nil {
+	if err := h.service.Validate(user); err != nil {
 		c.JSON(401, err.Error())
 		return err
 	}
-	if err := user.HashPass(); err != nil {
+	if err := h.service.HashPass(user); err != nil {
 		c.JSON(401, err.Error())
 		return err
 	}
@@ -46,11 +47,11 @@ func (h *Handler) POST_SignIn(c echo.Context) error {
 		Email:    c.FormValue("Email"),
 		Password: c.FormValue("Password"),
 	}
-	if err := user.Validate(); err != nil {
+	if err := h.service.Validate(user); err != nil {
 		c.JSON(401, err.Error())
 		return err
 	}
-	if err := user.HashPass(); err != nil {
+	if err := h.service.HashPass(user); err != nil {
 		c.JSON(401, err.Error())
 		return err
 	}
@@ -68,8 +69,13 @@ func (h *Handler) POST_SignIn(c echo.Context) error {
 	})
 }
 
+type JWTClaims struct {
+	ID string `json:"id"`
+	jwt.StandardClaims
+}
+
 func (h *Handler) CreateJWT(id string) (string, error) {
-	claims := models.JWTClaims{
+	claims := JWTClaims{
 		ID: id,
 		StandardClaims: jwt.StandardClaims{
 			Id:        "user_id",
