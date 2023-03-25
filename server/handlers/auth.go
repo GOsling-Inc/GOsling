@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/GOsling-Inc/GOsling/models"
+	"github.com/GOsling-Inc/GOsling/services"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
@@ -12,19 +13,30 @@ const (
 	salt = "GOsling"
 )
 
-func (h *Handler) POST_SignUp(c echo.Context) error {
+type AuthHandler struct {
+	service *services.Service
+}
+
+func NewAuthHandler(s *services.Service) *AuthHandler {
+	return &AuthHandler{
+		service: s,
+	}
+}
+
+func (h *AuthHandler) POST_SignUp(c echo.Context) error {
 	user := models.User{
+		Id:       h.service.MakeID(),
 		Name:     c.FormValue("Name"),
 		Surname:  c.FormValue("Surname"),
 		Email:    c.FormValue("Email"),
 		Password: c.FormValue("Password"),
 		Role:     "user",
 	}
-	if err := h.service.Validate(user); err != nil {
+	if err := h.service.Validate(&user); err != nil {
 		c.JSON(401, err.Error())
 		return err
 	}
-	if err := h.service.HashPass(user); err != nil {
+	if err := h.service.HashPassword(&user); err != nil {
 		c.JSON(401, err.Error())
 		return err
 	}
@@ -32,7 +44,7 @@ func (h *Handler) POST_SignUp(c echo.Context) error {
 		c.JSON(401, err.Error())
 		return err
 	}
-	token, err := h.CreateJWT(user.ID)
+	token, err := h.CreateJWT(user.Id)
 	if err != nil {
 		c.JSON(401, err.Error())
 		return err
@@ -42,16 +54,16 @@ func (h *Handler) POST_SignUp(c echo.Context) error {
 	})
 }
 
-func (h *Handler) POST_SignIn(c echo.Context) error {
+func (h *AuthHandler) POST_SignIn(c echo.Context) error {
 	user := models.User{
 		Email:    c.FormValue("Email"),
 		Password: c.FormValue("Password"),
 	}
-	if err := h.service.Validate(user); err != nil {
+	if err := h.service.Validate(&user); err != nil {
 		c.JSON(401, err.Error())
 		return err
 	}
-	if err := h.service.HashPass(user); err != nil {
+	if err := h.service.HashPassword(&user); err != nil {
 		c.JSON(401, err.Error())
 		return err
 	}
@@ -59,7 +71,7 @@ func (h *Handler) POST_SignIn(c echo.Context) error {
 		c.JSON(401, err.Error())
 		return err
 	}
-	token, err := h.CreateJWT(user.ID)
+	token, err := h.CreateJWT(user.Id)
 	if err != nil {
 		c.JSON(401, err.Error())
 		return err
@@ -74,7 +86,7 @@ type JWTClaims struct {
 	jwt.StandardClaims
 }
 
-func (h *Handler) CreateJWT(id string) (string, error) {
+func (h *AuthHandler) CreateJWT(id string) (string, error) {
 	claims := JWTClaims{
 		ID: id,
 		StandardClaims: jwt.StandardClaims{

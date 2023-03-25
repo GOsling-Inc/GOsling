@@ -1,21 +1,27 @@
 package database
 
 import (
-	//"fmt"
 	"log"
 
 	"github.com/GOsling-Inc/GOsling/env"
+	"github.com/GOsling-Inc/GOsling/models"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
 
+type IAuthDatabase interface {
+	GetUserByMail(string) (*models.User, error)
+	GetUserById(string) (*models.User, error)
+	AddUser(*models.User) error
+}
+
 type Database struct {
-	db *sqlx.DB
+	IAuthDatabase
 }
 
 func New(db *sqlx.DB) *Database {
 	return &Database{
-		db: db,
+		IAuthDatabase: NewAuthDatabase(db),
 	}
 }
 

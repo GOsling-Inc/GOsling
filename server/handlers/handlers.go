@@ -2,15 +2,21 @@ package handlers
 
 import (
 	"github.com/GOsling-Inc/GOsling/services"
+	"github.com/labstack/echo/v4"
 )
 
+type IAuthHandler interface {
+	POST_SignUp(echo.Context) error
+	POST_SignIn(echo.Context) error
+	CreateJWT(string) (string, error)
+}
+
 type Handler struct {
-	service *services.Service
+	IAuthHandler
 }
 
 func New(s *services.Service) *Handler {
 	return &Handler{
-		service: s,
+		IAuthHandler: NewAuthHandler(s),
 	}
 }
-

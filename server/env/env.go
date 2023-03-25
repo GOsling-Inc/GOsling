@@ -1,6 +1,6 @@
 package env
 
-import "fmt"
+import . "fmt"
 
 const (
 	PORT        string = ":1337"
@@ -16,5 +16,5 @@ func GetPORT() string {
 }
 
 func GetDBconfig() string {
-	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
+	return Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
 }
