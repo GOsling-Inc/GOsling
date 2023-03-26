@@ -12,6 +12,7 @@ type IAuthHandler interface {
 
 type Handler struct {
 	IAuthHandler
+	UserHandler
 }
 
 func New(s *services.Service) *Handler {
