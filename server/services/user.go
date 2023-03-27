@@ -17,7 +17,8 @@ import (
 )
 
 const (
-	salt = "GOsling"
+	salt       = "#bXZZG0sling$$#"
+	signingKey = "qrkjk#4#%35FSFJlja#4353KSFjH"
 )
 
 type UserService struct {
@@ -89,5 +90,32 @@ func (s *UserService) CreateJWT(id string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	log.Println(token)
 	return token, nil
+}
+
+func (s *UserService) ParseJWT(accessToken string) (string, error) {
+	token, err := jwt.ParseWithClaims(accessToken, &models.JWTClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, err := token.Method.(*jwt.SigningMethodHMAC); !err {
+			return nil, errors.New("invalid singing method")
+		}
+		return []byte(signingKey), nil
+	})
+	if err != nil {
+		return "", err
+	}
+	claims, ok := token.Claims.(*models.JWTClaims)
+	if !ok {
+		return "", errors.New("token claims are not of type JWTClaims")
+	}
+	log.Println(claims.ID)
+	return claims.ID, nil
+}
+
+func (s *UserService) GetUser(id string) error {
+	_, err := s.database.GetUserById(id)
+	if err != nil {
+		return errors.New("incorrect email or password")
+	}
+	return nil
 }
