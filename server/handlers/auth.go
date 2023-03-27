@@ -18,12 +18,13 @@ func NewAuthHandler(s *services.Service) *AuthHandler {
 
 func (h *AuthHandler) POST_SignUp(c echo.Context) error {
 	user := models.User{
-		Id:       h.service.MakeID(),
-		Name:     c.FormValue("Name"),
-		Surname:  c.FormValue("Surname"),
-		Email:    c.FormValue("Email"),
-		Password: c.FormValue("Password"),
-		Role:     "user",
+		Id:        h.service.MakeID(),
+		Name:      c.FormValue("Name"),
+		Surname:   c.FormValue("Surname"),
+		Email:     c.FormValue("Email"),
+		Password:  c.FormValue("Password"),
+		Role:      "user",
+		Birthdate: c.FormValue("Date"),
 	}
 	if err := h.service.Validate(&user); err != nil {
 		c.JSON(401, err.Error())

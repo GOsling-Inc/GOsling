@@ -39,14 +39,21 @@ func (d *UserDatabase) GetUserById(id string) (*models.User, error) {
 
 func (d *UserDatabase) AddUser(user *models.User) error {
 	var id string
-	query := "INSERT INTO users (id, name, surname, email, password) values ($1, $2, $3, $4, $5) RETURNING id"
-	err := d.db.Get(&id, query, user.Id, user.Name, user.Surname, user.Email, user.Password)
+	query := "INSERT INTO users (id, name, surname, email, password, date) values ($1, $2, $3, $4, $5, $6) RETURNING id"
+	err := d.db.Get(&id, query, user.Id, user.Name, user.Surname, user.Email, user.Password, user.Birthdate)
 	return err
 }
 
-func (d *UserDatabase) UpdateUser(id, key, value string) (error) {
+func (d *UserDatabase) UpdatePasswordUser(id, password string) error {
 	var ID string
-	query := "UPDATE users SET " + key + "=" + value + " WHERE id=" + id + " RETURNING id";
-	err := d.db.Get(&ID, query)
+	query := "UPDATE users SET password=$1 WHERE id=$2 RETURNING id";
+	err := d.db.Get(&ID, query, password, id)
+	return err
+}
+
+func (d *UserDatabase) UpdateUserData(id, name, surname, birthdate string) error {
+	var ID string
+	query := "UPDATE users SET name=$1, surname=$2, birthdate=$3 WHERE id=$4 RETURNING id";
+	err := d.db.Get(&ID, query, name, surname, birthdate, id)
 	return err
 }

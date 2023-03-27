@@ -13,6 +13,8 @@ type IUserDatabase interface {
 	GetUserByMail(string) (*models.User, error)
 	GetUserById(string) (*models.User, error)
 	AddUser(*models.User) error
+	UpdatePasswordUser(id, password string) error
+	UpdateUserData(id, name, surname, birthdate string) error
 }
 
 type Database struct {
