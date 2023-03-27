@@ -12,22 +12,22 @@ type UserHandler struct {
 
 func (h *UserHandler) POST_User(c echo.Context) error {
 	user := models.User{
-		Id:       c.FormValue("Id"),
-		Name:     c.FormValue("Name"),
-		Surname:  c.FormValue("Surname"),
-		Email:    c.FormValue("Email"),
-		Password: c.FormValue("Password"),
-		Role:     c.FormValue("Role"),
+		Name:    c.FormValue("Name"),
+		Surname: c.FormValue("Surname"),
+		//Password: c.FormValue("Password"), //надо разделить на отдельную фунцию
 	}
-	if err := h.service.GetUser(user.Id); err != nil {
+	header := c.Request().Header
+	id, err := h.service.ParseJWT(header["Token"][0])
+	if err != nil {
+		c.JSON(401, err.Error())
+	}
+	if err = h.service.GetUser(id); err != nil {
 		return c.JSON(401, err.Error())
 	}
 	return c.JSON(201, map[string]string{
-		"Name":     user.Name,
-		"Surname":  user.Surname,
-		"Email":    user.Email,
-		"Password": user.Password,
-		"Role":     user.Role,
+		"Name":    user.Name,
+		"Surname": user.Surname,
+		//"Password": user.Password,
 	})
 }
 
