@@ -17,13 +17,21 @@ type IUserDatabase interface {
 	UpdateUserData(id, name, surname, birthdate string) error
 }
 
+type IAccountDatabase interface {
+	AddAccount(*models.Account) error
+	GetUserAccounts(userId string) ([]models.Account, error)
+	
+}
+
 type Database struct {
 	IUserDatabase
+	IAccountDatabase
 }
 
 func New(db *sqlx.DB) *Database {
 	return &Database{
 		IUserDatabase: NewUserDatabase(db),
+		IAccountDatabase: NewAccountDatabase(db),
 	}
 }
 

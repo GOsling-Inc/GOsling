@@ -8,6 +8,8 @@ import (
 type IAuthHandler interface {
 	POST_SignUp(echo.Context) error
 	POST_SignIn(echo.Context) error
+
+	TEST(echo.Context) error // DONT TOUCH
 }
 
 type IUserHandler interface {

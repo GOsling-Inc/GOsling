@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"log"
 
 	"github.com/GOsling-Inc/GOsling/database"
 	"github.com/GOsling-Inc/GOsling/models"
@@ -35,5 +36,21 @@ func (s *AuthService) SignUp(user *models.User) error {
 		return errors.New("user with this email already registered")
 	}
 	err = s.database.AddUser(user)
+	return err
+}
+
+func (s *AuthService) TEST() error { // DONT TOUCH
+	acc := new(models.Account)
+	acc.Id = "x4erBWbf08RkW3R41"
+	acc.Name = "Main"
+	acc.Type = "BASIC"
+	acc.Unit = "BYN"
+	acc.UserId = "x4erBWb"
+	if err := s.database.AddAccount(acc); err != nil {
+		log.Println(err)
+		return err
+	}
+	accounts, err := s.database.GetUserAccounts("x4erBWb")
+	log.Println(accounts, err)
 	return err
 }

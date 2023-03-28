@@ -8,6 +8,8 @@ import (
 type IAuthService interface {
 	SignIn(*models.User) error
 	SignUp(*models.User) error
+
+	TEST() error // DONT TOUCH
 }
 
 type IUserService interface {

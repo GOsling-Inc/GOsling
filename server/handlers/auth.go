@@ -68,3 +68,7 @@ func (h *AuthHandler) POST_SignIn(c echo.Context) error {
 		"Token": token,
 	})
 }
+
+func (h* AuthHandler) TEST(c echo.Context) error { // DONT TOUCH
+	return h.service.TEST()
+}

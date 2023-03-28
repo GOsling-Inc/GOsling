@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"errors"
-
 	"github.com/GOsling-Inc/GOsling/models"
 	"github.com/GOsling-Inc/GOsling/services"
 	"github.com/labstack/echo/v4"
