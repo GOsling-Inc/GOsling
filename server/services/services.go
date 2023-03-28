@@ -18,6 +18,8 @@ type IUserService interface {
 	CreateJWT(string) (string, error)
 	ParseJWT(string) (string, error)
 	GetUser(string) error
+	Change_Main_Info(models.User) error
+	Change_Password(models.User) error
 }
 
 type Service struct {

@@ -119,3 +119,11 @@ func (s *UserService) GetUser(id string) error {
 	}
 	return nil
 }
+
+func (s *UserService) Change_Main_Info(u models.User) error {
+	return s.database.UpdateUserData(u.Id, u.Name, u.Surname, u.Birthdate)
+}
+
+func (s *UserService) Change_Password(u models.User) error {
+	return s.database.UpdatePasswordUser(u.Id, u.Password)
+}
