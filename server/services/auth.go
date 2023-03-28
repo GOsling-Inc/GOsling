@@ -25,6 +25,7 @@ func (s *AuthService) SignIn(user *models.User) error {
 	if user.Password != tempUser.Password {
 		return errors.New("incorrect email or password")
 	}
+	user.Id = tempUser.Id
 	return nil
 }
 
@@ -33,7 +34,6 @@ func (s *AuthService) SignUp(user *models.User) error {
 	if err == nil {
 		return errors.New("user with this email already registered")
 	}
-
 	err = s.database.AddUser(user)
 	return err
 }

@@ -1,6 +1,6 @@
 package models
 
-import "github.com/golang-jwt/jwt"
+import "github.com/dgrijalva/jwt-go"
 
 type User struct {
 	Id        string `json:"id"`
@@ -9,10 +9,10 @@ type User struct {
 	Email     string `json:"email"`
 	Password  string `json:"password,omitempty"`
 	Role      string `json:"role"`
-	Birthdate string `json:"date"`
+	Birthdate string `json:"birthdate"`
 }
 
 type JWTClaims struct {
-	ID string `json:"id"`
 	jwt.StandardClaims
+	ID string `json:"id"`
 }

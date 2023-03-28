@@ -10,13 +10,20 @@ type IAuthHandler interface {
 	POST_SignIn(echo.Context) error
 }
 
+type IUserHandler interface {
+	POST_User(echo.Context) error
+	POST_Change_Main(c echo.Context) error
+	POST_Change_Password(c echo.Context) error
+}
+
 type Handler struct {
 	IAuthHandler
-	UserHandler
+	IUserHandler
 }
 
 func New(s *services.Service) *Handler {
 	return &Handler{
 		IAuthHandler: NewAuthHandler(s),
+		IUserHandler: NewUserHandler(s),
 	}
 }

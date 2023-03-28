@@ -11,15 +11,14 @@ type IAuthService interface {
 }
 
 type IUserService interface {
-	MakeID() string
-	Validate(*models.User) error
-	HashPassword(*models.User) error
-	getHashedPassword(string) (string, error)
-	CreateJWT(string) (string, error)
-	ParseJWT(string) (string, error)
-	GetUser(string) error
+	GetUser(string) (*models.User, error)
 	Change_Main_Info(models.User) error
 	Change_Password(models.User) error
+	MakeID() string
+	CreateJWT(string) (string, error)
+	ParseJWT(string) (string, error)
+	Validate(user *models.User) error
+	Hash(str string) (string, error)
 }
 
 type Service struct {

@@ -24,16 +24,13 @@ func (h *AuthHandler) POST_SignUp(c echo.Context) error {
 		Email:     c.FormValue("Email"),
 		Password:  c.FormValue("Password"),
 		Role:      "user",
-		Birthdate: c.FormValue("Date"),
+		Birthdate: c.FormValue("Birthdate"),
 	}
 	if err := h.service.Validate(&user); err != nil {
 		c.JSON(401, err.Error())
 		return err
 	}
-	if err := h.service.HashPassword(&user); err != nil {
-		c.JSON(401, err.Error())
-		return err
-	}
+	user.Password, _ = h.service.Hash(user.Password)
 	if err := h.service.SignUp(&user); err != nil {
 		c.JSON(401, err.Error())
 		return err
@@ -57,10 +54,7 @@ func (h *AuthHandler) POST_SignIn(c echo.Context) error {
 		c.JSON(401, err.Error())
 		return err
 	}
-	if err := h.service.HashPassword(&user); err != nil {
-		c.JSON(401, err.Error())
-		return err
-	}
+	user.Password, _ = h.service.Hash(user.Password)
 	if err := h.service.SignIn(&user); err != nil {
 		c.JSON(401, err.Error())
 		return err
