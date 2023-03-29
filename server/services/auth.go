@@ -39,7 +39,7 @@ func (s *AuthService) SignUp(user *models.User) error {
 	return err
 }
 
-func (s *AuthService) TEST() error { // DONT TOUCH
+func (s *AuthService) TEST() error { // DONT TOUCH (PROTO?)
 	acc := new(models.Account)
 	acc.Id = "x4erBWbf08RkW3R41"
 	acc.Name = "Main"
