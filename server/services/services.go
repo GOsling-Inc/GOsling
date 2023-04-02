@@ -19,8 +19,10 @@ type IUserService interface {
 	MakeID() string
 	CreateJWT(string) (string, error)
 	ParseJWT(string) (string, error)
-	Validate(user *models.User) error
-	Hash(str string) (string, error)
+	Validate(*models.User) error
+	Hash(string) (string, error)
+	AddAccount(*models.User, *models.Account) error
+	GetUserAccounts(*models.User) ([]models.Account, error)
 }
 
 type Service struct {

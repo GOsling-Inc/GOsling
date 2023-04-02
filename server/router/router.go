@@ -12,5 +12,8 @@ func Init(server *echo.Echo, handler *handlers.Handler) {
 	server.POST("user/change/main", handler.POST_Change_Main)
 	server.POST("/user/change/password", handler.POST_Change_Password)
 
+	server.POST("/user/addacc", handler.POST_Add_Account) //(beta)
+	server.POST("/user/accs", handler.POST_User_Accounts) //(beta)
+
 	server.POST("/TEST", handler.TEST) // DONT TOUCH
 }

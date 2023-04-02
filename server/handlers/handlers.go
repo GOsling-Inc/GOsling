@@ -14,8 +14,10 @@ type IAuthHandler interface {
 
 type IUserHandler interface {
 	POST_User(echo.Context) error
-	POST_Change_Main(c echo.Context) error
-	POST_Change_Password(c echo.Context) error
+	POST_Change_Main(echo.Context) error
+	POST_Change_Password(echo.Context) error
+	POST_Add_Account(echo.Context) error
+	POST_User_Accounts(echo.Context) error
 }
 
 type Handler struct {

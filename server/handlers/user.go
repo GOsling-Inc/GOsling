@@ -83,3 +83,42 @@ func (h *UserHandler) POST_Change_Password(c echo.Context) error {
 	}
 	return nil
 }
+
+func (h *UserHandler) POST_User_Accounts(c echo.Context) error {
+	header := c.Request().Header
+	id, err := h.service.ParseJWT(header["Token"][0])
+	if err != nil {
+		return c.JSON(401, err.Error())
+	}
+	user, err := h.service.GetUser(id)
+	if err != nil {
+		return c.JSON(401, err.Error())
+	}
+	accs, err := h.service.GetUserAccounts(user)
+	if err != nil {
+		return c.JSON(401, err.Error())
+	}
+	return c.JSON(200, accs)
+}
+
+func (h *UserHandler) POST_Add_Account(c echo.Context) error {
+	beta_acc := &models.Account{
+		Name: c.FormValue("Name"),
+		Unit: c.FormValue("Unit"),
+		Type: c.FormValue("Type"),
+	}
+
+	header := c.Request().Header
+	id, err := h.service.ParseJWT(header["Token"][0])
+	if err != nil {
+		return c.JSON(401, err.Error())
+	}
+	user, err := h.service.GetUser(id)
+	if err != nil {
+		return c.JSON(401, err.Error())
+	}
+	if err = h.service.AddAccount(user, beta_acc); err != nil {
+		return c.JSON(401, err.Error())
+	}
+	return nil
+}
