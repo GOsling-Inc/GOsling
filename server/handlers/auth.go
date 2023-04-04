@@ -6,6 +6,13 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+type IAuthHandler interface {
+	POST_SignUp(echo.Context) error
+	POST_SignIn(echo.Context) error
+
+	TEST(echo.Context) error // DONT TOUCH
+}
+
 type AuthHandler struct {
 	service *services.Service
 }

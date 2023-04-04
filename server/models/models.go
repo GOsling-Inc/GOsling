@@ -22,6 +22,13 @@ type Account struct {
 	State  string  `json:"state"` // ACTIVE / BLOCKED / FROZEN
 }
 
+type Trasfer struct {
+	Id     string  `json:"id"`
+	Receiver string  `json:"receiver"`
+	Sender string  `json:"sender"`
+	Amount float32 `json:"amount"`
+}
+
 type JWTClaims struct {
 	jwt.StandardClaims
 	ID string `json:"id"`
