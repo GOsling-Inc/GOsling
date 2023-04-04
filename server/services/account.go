@@ -56,6 +56,9 @@ func (s *AccountService) ProvideTransfer(transfer *models.Trasfer) error {
 	if err != nil || reciever_acc.Unit != sender_acc.Unit {
 		return errors.New("reciever account error, transaction cancelled")
 	}
+	if sender_acc.State != "ACTIVE" || reciever_acc.State != "ACTIVE" {
+		return errors.New("one of accounts is not active")
+	}
 	if err = s.database.Transfer(transfer.Sender, transfer.Receiver, transfer.Amount); err != nil {
 		return err
 	}

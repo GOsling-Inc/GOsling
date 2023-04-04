@@ -2,7 +2,6 @@ package services
 
 import (
 	"errors"
-	"log"
 
 	"github.com/GOsling-Inc/GOsling/database"
 	"github.com/GOsling-Inc/GOsling/models"
@@ -50,6 +49,16 @@ func (s *AuthService) SignUp(user *models.User) error {
 }
 
 func (s *AuthService) TEST() error { // DONT TOUCH
-	log.Println(s.database.GetAccountById("fDTDQv8x4erBWbBYN"))
+	crs := 2.85
+	am := 750 / crs
+	e := models.Exchange{
+		Receiver: "r4MjGvex4erBWbUSD",
+		Sender: "JnhoPNxx4erBWbBYN",
+		ReceiverAmount: am,
+		SenderAmount: 750,
+		Course: crs,
+	}
+	s.database.Exchange(e.Sender, e.Receiver, e.SenderAmount, e.ReceiverAmount)
+	s.database.AddExchange(&e)
 	return nil
 }

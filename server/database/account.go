@@ -13,6 +13,8 @@ type IAccountDatabase interface {
 	GetAccountById(id string) (models.Account, error)
 	Transfer(senderId, receiverId string, amount float64) error
 	AddTransfer(transfer *models.Trasfer) error
+	Exchange(senderId, receiverId string, sender_amount, receiver_amount float64) error
+	AddExchange(exchange *models.Exchange) error
 }
 
 type AccountDatabase struct {
@@ -70,5 +72,32 @@ func (d *AccountDatabase) AddTransfer(transfer *models.Trasfer) error {
 	var id string
 	query := "INSERT INTO transfers (sender, receiver, amount) values ($1, $2, $3) RETURNING id"
 	err := d.db.Get(&id, query, transfer.Sender, transfer.Receiver, transfer.Amount)
+	return err
+}
+
+func (d *AccountDatabase) Exchange(senderId, receiverId string, sender_amount, receiver_amount float64) error {
+	ctx := context.Background()
+	tx, err := d.db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	_, err = tx.ExecContext(ctx, "UPDATE accounts SET amount = amount + $1 WHERE id = $2", receiver_amount, receiverId)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	_, err = tx.ExecContext(ctx, "UPDATE accounts SET amount = amount - $1 WHERE id = $2", sender_amount, senderId)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = tx.Commit()
+	return err
+}
+
+func (d *AccountDatabase) AddExchange(exchange *models.Exchange) error {
+	var id string
+	query := "INSERT INTO exchanges (sender, receiver, sender_amount, receiver_amount, course) values ($1, $2, $3, $4, $5) RETURNING id"
+	err := d.db.Get(&id, query, exchange.Sender, exchange.Receiver, exchange.SenderAmount, exchange.ReceiverAmount, exchange.Course)
 	return err
 }

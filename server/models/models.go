@@ -29,6 +29,15 @@ type Trasfer struct {
 	Amount   float64 `json:"amount"`
 }
 
+type Exchange struct {
+	Id             string  `json:"id"`
+	Receiver       string  `json:"receiver"`
+	Sender         string  `json:"sender"`
+	ReceiverAmount float64 `json:"receiveramount"`
+	SenderAmount   float64 `json:"senderamount"`
+	Course         float64 `json:"course"`
+}
+
 type JWTClaims struct {
 	jwt.StandardClaims
 	ID string `json:"id"`
