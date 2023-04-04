@@ -17,5 +17,7 @@ func Init(server *echo.Echo, handler *handlers.Handler) {
 
 	server.POST("user/transfer", handler.POST_Transfer) // (beta)
 
+	server.POST("user/exchange", handler.POST_User_Exchange) // (beta)
+
 	server.POST("/TEST", handler.TEST) // DONT TOUCH
 }

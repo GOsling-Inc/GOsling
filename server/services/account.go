@@ -12,6 +12,7 @@ type IAccountService interface {
 	AddAccount(*models.User, *models.Account) error
 	GetUserAccounts(*models.User) ([]models.Account, error)
 	ProvideTransfer(*models.Trasfer) error
+	ProvideExchange(*models.Exchange) error
 }
 
 type AccountService struct {
@@ -63,5 +64,25 @@ func (s *AccountService) ProvideTransfer(transfer *models.Trasfer) error {
 		return err
 	}
 	err = s.database.AddTransfer(transfer)
+	return err
+}
+
+func (s *AccountService) ProvideExchange(exchange *models.Exchange) error {
+	sender_acc, err := s.database.GetAccountById(exchange.Sender)
+	if err != nil || sender_acc.Amount < exchange.SenderAmount || sender_acc.State != "ACTIVE" {
+		return errors.New("sender account error, transaction cancelled")
+	}
+	reciever_acc, err := s.database.GetAccountById(exchange.Receiver)
+	if err != nil || reciever_acc.Unit == sender_acc.Unit {
+		return errors.New("reciever account error, transaction cancelled")
+	}
+	if sender_acc.State != "ACTIVE" || reciever_acc.State != "ACTIVE" {
+		return errors.New("one of accounts is not active")
+	}
+	exchange.ReceiverAmount = exchange.Course * exchange.SenderAmount
+	if err = s.database.Exchange(exchange.Sender, exchange.Receiver, exchange.SenderAmount, exchange.ReceiverAmount); err != nil {
+		return err
+	}
+	err = s.database.AddExchange(exchange)
 	return err
 }

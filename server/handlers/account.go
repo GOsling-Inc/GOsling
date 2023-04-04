@@ -14,6 +14,7 @@ type IAccountHadler interface {
 	POST_Add_Account(echo.Context) error
 	POST_User_Accounts(echo.Context) error
 	POST_Transfer(echo.Context) error
+	POST_User_Exchange(echo.Context) error
 }
 
 type AccountHandler struct {
@@ -80,5 +81,25 @@ func (h *AccountHandler) POST_Transfer(c echo.Context) error {
 		return c.JSON(401, errors.New("uninitialized sender"))
 	}
 	h.service.ProvideTransfer(beta_trans)
+	return nil
+}
+
+func (h *AccountHandler) POST_User_Exchange(c echo.Context) error {
+	beta_exchng := &models.Exchange{
+		Sender:   c.FormValue("Sender"),
+		Receiver: c.FormValue("Receiver"),
+	}
+	beta_exchng.SenderAmount, _ = strconv.ParseFloat(c.FormValue("Sender Amount"), 64)
+	//get course func
+	beta_exchng.Course = 1337228 //pass
+	header := c.Request().Header
+	id, err := h.service.ParseJWT(header["Token"][0])
+	if err != nil {
+		return c.JSON(401, err.Error())
+	}
+	if !strings.Contains(beta_exchng.Sender, id) {
+		return c.JSON(401, errors.New("uninitialized sender"))
+	}
+	h.service.ProvideExchange(beta_exchng)
 	return nil
 }
