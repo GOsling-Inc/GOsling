@@ -18,15 +18,15 @@ type Account struct {
 	Name   string  `json:"name"`
 	Type   string  `json:"type"` // BASIC / BUSINESS / INVESTMENT
 	Unit   string  `json:"unit"` // BYN / USD / EUR
-	Amount float32 `json:"amount"`
+	Amount float64 `json:"amount"`
 	State  string  `json:"state"` // ACTIVE / BLOCKED / FROZEN
 }
 
 type Trasfer struct {
-	Id     string  `json:"id"`
+	Id       string  `json:"id"`
 	Receiver string  `json:"receiver"`
-	Sender string  `json:"sender"`
-	Amount float32 `json:"amount"`
+	Sender   string  `json:"sender"`
+	Amount   float64 `json:"amount"`
 }
 
 type JWTClaims struct {

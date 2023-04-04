@@ -11,17 +11,18 @@ import (
 type IAccountService interface {
 	AddAccount(*models.User, *models.Account) error
 	GetUserAccounts(*models.User) ([]models.Account, error)
+	ProvideTransfer(*models.Trasfer) error
 }
 
 type AccountService struct {
 	database *database.Database
-	Utils *utils.Utils
+	Utils    *utils.Utils
 }
 
-func NewAccountService(d *database.Database,  u *utils.Utils) *AccountService {
+func NewAccountService(d *database.Database, u *utils.Utils) *AccountService {
 	return &AccountService{
 		database: d,
-		Utils: u,
+		Utils:    u,
 	}
 }
 
@@ -44,4 +45,20 @@ func (s *AccountService) GetUserAccounts(user *models.User) ([]models.Account, e
 		return nil, err
 	}
 	return accs, nil
+}
+
+func (s *AccountService) ProvideTransfer(transfer *models.Trasfer) error {
+	sender_acc, err := s.database.GetAccountById(transfer.Sender)
+	if err != nil || sender_acc.Amount < transfer.Amount {
+		return errors.New("sender account error, transaction cancelled")
+	}
+	reciever_acc, err := s.database.GetAccountById(transfer.Receiver)
+	if err != nil || reciever_acc.Unit != sender_acc.Unit {
+		return errors.New("reciever account error, transaction cancelled")
+	}
+	if err = s.database.Transfer(transfer.Sender, transfer.Receiver, transfer.Amount); err != nil {
+		return err
+	}
+	err = s.database.AddTransfer(transfer)
+	return err
 }
