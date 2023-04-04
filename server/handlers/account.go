@@ -90,8 +90,6 @@ func (h *AccountHandler) POST_User_Exchange(c echo.Context) error {
 		Receiver: c.FormValue("Receiver"),
 	}
 	beta_exchng.SenderAmount, _ = strconv.ParseFloat(c.FormValue("Sender Amount"), 64)
-	//get course func
-	beta_exchng.Course = 1337228 //pass
 	header := c.Request().Header
 	id, err := h.service.ParseJWT(header["Token"][0])
 	if err != nil {

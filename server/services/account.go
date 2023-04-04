@@ -79,6 +79,8 @@ func (s *AccountService) ProvideExchange(exchange *models.Exchange) error {
 	if sender_acc.State != "ACTIVE" || reciever_acc.State != "ACTIVE" {
 		return errors.New("one of accounts is not active")
 	}
+	//get course func(sender_acc, reciever_acc) float64
+	exchange.Course = 1337228 //pass
 	exchange.ReceiverAmount = exchange.Course * exchange.SenderAmount
 	if err = s.database.Exchange(exchange.Sender, exchange.Receiver, exchange.SenderAmount, exchange.ReceiverAmount); err != nil {
 		return err
