@@ -76,11 +76,27 @@ func (s *AccountService) ProvideExchange(exchange *models.Exchange) error {
 	if err != nil || reciever_acc.Unit == sender_acc.Unit {
 		return errors.New("reciever account error, transaction cancelled")
 	}
+	if sender_acc.UserId != reciever_acc.UserId {
+		return errors.New("incorrect account")
+	}
 	if sender_acc.State != "ACTIVE" || reciever_acc.State != "ACTIVE" {
 		return errors.New("one of accounts is not active")
 	}
-	//get course func(sender_acc, reciever_acc) float64
-	exchange.Course = 1337228 //pass
+	
+	if sender_acc.Unit == "BYN" && reciever_acc.Unit == "USD" {
+		exchange.Course = 1 / utils.BYN_USD()
+	} else if sender_acc.Unit == "BYN" && reciever_acc.Unit == "EUR" {
+		exchange.Course = 1 / utils.BYN_EUR()
+	} else if sender_acc.Unit == "USD" && reciever_acc.Unit == "BYN" {
+		exchange.Course = utils.BYN_USD()
+	} else if sender_acc.Unit == "EUR" && reciever_acc.Unit == "BYN" {
+		exchange.Course = 1 / utils.BYN_USD()
+	} else if sender_acc.Unit == "USD" && reciever_acc.Unit == "EUR" {
+		exchange.Course = utils.BYN_USD() / utils.BYN_EUR()
+	} else if sender_acc.Unit == "EUR" && reciever_acc.Unit == "USD" {
+		exchange.Course = utils.BYN_EUR() / utils.BYN_USD()
+	}
+
 	exchange.ReceiverAmount = exchange.Course * exchange.SenderAmount
 	if err = s.database.Exchange(exchange.Sender, exchange.Receiver, exchange.SenderAmount, exchange.ReceiverAmount); err != nil {
 		return err

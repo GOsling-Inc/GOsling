@@ -7,6 +7,7 @@ import (
 
 	"github.com/GOsling-Inc/GOsling/models"
 	"github.com/GOsling-Inc/GOsling/services"
+	"github.com/GOsling-Inc/GOsling/utils"
 	"github.com/labstack/echo/v4"
 )
 
@@ -80,8 +81,10 @@ func (h *AccountHandler) POST_Transfer(c echo.Context) error {
 	if !strings.Contains(beta_trans.Sender, id) {
 		return c.JSON(401, errors.New("uninitialized sender"))
 	}
-	h.service.ProvideTransfer(beta_trans)
-	return nil
+	if err = h.service.ProvideTransfer(beta_trans); err != nil {
+		return c.JSON(401, err.Error())
+	}
+	return err
 }
 
 func (h *AccountHandler) POST_User_Exchange(c echo.Context) error {
@@ -89,7 +92,7 @@ func (h *AccountHandler) POST_User_Exchange(c echo.Context) error {
 		Sender:   c.FormValue("Sender"),
 		Receiver: c.FormValue("Receiver"),
 	}
-	beta_exchng.SenderAmount, _ = strconv.ParseFloat(c.FormValue("Sender Amount"), 64)
+	beta_exchng.SenderAmount, _ = strconv.ParseFloat(c.FormValue("Sender_amount"), 64)
 	header := c.Request().Header
 	id, err := h.service.ParseJWT(header["Token"][0])
 	if err != nil {
@@ -98,6 +101,15 @@ func (h *AccountHandler) POST_User_Exchange(c echo.Context) error {
 	if !strings.Contains(beta_exchng.Sender, id) {
 		return c.JSON(401, errors.New("uninitialized sender"))
 	}
-	h.service.ProvideExchange(beta_exchng)
+	if err = h.service.ProvideExchange(beta_exchng); err != nil {
+		return c.JSON(401, err.Error())
+	}
 	return nil
+}
+
+func (h* Handler) GET_Exchanges(c echo.Context) error {
+	return c.JSON(200, map[string]float64 {
+		"BYN/USD": utils.BYN_USD(),
+		"BYN/EUR": utils.BYN_EUR(),
+	})
 }

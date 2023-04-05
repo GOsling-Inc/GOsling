@@ -17,13 +17,13 @@ type IAuthService interface {
 
 type AuthService struct {
 	database *database.Database
-	Utils *utils.Utils
+	Utils    *utils.Utils
 }
 
-func NewAuthService(d *database.Database,  u *utils.Utils) *AuthService {
+func NewAuthService(d *database.Database, u *utils.Utils) *AuthService {
 	return &AuthService{
 		database: d,
-		Utils: u,
+		Utils:    u,
 	}
 }
 
@@ -49,16 +49,5 @@ func (s *AuthService) SignUp(user *models.User) error {
 }
 
 func (s *AuthService) TEST() error { // DONT TOUCH
-	crs := 2.85
-	am := 750 / crs
-	e := models.Exchange{
-		Receiver: "r4MjGvex4erBWbUSD",
-		Sender: "JnhoPNxx4erBWbBYN",
-		ReceiverAmount: am,
-		SenderAmount: 750,
-		Course: crs,
-	}
-	s.database.Exchange(e.Sender, e.Receiver, e.SenderAmount, e.ReceiverAmount)
-	s.database.AddExchange(&e)
 	return nil
 }

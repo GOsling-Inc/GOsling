@@ -3,14 +3,22 @@ package utils
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"math/rand"
+	"net/http"
 
 	"github.com/GOsling-Inc/GOsling/database"
 )
 
+var byn_usd float64
+var byn_eur float64
+
 type IUtils interface {
 	MakeID() string
 	Hash(string) (string, error)
+	getExchanges() map[string]float64
+	BYN_USD() float64
+	BYN_EUR() float64
 }
 
 type Utils struct {
@@ -47,3 +55,26 @@ func (u *Utils) Hash(str string) (string, error) {
 
 	return hex.EncodeToString(hash.Sum(nil)), nil
 }
+
+func (u *Utils) UpdateExchanges() {
+	r, _ := http.Get("https://www.nbrb.by/api/exrates/rates?periodicity=0")
+	var data []map[string]interface{}
+	_ = json.NewDecoder(r.Body).Decode(&data)
+	for _, v := range data {
+		if v["Cur_Abbreviation"] == "USD" {
+			byn_usd, _ =  v["Cur_OfficialRate"].(float64)
+		}
+		if v["Cur_Abbreviation"] == "EUR" {
+			byn_eur, _ =  v["Cur_OfficialRate"].(float64)
+		}
+	}
+}
+
+func BYN_USD() float64 {
+	return byn_usd
+}
+
+func BYN_EUR() float64 {
+	return byn_eur
+}
+

@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/GOsling-Inc/GOsling/database"
 	"github.com/GOsling-Inc/GOsling/env"
@@ -17,6 +18,13 @@ func main() {
 	database := database.New(database.Connect())
 	services := services.New(database)
 	handlers := handlers.New(services)
+
+	go func() {
+		for {
+			services.UpdateExchanges()
+			time.Sleep(30 * time.Minute)
+		}
+	} ()
 
 	router.Init(server, handlers)
 
