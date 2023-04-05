@@ -8,6 +8,7 @@ type Handler struct {
 	IAuthHandler
 	IUserHandler
 	IAccountHadler
+	ILoanHandler
 }
 
 func New(s *services.Service) *Handler {
@@ -15,5 +16,6 @@ func New(s *services.Service) *Handler {
 		IAuthHandler: NewAuthHandler(s),
 		IUserHandler: NewUserHandler(s),
 		IAccountHadler: NewAccountHandler(s),
+		ILoanHandler: NewLoanHandler(s),
 	}
 }

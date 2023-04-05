@@ -38,6 +38,18 @@ type Exchange struct {
 	Course         float64 `json:"course"`
 }
 
+type Loan struct {
+	Id        string  `json:"id"`
+	AccountId string  `json:"accountId"`
+	UserId    string  `json:"userid"`
+	Amount    float64 `json:"amount"`
+	Remaining float64 `json:"remaining"`
+	Part      float64 `json:"part"`
+	Percent   float64 `json:"percent"`
+	Period    string  `json:"period"`
+	Deadline  string  `json:"deadline"`
+}
+
 type JWTClaims struct {
 	jwt.StandardClaims
 	ID string `json:"id"`

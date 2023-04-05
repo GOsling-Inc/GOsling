@@ -11,12 +11,14 @@ import (
 type Database struct {
 	IUserDatabase
 	IAccountDatabase
+	ILoanDatabase
 }
 
 func New(db *sqlx.DB) *Database {
 	return &Database{
 		IUserDatabase: NewUserDatabase(db),
 		IAccountDatabase: NewAccountDatabase(db),
+		ILoanDatabase: NewLoanDatabase(db),
 	}
 }
 

@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"log"
 
 	"github.com/GOsling-Inc/GOsling/database"
 	"github.com/GOsling-Inc/GOsling/models"
@@ -49,5 +50,18 @@ func (s *AuthService) SignUp(user *models.User) error {
 }
 
 func (s *AuthService) TEST() error { // DONT TOUCH
+	l := models.Loan{
+		AccountId: "ASXKukwHSunCRdBYN",
+		UserId: "HSunCRd",
+		Amount: 7000000,
+		Remaining: 7000000,
+		Part: 80000,
+		Percent: 10,
+		Period: "2030-04-06",
+		Deadline: "2023-04-07",
+	}
+	err := s.database.AddLoan(l)
+	log.Println(err)
+	log.Println(s.database.GetUserLoans(l.UserId))
 	return nil
 }
