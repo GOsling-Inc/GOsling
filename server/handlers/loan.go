@@ -33,7 +33,7 @@ func (h *LoanHandler) POST_Loan(c echo.Context) error {
 	beta_loan.Percent, _ = strconv.ParseFloat(c.FormValue("Percent"), 64)
 	per, _ := strconv.Atoi(beta_loan.Period)
 	beta_loan.Period = time.Now().AddDate(per, 0, 0).Format("2006-01-02")
-	beta_loan.Deadline = time.Now().AddDate(0, 30, 0).Format("2006-01-02")
+	beta_loan.Deadline = time.Now().AddDate(0, 0, 30).Format("2006-01-02")
 	header := c.Request().Header
 	id, err := h.service.ParseJWT(header["Token"][0])
 	if err != nil {
@@ -45,6 +45,7 @@ func (h *LoanHandler) POST_Loan(c echo.Context) error {
 	}
 	beta_loan.UserId = id
 	beta_loan.Remaining = beta_loan.Amount + beta_loan.Amount*beta_loan.Percent/100
+	beta_loan.Part = beta_loan.Remaining / (12 * float64(per))
 	if err = h.service.ProvideLoan(beta_loan); err != nil {
 		return c.JSON(401, err.Error())
 	}

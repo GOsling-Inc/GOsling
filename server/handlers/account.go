@@ -13,7 +13,7 @@ import (
 
 type IAccountHadler interface {
 	POST_Add_Account(echo.Context) error
-	POST_User_Accounts(echo.Context) error
+	GET_User_Accounts(echo.Context) error
 	POST_Transfer(echo.Context) error
 	POST_User_Exchange(echo.Context) error
 }
@@ -28,7 +28,7 @@ func NewAccountHandler(s *services.Service) *AccountHandler {
 	}
 }
 
-func (h *AccountHandler) POST_User_Accounts(c echo.Context) error {
+func (h *AccountHandler) GET_User_Accounts(c echo.Context) error {
 	header := c.Request().Header
 	id, err := h.service.ParseJWT(header["Token"][0])
 	if err != nil {

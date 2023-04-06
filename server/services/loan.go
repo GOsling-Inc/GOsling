@@ -35,14 +35,10 @@ func (s *LoanService) ProvideLoan(loan *models.Loan) error {
 			return errors.New("can't open a new loan")
 		}
 	}
-	if err = s.database.Debits(); err != nil {
-		return err
-	}
 	err = s.database.AddLoan(*loan)
 	return err
 }
 
 func (s *LoanService) GetUserLoans(id string) ([]models.Loan, error) {
-	loans, err := s.database.GetUserLoans(id)
-	return loans, err
+	return s.database.GetUserLoans(id)
 }
