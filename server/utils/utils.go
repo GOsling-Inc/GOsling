@@ -4,10 +4,13 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"io/ioutil"
+	"log"
 	"math/rand"
 	"net/http"
 
 	"github.com/GOsling-Inc/GOsling/database"
+	"github.com/GOsling-Inc/GOsling/models"
 )
 
 var byn_usd float64
@@ -57,17 +60,32 @@ func (u *Utils) Hash(str string) (string, error) {
 }
 
 func (u *Utils) UpdateExchanges() {
-	r, _ := http.Get("https://www.nbrb.by/api/exrates/rates?periodicity=0")
+	r, err := http.Get("https://www.nbrb.by/api/exrates/rates?periodicity=0")
+	if err != nil {
+		pair := models.ExchangePair{}
+		content, _ := ioutil.ReadFile("env/exchanges.json")
+		json.Unmarshal(content, &pair)
+		byn_usd = pair.BYN_USD
+		byn_eur = pair.BYN_EUR
+		return 
+	}
 	var data []map[string]interface{}
 	_ = json.NewDecoder(r.Body).Decode(&data)
 	for _, v := range data {
 		if v["Cur_Abbreviation"] == "USD" {
-			byn_usd, _ =  v["Cur_OfficialRate"].(float64)
+			byn_usd, _ = v["Cur_OfficialRate"].(float64)
 		}
 		if v["Cur_Abbreviation"] == "EUR" {
-			byn_eur, _ =  v["Cur_OfficialRate"].(float64)
+			byn_eur, _ = v["Cur_OfficialRate"].(float64)
 		}
 	}
+	pair := models.ExchangePair{
+		BYN_USD: byn_usd,
+		BYN_EUR: byn_eur,
+	}
+	content, _ := json.Marshal(pair)
+	err = ioutil.WriteFile("env/exchanges.json", content, 0644)
+	log.Println(err)
 }
 
 func BYN_USD() float64 {
@@ -77,4 +95,3 @@ func BYN_USD() float64 {
 func BYN_EUR() float64 {
 	return byn_eur
 }
-

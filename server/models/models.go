@@ -48,6 +48,12 @@ type Loan struct {
 	Percent   float64 `json:"percent"`
 	Period    string  `json:"period"`
 	Deadline  string  `json:"deadline"`
+	State     string  `json:"state"` // ACTIVE / CLOSED
+}
+
+type ExchangePair struct {
+	BYN_USD float64 `json:"BYN_USD"`
+	BYN_EUR float64 `json:"BYN_EUR"`
 }
 
 type JWTClaims struct {
