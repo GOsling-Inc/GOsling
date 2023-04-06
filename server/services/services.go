@@ -9,15 +9,17 @@ type Service struct {
 	IAuthService
 	IUserService
 	IAccountService
+	ILoantService
 	*utils.Utils
 }
 
 func New(d *database.Database) *Service {
-	u := utils.NewUtils(d);
+	u := utils.NewUtils(d)
 	return &Service{
-		IAuthService: NewAuthService(d, u),
-		IUserService: NewUserService(d, u),
+		IAuthService:    NewAuthService(d, u),
+		IUserService:    NewUserService(d, u),
 		IAccountService: NewAccountService(d, u),
-		Utils: u,
+		ILoantService:   NewLoanService(d, u),
+		Utils:           u,
 	}
 }
