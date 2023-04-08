@@ -49,6 +49,6 @@ func (s *AuthService) SignUp(user *models.User) error {
 }
 
 func (s *AuthService) TEST() error { // DONT TOUCH
-	s.database.Debits()
+	s.database.UpdateDeposits()
 	return nil
 }

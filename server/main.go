@@ -22,7 +22,7 @@ func main() {
 	go func() {
 		for {
 			services.UpdateExchanges()
-			database.Debits()
+			database.UpdateLoans()
 			time.Sleep(30 * time.Minute)
 		}
 	} ()

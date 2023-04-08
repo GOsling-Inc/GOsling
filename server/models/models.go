@@ -16,7 +16,7 @@ type Account struct {
 	Id     string  `json:"id"`
 	UserId string  `json:"userid"`
 	Name   string  `json:"name"`
-	Type   string  `json:"type"` // BASIC / BUSINESS / INVESTMENT
+	Type   string  `json:"type"` // BASIC / BUSINESS / DEPOSIT
 	Unit   string  `json:"unit"` // BYN / USD / EUR
 	Amount float64 `json:"amount"`
 	State  string  `json:"state"` // ACTIVE / BLOCKED / FROZEN
@@ -39,6 +39,19 @@ type Exchange struct {
 }
 
 type Loan struct {
+	Id        string  `json:"id"`
+	AccountId string  `json:"accountId"`
+	UserId    string  `json:"userid"`
+	Amount    float64 `json:"amount"`
+	Remaining float64 `json:"remaining"`
+	Part      float64 `json:"part"`
+	Percent   float64 `json:"percent"`
+	Period    string  `json:"period"`
+	Deadline  string  `json:"deadline"`
+	State     string  `json:"state"` // ACTIVE / CLOSED
+}
+
+type Deposit struct {
 	Id        string  `json:"id"`
 	AccountId string  `json:"accountId"`
 	UserId    string  `json:"userid"`

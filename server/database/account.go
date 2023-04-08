@@ -11,6 +11,8 @@ type IAccountDatabase interface {
 	AddAccount(*models.Account) error
 	GetUserAccounts(userId string) ([]models.Account, error)
 	GetAccountById(id string) (models.Account, error)
+	FreezeAccount(string) error
+	DeleteAccount(string) error
 	Transfer(senderId, receiverId string, amount float64) error
 	AddTransfer(transfer *models.Trasfer) error
 	Exchange(senderId, receiverId string, sender_amount, receiver_amount float64) error
@@ -47,6 +49,20 @@ func (d *AccountDatabase) GetAccountById(id string) (models.Account, error) {
 	err := d.db.Get(&account, query, id)
 	return account, err
 }
+
+func (d *AccountDatabase) FreezeAccount(id string) error {
+	var empty string
+	query := "UPDATE accounts SET state='FROZEN' WHERE id=$1 RETURNING id"
+	return d.db.Get(&empty, query, id)
+}
+
+func (d *AccountDatabase) DeleteAccount(id string) error {
+	var empty string
+	query := "DELETE from accounts WHERE id=$1"
+	return d.db.Get(&empty, query, id)
+}
+
+
 
 func (d *AccountDatabase) Transfer(senderId, receiverId string, amount float64) error {
 	ctx := context.Background()

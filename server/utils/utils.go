@@ -5,7 +5,6 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"math/rand"
 	"net/http"
 
@@ -67,7 +66,7 @@ func (u *Utils) UpdateExchanges() {
 		json.Unmarshal(content, &pair)
 		byn_usd = pair.BYN_USD
 		byn_eur = pair.BYN_EUR
-		return 
+		return
 	}
 	var data []map[string]interface{}
 	_ = json.NewDecoder(r.Body).Decode(&data)
@@ -85,7 +84,6 @@ func (u *Utils) UpdateExchanges() {
 	}
 	content, _ := json.Marshal(pair)
 	err = ioutil.WriteFile("env/exchanges.json", content, 0644)
-	log.Println(err)
 }
 
 func BYN_USD() float64 {

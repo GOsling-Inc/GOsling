@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"strconv"
-	"time"
 
 	"github.com/GOsling-Inc/GOsling/models"
 	"github.com/GOsling-Inc/GOsling/services"
@@ -29,11 +28,6 @@ func (h *LoanHandler) POST_Loan(c echo.Context) error {
 		AccountId: c.FormValue("AccountId"),
 		Period:    c.FormValue("Period"),
 	}
-	beta_loan.Amount, _ = strconv.ParseFloat(c.FormValue("Amount"), 64)
-	beta_loan.Percent, _ = strconv.ParseFloat(c.FormValue("Percent"), 64)
-	per, _ := strconv.Atoi(beta_loan.Period)
-	beta_loan.Period = time.Now().AddDate(per, 0, 0).Format("2006-01-02")
-	beta_loan.Deadline = time.Now().AddDate(0, 0, 30).Format("2006-01-02")
 	header := c.Request().Header
 	id, err := h.service.ParseJWT(header["Token"][0])
 	if err != nil {
@@ -44,8 +38,8 @@ func (h *LoanHandler) POST_Loan(c echo.Context) error {
 		return c.JSON(401, err.Error())
 	}
 	beta_loan.UserId = id
-	beta_loan.Remaining = beta_loan.Amount + beta_loan.Amount*beta_loan.Percent/100
-	beta_loan.Part = beta_loan.Remaining / (12 * float64(per))
+	beta_loan.Amount, _ = strconv.ParseFloat(c.FormValue("Amount"), 64)
+	beta_loan.Percent, _ = strconv.ParseFloat(c.FormValue("Percent"), 64)
 	if err = h.service.ProvideLoan(beta_loan); err != nil {
 		return c.JSON(401, err.Error())
 	}

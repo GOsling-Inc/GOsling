@@ -13,6 +13,8 @@ type IAccountService interface {
 	GetUserAccounts(*models.User) ([]models.Account, error)
 	ProvideTransfer(*models.Trasfer) error
 	ProvideExchange(*models.Exchange) error
+	FreezeAccount(string) error
+	DeleteAccount(string) error
 }
 
 type AccountService struct {
@@ -46,6 +48,20 @@ func (s *AccountService) GetUserAccounts(user *models.User) ([]models.Account, e
 		return nil, err
 	}
 	return accs, nil
+}
+
+func (s *AccountService) FreezeAccount(accountId string) error {
+	if err := s.database.FreezeAccount(accountId); err != nil {
+		return errors.New("incorrect account")
+	}
+	return nil
+}
+
+func (s *AccountService) DeleteAccount(accountId string) error {
+	if err := s.database.DeleteAccount(accountId); err != nil {
+		return errors.New("incorrect account")
+	}
+	return nil
 }
 
 func (s *AccountService) ProvideTransfer(transfer *models.Trasfer) error {

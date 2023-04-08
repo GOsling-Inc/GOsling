@@ -12,13 +12,15 @@ type Database struct {
 	IUserDatabase
 	IAccountDatabase
 	ILoanDatabase
+	IDepositDatabase
 }
 
 func New(db *sqlx.DB) *Database {
 	return &Database{
-		IUserDatabase: NewUserDatabase(db),
+		IUserDatabase:    NewUserDatabase(db),
 		IAccountDatabase: NewAccountDatabase(db),
-		ILoanDatabase: NewLoanDatabase(db),
+		ILoanDatabase:    NewLoanDatabase(db),
+		IDepositDatabase: NewDepositDatabase(db),
 	}
 }
 

@@ -11,7 +11,7 @@ import (
 type ILoanDatabase interface {
 	AddLoan(models.Loan) error
 	GetUserLoans(string) ([]models.Loan, error)
-	Debits() error
+	UpdateLoans() error
 }
 
 type LoanDatabase struct {
@@ -51,7 +51,7 @@ func (d *LoanDatabase) GetUserLoans(userId string) ([]models.Loan, error) {
 	return loans, err
 }
 
-func (d *LoanDatabase) Debits() error {
+func (d *LoanDatabase) UpdateLoans() error {
 	date := time.Now().Format("2006-01-02")
 	var loans []models.Loan
 	query := "SELECT * FROM loans WHERE deadline=$1"
