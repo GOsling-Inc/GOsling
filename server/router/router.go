@@ -20,9 +20,12 @@ func Init(server *echo.Echo, handler *handlers.Handler) {
 		user.POST("/delete-account", handler.POST_Delete_Account)
 		user.GET("/accounts", handler.GET_User_Accounts)
 		user.POST("/transfer", handler.POST_Transfer)
-		user.POST("/exchange", handler.POST_User_Exchange) 
-		user.GET("/loans" , handler.GET_User_Loans)
+		user.POST("/exchange", handler.POST_User_Exchange)
+		user.GET("/loans", handler.GET_User_Loans)
 		user.POST("/new-loan", handler.POST_Loan)
+
+		user.GET("/deposits", handler.GET_User_Deposits)   // beta
+		user.POST("/new-deposit", handler.POST_NewDeposit) // beta
 	}
 	server.POST("/TEST", handler.TEST) // DONT TOUCH
 }

@@ -10,6 +10,7 @@ type Service struct {
 	IUserService
 	IAccountService
 	ILoantService
+	IDepositService
 	*utils.Utils
 }
 
@@ -20,6 +21,7 @@ func New(d *database.Database) *Service {
 		IUserService:    NewUserService(d, u),
 		IAccountService: NewAccountService(d, u),
 		ILoantService:   NewLoanService(d, u),
+		IDepositService: NewDepositService(d, u),
 		Utils:           u,
 	}
 }

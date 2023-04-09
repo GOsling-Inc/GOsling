@@ -9,13 +9,15 @@ type Handler struct {
 	IUserHandler
 	IAccountHadler
 	ILoanHandler
+	IDepositHandler
 }
 
 func New(s *services.Service) *Handler {
 	return &Handler{
-		IAuthHandler: NewAuthHandler(s),
-		IUserHandler: NewUserHandler(s),
-		IAccountHadler: NewAccountHandler(s),
-		ILoanHandler: NewLoanHandler(s),
+		IAuthHandler:    NewAuthHandler(s),
+		IUserHandler:    NewUserHandler(s),
+		IAccountHadler:  NewAccountHandler(s),
+		ILoanHandler:    NewLoanHandler(s),
+		IDepositHandler: NewDepositHandler(s),
 	}
 }

@@ -10,6 +10,7 @@ import (
 
 type IAccountService interface {
 	AddAccount(*models.User, *models.Account) error
+	GetAccountById(string) (models.Account, error)
 	GetUserAccounts(*models.User) ([]models.Account, error)
 	ProvideTransfer(*models.Trasfer) error
 	ProvideExchange(*models.Exchange) error
@@ -40,6 +41,10 @@ func (s *AccountService) AddAccount(user *models.User, acc *models.Account) erro
 		return err
 	}
 	return nil
+}
+
+func (s *AccountService) GetAccountById(id string) (models.Account, error) {
+	return s.database.GetAccountById(id)
 }
 
 func (s *AccountService) GetUserAccounts(user *models.User) ([]models.Account, error) {
@@ -98,7 +103,7 @@ func (s *AccountService) ProvideExchange(exchange *models.Exchange) error {
 	if sender_acc.State != "ACTIVE" || reciever_acc.State != "ACTIVE" {
 		return errors.New("one of accounts is not active")
 	}
-	
+
 	if sender_acc.Unit == "BYN" && reciever_acc.Unit == "USD" {
 		exchange.Course = 1 / utils.BYN_USD()
 	} else if sender_acc.Unit == "BYN" && reciever_acc.Unit == "EUR" {
