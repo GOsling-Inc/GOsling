@@ -1,72 +1,53 @@
 package handlers
 
 import (
-	"errors"
 	"strconv"
 
+	"github.com/GOsling-Inc/GOsling/middleware"
 	"github.com/GOsling-Inc/GOsling/models"
-	"github.com/GOsling-Inc/GOsling/services"
 	"github.com/labstack/echo/v4"
 )
 
-type IDepositHandler interface {
-	POST_NewDeposit(echo.Context) error
-	GET_User_Deposits(echo.Context) error
-}
-
 type DepositHandler struct {
-	service *services.Service
+	middleware *middleware.Middleware
 }
 
-func NewDepositHandler(s *services.Service) *DepositHandler {
+func NewDepositHandler(m *middleware.Middleware) *DepositHandler {
 	return &DepositHandler{
-		service: s,
+		middleware: m,
 	}
 }
 
 func (h *DepositHandler) POST_NewDeposit(c echo.Context) error {
-	beta_depos := &models.Deposit{
+	id := h.middleware.Auth(c.Request().Header)
+	if id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+
+	beta_depos := models.Deposit{
+		UserId:    id,
 		AccountId: c.FormValue("AccountId"),
 		Period:    c.FormValue("Period"),
 	}
-	header := c.Request().Header
-	id, err := h.service.ParseJWT(header["Token"][0])
-	if err != nil {
-		return c.JSON(401, err.Error())
-	}
-	_, err = h.service.GetUser(id)
-	if err != nil {
-		return c.JSON(401, err.Error())
-	}
-	acc, err := h.service.GetAccountById(beta_depos.AccountId)
-	if err != nil {
-		return c.JSON(401, err.Error())
-	}
 	beta_depos.Amount, _ = strconv.ParseFloat(c.FormValue("Amount"), 64)
 	beta_depos.Percent, _ = strconv.ParseFloat(c.FormValue("Percent"), 64)
-	if acc.UserId != id || acc.Amount < beta_depos.Amount {
-		return c.JSON(401, errors.New("account error"))
+
+	code, err := h.middleware.CreateDeposit(beta_depos)
+	if err != nil {
+		return c.JSON(code, JSON{nil, err.Error()})
 	}
-	beta_depos.UserId = id
-	if err = h.service.CreateDeposit(beta_depos); err != nil {
-		return c.JSON(401, err.Error())
-	}
-	return nil
+	return c.JSON(code, JSON{"ok", ""})
 }
 
-func (h *DepositHandler) GET_USER_DEPOSITS(c echo.Context) error {
-	header := c.Request().Header
-	id, err := h.service.ParseJWT(header["Token"][0])
-	if err != nil {
-		return c.JSON(401, err.Error())
+func (h *DepositHandler) GET_User_Deposits(c echo.Context) error {
+	id := h.middleware.Auth(c.Request().Header)
+	if id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
-	_, err = h.service.GetUser(id)
+
+	code, depos, err := h.middleware.GetUserDeposits(id)
 	if err != nil {
-		return c.JSON(401, err.Error())
+		return c.JSON(code, JSON{nil, err.Error()})
 	}
-	depos, err := h.service.GetUserDeposits(id)
-	if err != nil {
-		return c.JSON(401, err.Error())
-	}
-	return c.JSON(200, depos)
+	return c.JSON(code, JSON{depos, ""})
 }

@@ -1,23 +1,30 @@
 package handlers
 
 import (
-	"github.com/GOsling-Inc/GOsling/services"
+	"github.com/GOsling-Inc/GOsling/middleware"
 )
 
-type Handler struct {
-	IAuthHandler
-	IUserHandler
-	IAccountHadler
-	ILoanHandler
-	IDepositHandler
+type JSON struct {
+	Data  interface{} `json:"data"`
+	Error string      `json:"error"`
 }
 
-func New(s *services.Service) *Handler {
+type OBJ map[string]interface{}
+
+type Handler struct {
+	*AuthHandler
+	*UserHandler
+	*AccountHandler
+	*LoanHandler
+	*DepositHandler
+}
+
+func New(m *middleware.Middleware) *Handler {
 	return &Handler{
-		IAuthHandler:    NewAuthHandler(s),
-		IUserHandler:    NewUserHandler(s),
-		IAccountHadler:  NewAccountHandler(s),
-		ILoanHandler:    NewLoanHandler(s),
-		IDepositHandler: NewDepositHandler(s),
+		AuthHandler:    NewAuthHandler(m),
+		UserHandler:    NewUserHandler(m),
+		AccountHandler: NewAccountHandler(m),
+		LoanHandler:    NewLoanHandler(m),
+		DepositHandler: NewDepositHandler(m),
 	}
 }

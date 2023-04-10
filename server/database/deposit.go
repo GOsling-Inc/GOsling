@@ -8,12 +8,6 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type IDepositDatabase interface {
-	AddDeposit(deposit models.Deposit) error
-	GetUserDeposits(userId string) ([]models.Deposit, error)
-	UpdateDeposits() error
-}
-
 type DepositDatabase struct {
 	db *sqlx.DB
 }
@@ -80,8 +74,7 @@ func (d *DepositDatabase) UpdateDeposits() error {
 				return err
 			}
 		}
-		err = tx.Commit()
-		return err
+		tx.Commit()
 	}
 
 	return nil

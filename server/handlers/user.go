@@ -1,91 +1,69 @@
 package handlers
 
 import (
+	"github.com/GOsling-Inc/GOsling/middleware"
 	"github.com/GOsling-Inc/GOsling/models"
-	"github.com/GOsling-Inc/GOsling/services"
 	"github.com/labstack/echo/v4"
 )
 
-type IUserHandler interface {
-	POST_User(echo.Context) error
-	POST_Change_Main(echo.Context) error
-	POST_Change_Password(echo.Context) error
-}
-
 type UserHandler struct {
-	service *services.Service
+	middleware *middleware.Middleware
 }
 
-func NewUserHandler(s *services.Service) *UserHandler {
+func NewUserHandler(m *middleware.Middleware) *UserHandler {
 	return &UserHandler{
-		service: s,
+		middleware: m,
 	}
 }
 
 func (h *UserHandler) POST_User(c echo.Context) error {
-	header := c.Request().Header
-	id, err := h.service.ParseJWT(header["Token"][0])
-	if err != nil {
-		return c.JSON(401, err.Error())
+	id := h.middleware.Auth(c.Request().Header)
+	if id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
-	user, err := h.service.GetUser(id)
+	code, user, err := h.middleware.GetUser(id)
 	if err != nil {
-		return c.JSON(401, err.Error())
+		return c.JSON(code, JSON{nil, err.Error()})
 	}
-	return c.JSON(200, map[string]string{
+	return c.JSON(code, JSON{OBJ{
 		"Name":      user.Name,
 		"Surname":   user.Surname,
 		"Email":     user.Email,
 		"Birthdate": user.Birthdate,
-	})
+	}, ""})
 }
 
 func (h *UserHandler) POST_Change_Main(c echo.Context) error {
+	id := h.middleware.Auth(c.Request().Header)
+	if id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+
 	temp_user := models.User{
+		Id:        id,
 		Name:      c.FormValue("Name"),
 		Surname:   c.FormValue("Surname"),
 		Birthdate: c.FormValue("Birthdate"),
 	}
-	header := c.Request().Header
-	id, err := h.service.ParseJWT(header["Token"][0])
+
+	code, err := h.middleware.Change_Main_Info(temp_user)
 	if err != nil {
-		return c.JSON(401, err.Error())
+		return c.JSON(code, JSON{nil, err.Error()})
 	}
-	_, err = h.service.GetUser(id)
-	if err != nil {
-		return c.JSON(401, err.Error())
-	}
-	temp_user.Id = id
-	if err = h.service.Change_Main_Info(temp_user); err != nil {
-		return c.JSON(500, err.Error())
-	}
-	return nil
+	return c.JSON(code, JSON{"ok", ""})
 }
 
 func (h *UserHandler) POST_Change_Password(c echo.Context) error {
-	tempUser := models.User{
-		Password: c.FormValue("NewPassword"),
+	id := h.middleware.Auth(c.Request().Header)
+	if id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
+	newPassword := c.FormValue("NewPassword")
 	oldPassword := c.FormValue("OldPassword")
 
-	tempUser.Password, _ = h.service.Hash(tempUser.Password)
-	oldPassword, _ = h.service.Hash(oldPassword)
-
-	header := c.Request().Header
-	id, err := h.service.ParseJWT(header["Token"][0])
+	code, err := h.middleware.Change_Password(id, oldPassword, newPassword)
 	if err != nil {
-		return c.JSON(401, err.Error())
+		return c.JSON(code, JSON{nil, err.Error()})
 	}
-	user, err := h.service.GetUser(id)
-	if err != nil {
-		return c.JSON(401, err.Error())
-	}
-	if user.Password != oldPassword {
-		return c.JSON(401, "wrong password")
-	}
-	tempUser.Id = id
-	if err = h.service.Change_Password(tempUser); err != nil {
-		return c.JSON(500, err.Error())
-	}
-	return nil
+	return c.JSON(code, JSON{"ok", ""})
 }

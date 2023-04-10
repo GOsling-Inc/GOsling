@@ -7,27 +7,19 @@ import (
 
 	"github.com/GOsling-Inc/GOsling/database"
 	"github.com/GOsling-Inc/GOsling/models"
-	"github.com/GOsling-Inc/GOsling/utils"
 )
-
-type ILoantService interface {
-	ProvideLoan(*models.Loan) error
-	GetUserLoans(string) ([]models.Loan, error)
-}
 
 type LoanService struct {
 	database *database.Database
-	Utils    *utils.Utils
 }
 
-func NewLoanService(d *database.Database, u *utils.Utils) *LoanService {
+func NewLoanService(d *database.Database) *LoanService {
 	return &LoanService{
 		database: d,
-		Utils:    u,
 	}
 }
 
-func (s *LoanService) ProvideLoan(loan *models.Loan) error {
+func (s *LoanService) ProvideLoan(loan models.Loan) error {
 	loans, err := s.GetUserLoans(loan.UserId)
 	if err != nil {
 		return err
@@ -42,7 +34,7 @@ func (s *LoanService) ProvideLoan(loan *models.Loan) error {
 	loan.Deadline = time.Now().AddDate(0, 0, 30).Format("2006-01-02")
 	loan.Remaining = loan.Amount + loan.Amount * loan.Percent / 100 * float64(per)
 	loan.Part = loan.Remaining / (12 * float64(per))
-	err = s.database.AddLoan(*loan)
+	err = s.database.AddLoan(loan)
 	return err
 }
 

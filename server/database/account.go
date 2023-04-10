@@ -7,18 +7,6 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type IAccountDatabase interface {
-	AddAccount(*models.Account) error
-	GetUserAccounts(userId string) ([]models.Account, error)
-	GetAccountById(id string) (models.Account, error)
-	FreezeAccount(string) error
-	DeleteAccount(string) error
-	Transfer(senderId, receiverId string, amount float64) error
-	AddTransfer(transfer *models.Trasfer) error
-	Exchange(senderId, receiverId string, sender_amount, receiver_amount float64) error
-	AddExchange(exchange *models.Exchange) error
-}
-
 type AccountDatabase struct {
 	db *sqlx.DB
 }
@@ -29,7 +17,7 @@ func NewAccountDatabase(db *sqlx.DB) *AccountDatabase {
 	}
 }
 
-func (d *AccountDatabase) AddAccount(account *models.Account) error {
+func (d *AccountDatabase) AddAccount(account models.Account) error {
 	var id string
 	query := "INSERT INTO accounts (id, userid, name, type, unit) values ($1, $2, $3, $4, $5) RETURNING id"
 	err := d.db.Get(&id, query, account.Id, account.UserId, account.Name, account.Type, account.Unit)
@@ -50,19 +38,11 @@ func (d *AccountDatabase) GetAccountById(id string) (models.Account, error) {
 	return account, err
 }
 
-func (d *AccountDatabase) FreezeAccount(id string) error {
-	var empty string
-	query := "UPDATE accounts SET state='FROZEN' WHERE id=$1 RETURNING id"
-	return d.db.Get(&empty, query, id)
-}
-
 func (d *AccountDatabase) DeleteAccount(id string) error {
 	var empty string
-	query := "DELETE from accounts WHERE id=$1"
+	query := "UPDATE accounts SET state = 'DELETED' WHERE id=$1 RETURNING id"
 	return d.db.Get(&empty, query, id)
 }
-
-
 
 func (d *AccountDatabase) Transfer(senderId, receiverId string, amount float64) error {
 	ctx := context.Background()
@@ -84,7 +64,7 @@ func (d *AccountDatabase) Transfer(senderId, receiverId string, amount float64) 
 	return err
 }
 
-func (d *AccountDatabase) AddTransfer(transfer *models.Trasfer) error {
+func (d *AccountDatabase) AddTransfer(transfer models.Trasfer) error {
 	var id string
 	query := "INSERT INTO transfers (sender, receiver, amount) values ($1, $2, $3) RETURNING id"
 	err := d.db.Get(&id, query, transfer.Sender, transfer.Receiver, transfer.Amount)
@@ -111,7 +91,7 @@ func (d *AccountDatabase) Exchange(senderId, receiverId string, sender_amount, r
 	return err
 }
 
-func (d *AccountDatabase) AddExchange(exchange *models.Exchange) error {
+func (d *AccountDatabase) AddExchange(exchange models.Exchange) error {
 	var id string
 	query := "INSERT INTO exchanges (sender, receiver, sender_amount, receiver_amount, course) values ($1, $2, $3, $4, $5) RETURNING id"
 	err := d.db.Get(&id, query, exchange.Sender, exchange.Receiver, exchange.SenderAmount, exchange.ReceiverAmount, exchange.Course)

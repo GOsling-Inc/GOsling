@@ -8,12 +8,6 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type ILoanDatabase interface {
-	AddLoan(models.Loan) error
-	GetUserLoans(string) ([]models.Loan, error)
-	UpdateLoans() error
-}
-
 type LoanDatabase struct {
 	db *sqlx.DB
 }
@@ -56,14 +50,13 @@ func (d *LoanDatabase) UpdateLoans() error {
 	var loans []models.Loan
 	query := "SELECT * FROM loans WHERE deadline=$1"
 	d.db.Select(&loans, query, date)
-
 	ctx := context.Background()
 	for _, loan := range loans {
 		tx, err := d.db.BeginTx(ctx, nil)
 		if err != nil {
 			return err
 		}
-		_, err = tx.ExecContext(ctx, "UPDATE accounts SET amount = amount - $1 WHERE id = $2 AND status = 'ACTIVE'", loan.Part, loan.AccountId)
+		_, err = tx.ExecContext(ctx, "UPDATE accounts SET amount = amount - $1 WHERE id = $2 AND state = 'ACTIVE'", loan.Part, loan.AccountId)
 		if err != nil {
 			tx.Rollback()
 			return err
@@ -73,15 +66,14 @@ func (d *LoanDatabase) UpdateLoans() error {
 			tx.Rollback()
 			return err
 		}
-		if loan.Remaining - loan.Part <= 0 {
+		if loan.Remaining-loan.Part <= 0 {
 			_, err = tx.ExecContext(ctx, "UPDATE loans SET state = 'CLOSED' WHERE id = $1", loan.Id)
 			if err != nil {
 				tx.Rollback()
 				return err
 			}
 		}
-		err = tx.Commit()
-		return err
+		tx.Commit()
 	}
 
 	return nil

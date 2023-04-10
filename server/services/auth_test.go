@@ -19,7 +19,7 @@ var (
 func Test_User_SignIn(t *testing.T) {
 
 	server := echo.New()
-	user := &models.User{
+	user := models.User{
 		Name:      "ABOBA",
 		Surname:   "ABOBOB",
 		Email:     "examle@gmail.com",
@@ -27,7 +27,7 @@ func Test_User_SignIn(t *testing.T) {
 		Role:      "user",
 		Birthdate: "2020-01-01",
 	}
-	db.AddUser(user)
+	db.AddUser(&user)
 	testCases := []struct {
 		name         string
 		payload      interface{}

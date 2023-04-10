@@ -5,14 +5,6 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type IUserDatabase interface {
-	GetUserByMail(string) (*models.User, error)
-	GetUserById(string) (*models.User, error)
-	AddUser(*models.User) error
-	UpdatePasswordUser(id, password string) error
-	UpdateUserData(id, name, surname, birthdate string) error
-}
-
 type UserDatabase struct {
 	db *sqlx.DB
 }
@@ -23,24 +15,24 @@ func NewUserDatabase(db *sqlx.DB) *UserDatabase {
 	}
 }
 
-func (d *UserDatabase) GetUserByMail(mail string) (*models.User, error) {
-	user := new(models.User)
+func (d *UserDatabase) GetUserByMail(mail string) (models.User, error) {
+	var user models.User
 
 	query := "SELECT * FROM users WHERE email=$1"
-	err := d.db.Get(user, query, mail)
+	err := d.db.Get(&user, query, mail)
 	if err != nil {
-		return nil, err
+		return models.User{}, err
 	}
 	return user, nil
 }
 
-func (d *UserDatabase) GetUserById(id string) (*models.User, error) {
-	user := new(models.User)
+func (d *UserDatabase) GetUserById(id string) (models.User, error) {
+	var user models.User
 
 	query := "SELECT * FROM users WHERE id=$1"
-	err := d.db.Get(user, query, id)
+	err := d.db.Get(&user, query, id)
 	if err != nil {
-		return nil, err
+		return models.User{}, err
 	}
 	return user, nil
 }
@@ -49,6 +41,7 @@ func (d *UserDatabase) AddUser(user *models.User) error {
 	var id string
 	query := "INSERT INTO users (id, name, surname, email, password, birthdate) values ($1, $2, $3, $4, $5, $6) RETURNING id"
 	err := d.db.Get(&id, query, user.Id, user.Name, user.Surname, user.Email, user.Password, user.Birthdate)
+	user.Id = id
 	return err
 }
 

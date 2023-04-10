@@ -1,31 +1,23 @@
 package handlers
 
 import (
+	"github.com/GOsling-Inc/GOsling/middleware"
 	"github.com/GOsling-Inc/GOsling/models"
-	"github.com/GOsling-Inc/GOsling/services"
 	"github.com/labstack/echo/v4"
 )
 
-type IAuthHandler interface {
-	POST_SignUp(echo.Context) error
-	POST_SignIn(echo.Context) error
-
-	TEST(echo.Context) error // DONT TOUCH
-}
-
 type AuthHandler struct {
-	service *services.Service
+	middleware *middleware.Middleware
 }
 
-func NewAuthHandler(s *services.Service) *AuthHandler {
+func NewAuthHandler(m *middleware.Middleware) *AuthHandler {
 	return &AuthHandler{
-		service: s,
+		middleware: m,
 	}
 }
 
 func (h *AuthHandler) POST_SignUp(c echo.Context) error {
 	user := models.User{
-		Id:        h.service.MakeID(),
 		Name:      c.FormValue("Name"),
 		Surname:   c.FormValue("Surname"),
 		Email:     c.FormValue("Email"),
@@ -33,23 +25,18 @@ func (h *AuthHandler) POST_SignUp(c echo.Context) error {
 		Role:      "user",
 		Birthdate: c.FormValue("Birthdate"),
 	}
-	if err := h.service.Validate(&user); err != nil {
-		c.JSON(401, err.Error())
-		return err
-	}
-	user.Password, _ = h.service.Hash(user.Password)
-	if err := h.service.SignUp(&user); err != nil {
-		c.JSON(401, err.Error())
-		return err
-	}
-	token, err := h.service.CreateJWT(user.Id)
+
+	code, err := h.middleware.SignUp(&user)
 	if err != nil {
-		c.JSON(401, err.Error())
-		return err
+		return c.JSON(code, JSON{nil, err.Error()})
 	}
-	return c.JSON(201, map[string]string{
-		"Token": token,
-	})
+
+	token, jwtErr := h.middleware.CreateJWT(user.Id)
+	if jwtErr != nil {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, err.Error()})
+	}
+
+	return c.JSON(code, JSON{OBJ{"Token": token}, ""})
 }
 
 func (h *AuthHandler) POST_SignIn(c echo.Context) error {
@@ -57,25 +44,20 @@ func (h *AuthHandler) POST_SignIn(c echo.Context) error {
 		Email:    c.FormValue("Email"),
 		Password: c.FormValue("Password"),
 	}
-	if err := h.service.Validate(&user); err != nil {
-		c.JSON(401, err.Error())
-		return err
-	}
-	user.Password, _ = h.service.Hash(user.Password)
-	if err := h.service.SignIn(&user); err != nil {
-		c.JSON(401, err.Error())
-		return err
-	}
-	token, err := h.service.CreateJWT(user.Id)
+
+	code, err := h.middleware.SignIn(&user)
 	if err != nil {
-		c.JSON(401, err.Error())
-		return err
+		return c.JSON(code, JSON{nil, err.Error()})
 	}
-	return c.JSON(201, map[string]string{
-		"Token": token,
-	})
+
+	token, jwtErr := h.middleware.CreateJWT(user.Id)
+	if jwtErr != nil {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, err.Error()})
+	}
+
+	return c.JSON(code, JSON{OBJ{"Token": token}, ""})
 }
 
-func (h* AuthHandler) TEST(c echo.Context) error { // DONT TOUCH
-	return h.service.TEST()
+func (h *AuthHandler) DBTEST(c echo.Context) error { // DONT TOUCH
+	return h.middleware.DBTEST()
 }

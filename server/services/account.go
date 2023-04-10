@@ -1,43 +1,36 @@
 package services
 
 import (
+	"encoding/json"
 	"errors"
+	"os"
+	"net/http"
 
 	"github.com/GOsling-Inc/GOsling/database"
 	"github.com/GOsling-Inc/GOsling/models"
-	"github.com/GOsling-Inc/GOsling/utils"
 )
 
-type IAccountService interface {
-	AddAccount(*models.User, *models.Account) error
-	GetAccountById(string) (models.Account, error)
-	GetUserAccounts(*models.User) ([]models.Account, error)
-	ProvideTransfer(*models.Trasfer) error
-	ProvideExchange(*models.Exchange) error
-	FreezeAccount(string) error
-	DeleteAccount(string) error
-}
+var (
+	byn_usd float64
+	byn_eur float64
+)
 
 type AccountService struct {
 	database *database.Database
-	Utils    *utils.Utils
 }
 
-func NewAccountService(d *database.Database, u *utils.Utils) *AccountService {
+func NewAccountService(d *database.Database) *AccountService {
 	return &AccountService{
 		database: d,
-		Utils:    u,
 	}
 }
 
-func (s *AccountService) AddAccount(user *models.User, acc *models.Account) error {
-	accs, err := s.database.GetUserAccounts(user.Id)
+func (s *AccountService) AddAccount(userId string, acc models.Account) error {
+	accs, err := s.database.GetUserAccounts(userId)
 	if len(accs) == 12 || err != nil {
 		return errors.New("can't add an account")
 	}
-	acc.Id = s.Utils.MakeID() + user.Id + acc.Unit
-	acc.UserId = user.Id
-	if err := s.database.IAccountDatabase.AddAccount(acc); err != nil {
+	if err := s.database.AddAccount(acc); err != nil {
 		return err
 	}
 	return nil
@@ -47,19 +40,12 @@ func (s *AccountService) GetAccountById(id string) (models.Account, error) {
 	return s.database.GetAccountById(id)
 }
 
-func (s *AccountService) GetUserAccounts(user *models.User) ([]models.Account, error) {
-	accs, err := s.database.GetUserAccounts(user.Id)
+func (s *AccountService) GetUserAccounts(userId string) ([]models.Account, error) {
+	accs, err := s.database.GetUserAccounts(userId)
 	if err != nil {
 		return nil, err
 	}
 	return accs, nil
-}
-
-func (s *AccountService) FreezeAccount(accountId string) error {
-	if err := s.database.FreezeAccount(accountId); err != nil {
-		return errors.New("incorrect account")
-	}
-	return nil
 }
 
 func (s *AccountService) DeleteAccount(accountId string) error {
@@ -69,7 +55,7 @@ func (s *AccountService) DeleteAccount(accountId string) error {
 	return nil
 }
 
-func (s *AccountService) ProvideTransfer(transfer *models.Trasfer) error {
+func (s *AccountService) ProvideTransfer(transfer models.Trasfer) error {
 	sender_acc, err := s.database.GetAccountById(transfer.Sender)
 	if err != nil || sender_acc.Amount < transfer.Amount {
 		return errors.New("sender account error, transaction cancelled")
@@ -88,7 +74,7 @@ func (s *AccountService) ProvideTransfer(transfer *models.Trasfer) error {
 	return err
 }
 
-func (s *AccountService) ProvideExchange(exchange *models.Exchange) error {
+func (s *AccountService) ProvideExchange(exchange models.Exchange) error {
 	sender_acc, err := s.database.GetAccountById(exchange.Sender)
 	if err != nil || sender_acc.Amount < exchange.SenderAmount || sender_acc.State != "ACTIVE" {
 		return errors.New("sender account error, transaction cancelled")
@@ -105,17 +91,17 @@ func (s *AccountService) ProvideExchange(exchange *models.Exchange) error {
 	}
 
 	if sender_acc.Unit == "BYN" && reciever_acc.Unit == "USD" {
-		exchange.Course = 1 / utils.BYN_USD()
+		exchange.Course = 1 / s.BYN_USD()
 	} else if sender_acc.Unit == "BYN" && reciever_acc.Unit == "EUR" {
-		exchange.Course = 1 / utils.BYN_EUR()
+		exchange.Course = 1 / s.BYN_EUR()
 	} else if sender_acc.Unit == "USD" && reciever_acc.Unit == "BYN" {
-		exchange.Course = utils.BYN_USD()
+		exchange.Course = s.BYN_USD()
 	} else if sender_acc.Unit == "EUR" && reciever_acc.Unit == "BYN" {
-		exchange.Course = 1 / utils.BYN_USD()
+		exchange.Course = 1 / s.BYN_USD()
 	} else if sender_acc.Unit == "USD" && reciever_acc.Unit == "EUR" {
-		exchange.Course = utils.BYN_USD() / utils.BYN_EUR()
+		exchange.Course = s.BYN_USD() / s.BYN_EUR()
 	} else if sender_acc.Unit == "EUR" && reciever_acc.Unit == "USD" {
-		exchange.Course = utils.BYN_EUR() / utils.BYN_USD()
+		exchange.Course = s.BYN_EUR() / s.BYN_USD()
 	}
 
 	exchange.ReceiverAmount = exchange.Course * exchange.SenderAmount
@@ -124,4 +110,40 @@ func (s *AccountService) ProvideExchange(exchange *models.Exchange) error {
 	}
 	err = s.database.AddExchange(exchange)
 	return err
+}
+
+func (s *AccountService) UpdateExchanges() {
+	r, err := http.Get("https://www.nbrb.by/api/exrates/rates?periodicity=0")
+	if err != nil {
+		pair := models.ExchangePair{}
+		content, _ := os.ReadFile("env/exchanges.json")
+		json.Unmarshal(content, &pair)
+		byn_usd = pair.BYN_USD
+		byn_eur = pair.BYN_EUR
+		return
+	}
+	var data []map[string]interface{}
+	_ = json.NewDecoder(r.Body).Decode(&data)
+	for _, v := range data {
+		if v["Cur_Abbreviation"] == "USD" {
+			byn_usd, _ = v["Cur_OfficialRate"].(float64)
+		}
+		if v["Cur_Abbreviation"] == "EUR" {
+			byn_eur, _ = v["Cur_OfficialRate"].(float64)
+		}
+	}
+	pair := models.ExchangePair{
+		BYN_USD: byn_usd,
+		BYN_EUR: byn_eur,
+	}
+	content, _ := json.Marshal(pair)
+	os.WriteFile("env/exchanges.json", content, 0644)
+}
+
+func (s *AccountService) BYN_USD() float64 {
+	return byn_usd
+}
+
+func (s *AccountService) BYN_EUR() float64 {
+	return byn_eur
 }

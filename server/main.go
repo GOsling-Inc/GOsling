@@ -8,6 +8,7 @@ import (
 	"github.com/GOsling-Inc/GOsling/database"
 	"github.com/GOsling-Inc/GOsling/env"
 	"github.com/GOsling-Inc/GOsling/handlers"
+	"github.com/GOsling-Inc/GOsling/middleware"
 	"github.com/GOsling-Inc/GOsling/router"
 	"github.com/GOsling-Inc/GOsling/services"
 	"github.com/labstack/echo/v4"
@@ -17,12 +18,14 @@ func main() {
 	server := echo.New()
 	database := database.New(database.Connect())
 	services := services.New(database)
-	handlers := handlers.New(services)
+	middleware := middleware.New(services)
+	handlers := handlers.New(middleware)
 
 	go func() {
 		for {
 			services.UpdateExchanges()
 			database.UpdateLoans()
+			database.UpdateDeposits()
 			time.Sleep(30 * time.Minute)
 		}
 	} ()

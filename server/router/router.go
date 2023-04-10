@@ -16,7 +16,6 @@ func Init(server *echo.Echo, handler *handlers.Handler) {
 		user.POST("/change/main", handler.POST_Change_Main)
 		user.POST("/change/password", handler.POST_Change_Password)
 		user.POST("/new-account", handler.POST_Add_Account)
-		user.POST("/freeze-account", handler.POST_Freeze_Account)
 		user.POST("/delete-account", handler.POST_Delete_Account)
 		user.GET("/accounts", handler.GET_User_Accounts)
 		user.POST("/transfer", handler.POST_Transfer)
@@ -24,8 +23,8 @@ func Init(server *echo.Echo, handler *handlers.Handler) {
 		user.GET("/loans", handler.GET_User_Loans)
 		user.POST("/new-loan", handler.POST_Loan)
 
-		user.GET("/deposits", handler.GET_User_Deposits)   // beta
-		user.POST("/new-deposit", handler.POST_NewDeposit) // beta
+		user.GET("/deposits", handler.GET_User_Deposits)   
+		user.POST("/new-deposit", handler.POST_NewDeposit) 
 	}
-	server.POST("/TEST", handler.TEST) // DONT TOUCH
+	server.POST("/TEST", handler.DBTEST) // DONT TOUCH
 }

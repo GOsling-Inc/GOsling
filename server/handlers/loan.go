@@ -3,62 +3,51 @@ package handlers
 import (
 	"strconv"
 
+	"github.com/GOsling-Inc/GOsling/middleware"
 	"github.com/GOsling-Inc/GOsling/models"
-	"github.com/GOsling-Inc/GOsling/services"
 	"github.com/labstack/echo/v4"
 )
 
-type ILoanHandler interface {
-	POST_Loan(echo.Context) error
-	GET_User_Loans(echo.Context) error
-}
-
 type LoanHandler struct {
-	service *services.Service
+	middleware *middleware.Middleware
 }
 
-func NewLoanHandler(s *services.Service) *LoanHandler {
+func NewLoanHandler(s *middleware.Middleware) *LoanHandler {
 	return &LoanHandler{
-		service: s,
+		middleware: s,
 	}
 }
 
 func (h *LoanHandler) POST_Loan(c echo.Context) error {
-	beta_loan := &models.Loan{
+	id := h.middleware.Auth(c.Request().Header)
+	if id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+
+	loan := models.Loan{
+		UserId: id,
 		AccountId: c.FormValue("AccountId"),
 		Period:    c.FormValue("Period"),
 	}
-	header := c.Request().Header
-	id, err := h.service.ParseJWT(header["Token"][0])
+	loan.Amount, _ = strconv.ParseFloat(c.FormValue("Amount"), 64)
+	loan.Percent, _ = strconv.ParseFloat(c.FormValue("Percent"), 64)
+
+	code, err := h.middleware.ProvideLoan(loan)
 	if err != nil {
-		return c.JSON(401, err.Error())
+		return c.JSON(code, JSON{nil, err.Error()})
 	}
-	_, err = h.service.GetUser(id)
-	if err != nil {
-		return c.JSON(401, err.Error())
-	}
-	beta_loan.UserId = id
-	beta_loan.Amount, _ = strconv.ParseFloat(c.FormValue("Amount"), 64)
-	beta_loan.Percent, _ = strconv.ParseFloat(c.FormValue("Percent"), 64)
-	if err = h.service.ProvideLoan(beta_loan); err != nil {
-		return c.JSON(401, err.Error())
-	}
-	return nil
+	return c.JSON(code, JSON{"ok", ""})
 }
 
 func (h *LoanHandler) GET_User_Loans(c echo.Context) error {
-	header := c.Request().Header
-	id, err := h.service.ParseJWT(header["Token"][0])
-	if err != nil {
-		return c.JSON(401, err.Error())
+	id := h.middleware.Auth(c.Request().Header)
+	if id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
-	_, err = h.service.GetUser(id)
+
+	code, loans, err := h.middleware.GetUserLoans(id)
 	if err != nil {
-		return c.JSON(401, err.Error())
+		return c.JSON(code, JSON{nil, err.Error()})
 	}
-	loans, err := h.service.GetUserLoans(id)
-	if err != nil {
-		return c.JSON(401, err.Error())
-	}
-	return c.JSON(200, loans)
+	return c.JSON(code, JSON{loans, ""})
 }

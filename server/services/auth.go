@@ -1,29 +1,22 @@
 package services
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"errors"
+	"math/rand"
 
 	"github.com/GOsling-Inc/GOsling/database"
 	"github.com/GOsling-Inc/GOsling/models"
-	"github.com/GOsling-Inc/GOsling/utils"
 )
-
-type IAuthService interface {
-	SignIn(*models.User) error
-	SignUp(*models.User) error
-
-	TEST() error // DONT TOUCH
-}
 
 type AuthService struct {
 	database *database.Database
-	Utils    *utils.Utils
 }
 
-func NewAuthService(d *database.Database, u *utils.Utils) *AuthService {
+func NewAuthService(d *database.Database) *AuthService {
 	return &AuthService{
 		database: d,
-		Utils:    u,
 	}
 }
 
@@ -48,7 +41,32 @@ func (s *AuthService) SignUp(user *models.User) error {
 	return err
 }
 
-func (s *AuthService) TEST() error { // DONT TOUCH
+func (s *AuthService) MakeID() string {
+	var charset = []byte("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	b := make([]byte, 7)
+	for {
+		for i := range b {
+			b[i] = charset[rand.Intn(len(charset))]
+		}
+		id := string(b)
+		_, err := s.database.GetUserById(id)
+		if err != nil {
+			return id
+		}
+	}
+}
+
+func (s *AuthService) Hash(str string) (string, error) {
+	hash := sha256.New()
+	_, err := hash.Write([]byte(str))
+	if err != nil {
+		return "", err
+	}
+
+	return hex.EncodeToString(hash.Sum(nil)), nil
+}
+
+func (s *AuthService) DBTEST() error { // DONT TOUCH
 	s.database.UpdateDeposits()
 	return nil
 }

@@ -9,18 +9,18 @@ import (
 )
 
 type Database struct {
-	IUserDatabase
-	IAccountDatabase
-	ILoanDatabase
-	IDepositDatabase
+	*UserDatabase
+	*AccountDatabase
+	*LoanDatabase
+	*DepositDatabase
 }
 
 func New(db *sqlx.DB) *Database {
 	return &Database{
-		IUserDatabase:    NewUserDatabase(db),
-		IAccountDatabase: NewAccountDatabase(db),
-		ILoanDatabase:    NewLoanDatabase(db),
-		IDepositDatabase: NewDepositDatabase(db),
+		UserDatabase:    NewUserDatabase(db),
+		AccountDatabase: NewAccountDatabase(db),
+		LoanDatabase:    NewLoanDatabase(db),
+		DepositDatabase: NewDepositDatabase(db),
 	}
 }
 
