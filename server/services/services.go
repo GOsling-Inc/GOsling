@@ -10,14 +10,16 @@ type Service struct {
 	*AccountService
 	*LoanService
 	*DepositService
+	*InsuranceService
 }
 
 func New(d *database.Database) *Service {
 	return &Service{
-		AuthService:    NewAuthService(d),
-		UserService:    NewUserService(d),
-		AccountService: NewAccountService(d),
-		LoanService:   NewLoanService(d),
-		DepositService: NewDepositService(d),
+		AuthService:      NewAuthService(d),
+		UserService:      NewUserService(d),
+		AccountService:   NewAccountService(d),
+		LoanService:      NewLoanService(d),
+		DepositService:   NewDepositService(d),
+		InsuranceService: NewInsuranceService(d),
 	}
 }
