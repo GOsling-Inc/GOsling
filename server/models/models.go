@@ -76,6 +76,20 @@ type Insurance struct {
 	State     string  `json:"state"` // ACTIVE / CLOSED
 }
 
+type Investment struct {
+	Id        int            `json:"id"`
+	Name      string         `json:"name"`
+	Investors map[string]int `json:"investors"`
+}
+
+type InvestOrder struct {
+	Name   string  `json:"name"`
+	UserId string  `json:"userid"`
+	Count  int     `json:"count"`
+	Action string  `json:"action"` // BUY / SELL
+	Price  float64 `json:"price"`
+}
+
 type ExchangePair struct {
 	BYN_USD float64 `json:"BYN_USD"`
 	BYN_EUR float64 `json:"BYN_EUR"`
