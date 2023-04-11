@@ -13,6 +13,7 @@ type Database struct {
 	*AccountDatabase
 	*LoanDatabase
 	*DepositDatabase
+	*InsuranceDatabase
 }
 
 func New(db *sqlx.DB) *Database {
@@ -21,6 +22,7 @@ func New(db *sqlx.DB) *Database {
 		AccountDatabase: NewAccountDatabase(db),
 		LoanDatabase:    NewLoanDatabase(db),
 		DepositDatabase: NewDepositDatabase(db),
+		InsuranceDatabase: NewInsuranceDatabase(db),
 	}
 }
 

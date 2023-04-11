@@ -64,6 +64,18 @@ type Deposit struct {
 	State     string  `json:"state"` // ACTIVE / CLOSED
 }
 
+type Insurance struct {
+	Id        string  `json:"id"`
+	AccountId string  `json:"accountId"`
+	UserId    string  `json:"userid"`
+	Amount    float64 `json:"amount"`
+	Remaining float64 `json:"remaining"`
+	Part      float64 `json:"part"`
+	Period    string  `json:"period"`
+	Deadline  string  `json:"deadline"`
+	State     string  `json:"state"` // ACTIVE / CLOSED
+}
+
 type ExchangePair struct {
 	BYN_USD float64 `json:"BYN_USD"`
 	BYN_EUR float64 `json:"BYN_EUR"`

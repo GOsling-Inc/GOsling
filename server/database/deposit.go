@@ -68,7 +68,7 @@ func (d *DepositDatabase) UpdateDeposits() error {
 				tx.Rollback()
 				return err
 			}
-			_, err = tx.ExecContext(ctx, "UPDATE accounts SET amount = $1 WHERE id = $2", deposit.Remaining+deposit.Part, deposit.Id)
+			_, err = tx.ExecContext(ctx, "UPDATE accounts SET amount = amount + $1 WHERE id = $2", deposit.Remaining+deposit.Part, deposit.Id)
 			if err != nil {
 				tx.Rollback()
 				return err

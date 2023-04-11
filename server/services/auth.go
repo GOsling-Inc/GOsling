@@ -67,6 +67,5 @@ func (s *AuthService) Hash(str string) (string, error) {
 }
 
 func (s *AuthService) DBTEST() error { // DONT TOUCH
-	s.database.UpdateDeposits()
 	return nil
 }

@@ -26,6 +26,7 @@ func main() {
 			services.UpdateExchanges()
 			database.UpdateLoans()
 			database.UpdateDeposits()
+			database.UpdateInsurances()
 			time.Sleep(30 * time.Minute)
 		}
 	} ()
