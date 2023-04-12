@@ -43,7 +43,7 @@ func (s *AuthService) SignUp(user *models.User) error {
 }
 
 func (s *AuthService) MakeID() string {
-	var charset = []byte("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	charset := []byte("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	b := make([]byte, 7)
 	for {
 		for i := range b {
@@ -68,7 +68,15 @@ func (s *AuthService) Hash(str string) (string, error) {
 }
 
 func (s *AuthService) DBTEST() error { // DONT TOUCH
-	investments, err := s.database.GetInvestments()
-	log.Println(investments, err)
+	o := models.Order{
+		Name:      "TESLA",
+		UserId:    "gosling",
+		AccountId: "spnP1j5goslingUSD",
+		Count:     1000,
+		Price:     183.80,
+		Action:    "BUY",
+	}
+	err := s.database.Sell("QmATMmarosto4kUSD", o, 1000)
+	log.Println(err)
 	return nil
 }

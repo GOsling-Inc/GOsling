@@ -90,11 +90,22 @@ type Investment struct {
 	Investors map[string]int `json:"investors"`
 }
 
-type InvestOrder struct {
+type Order struct {
+	Id        int     `json:"id"`
+	Name      string  `json:"name"`
+	UserId    string  `json:"userid"`
+	AccountId string  `json:"accountid"`
+	Count     int     `json:"count"`
+	Action    string  `json:"action"` // BUY / SELL
+	Price     float64 `json:"price"`
+}
+
+type Order_operation struct {
+	Id     int     `json:"id"`
 	Name   string  `json:"name"`
-	UserId string  `json:"userid"`
+	Buyer  string  `json:"buyer"`
+	Seller string  `json:"seller"`
 	Count  int     `json:"count"`
-	Action string  `json:"action"` // BUY / SELL
 	Price  float64 `json:"price"`
 }
 
