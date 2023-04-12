@@ -17,7 +17,7 @@ type Handler struct {
 	*AccountHandler
 	*LoanHandler
 	*DepositHandler
-	*EnsuranceHandler
+	*InsuranceHandler
 }
 
 func New(m *middleware.Middleware) *Handler {
@@ -27,6 +27,6 @@ func New(m *middleware.Middleware) *Handler {
 		AccountHandler:   NewAccountHandler(m),
 		LoanHandler:      NewLoanHandler(m),
 		DepositHandler:   NewDepositHandler(m),
-		EnsuranceHandler: NewEnsuranceHandler(m),
+		InsuranceHandler: NewInsuranceHandler(m),
 	}
 }

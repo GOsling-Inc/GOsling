@@ -22,7 +22,7 @@ func (m *DepositMiddleware) CreateInsurance(insurance models.Insurance) (int, er
 	if err != nil {
 		return UNAUTHORIZED, err
 	}
-	if acc.UserId != insurance.UserId || acc.Amount < insurance.Amount {
+	if acc.UserId != insurance.UserId || acc.Amount < insurance.Part {
 		return UNAUTHORIZED, errors.New("account error")
 	}
 	if err = m.service.CreateInsurance(insurance); err != nil {

@@ -15,16 +15,23 @@ func Init(server *echo.Echo, handler *handlers.Handler) {
 		user.POST("", handler.POST_User)
 		user.POST("/change/main", handler.POST_Change_Main)
 		user.POST("/change/password", handler.POST_Change_Password)
+
 		user.POST("/new-account", handler.POST_Add_Account)
 		user.POST("/delete-account", handler.POST_Delete_Account)
 		user.GET("/accounts", handler.GET_User_Accounts)
+
 		user.POST("/transfer", handler.POST_Transfer)
+
 		user.POST("/exchange", handler.POST_User_Exchange)
+
 		user.GET("/loans", handler.GET_User_Loans)
 		user.POST("/new-loan", handler.POST_Loan)
 
 		user.GET("/deposits", handler.GET_User_Deposits)   
 		user.POST("/new-deposit", handler.POST_NewDeposit) 
+
+		user.GET("/insurances", handler.GET_User_Insurances)
+		user.POST("/new-insurance", handler.POST_NewInsurance)
 	}
 	server.POST("/TEST", handler.DBTEST) // DONT TOUCH
 }

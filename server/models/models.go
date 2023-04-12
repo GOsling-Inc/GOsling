@@ -1,6 +1,8 @@
 package models
 
-import "github.com/dgrijalva/jwt-go"
+import (
+	"github.com/dgrijalva/jwt-go"
+)
 
 type User struct {
 	Id        string `json:"id"`
@@ -74,6 +76,12 @@ type Insurance struct {
 	Period    string  `json:"period"`
 	Deadline  string  `json:"deadline"`
 	State     string  `json:"state"` // ACTIVE / CLOSED
+}
+
+type RawInvestment struct {
+	Id        int    `json:"id"`
+	Name      string `json:"name"`
+	Investors string `json:"investors"`
 }
 
 type Investment struct {

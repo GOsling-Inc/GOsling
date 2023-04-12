@@ -20,7 +20,7 @@ func NewInsuranceDatabase(db *sqlx.DB) *InsuranceDatabase {
 
 func (d *InsuranceDatabase) AddInsurance(insurance models.Insurance) error {
 	var id string
-	query :="INSERT INTO insurances (accountid, userid, amount, remaining, part, period, deadline) values ($1, $2, $3, $4, $5, $6, $7)"
+	query :="INSERT INTO insurances (accountid, userid, amount, remaining, part, period, deadline) values ($1, $2, $3, $4, $5, $6, $7) RETURNING id"
 	return d.db.Get(&id, query, insurance.AccountId, insurance.UserId, insurance.Amount, insurance.Remaining, insurance.Part, insurance.Period, insurance.Deadline)
 }
 

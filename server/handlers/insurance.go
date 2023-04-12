@@ -8,42 +8,42 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type EnsuranceHandler struct {
+type InsuranceHandler struct {
 	middleware *middleware.Middleware
 }
 
-func NewEnsuranceHandler(m *middleware.Middleware) *EnsuranceHandler {
-	return &EnsuranceHandler{
+func NewInsuranceHandler(m *middleware.Middleware) *InsuranceHandler {
+	return &InsuranceHandler{
 		middleware: m,
 	}
 }
 
-func (h *EnsuranceHandler) POST_NewEnsurance(c echo.Context) error {
+func (h *InsuranceHandler) POST_NewInsurance(c echo.Context) error {
 	id := h.middleware.Auth(c.Request().Header)
 	if id == "" {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
-	beta_ensure := models.Insurance{
+	insurance := models.Insurance{
 		UserId:    id,
 		AccountId: c.FormValue("AccountId"),
 		Period:    c.FormValue("Period"),
 	}
-	beta_ensure.Amount, _ = strconv.ParseFloat(c.FormValue("Amount"), 64)
-	code, err := h.middleware.CreateInsurance(beta_ensure)
+	insurance.Amount, _ = strconv.ParseFloat(c.FormValue("Amount"), 64)
+	code, err := h.middleware.CreateInsurance(insurance)
 	if err != nil {
 		return c.JSON(code, JSON{nil, err.Error()})
 	}
 	return c.JSON(code, JSON{"ok", ""})
 }
 
-func (h *DepositHandler) GET_User_Ensurances(c echo.Context) error {
+func (h *InsuranceHandler) GET_User_Insurances(c echo.Context) error {
 	id := h.middleware.Auth(c.Request().Header)
 	if id == "" {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
-	code, ensure, err := h.middleware.GetUserInsurances(id)
+	code, insurances, err := h.middleware.GetUserInsurances(id)
 	if err != nil {
 		return c.JSON(code, JSON{nil, err.Error()})
 	}
-	return c.JSON(code, JSON{ensure, ""})
+	return c.JSON(code, JSON{insurances, ""})
 }
