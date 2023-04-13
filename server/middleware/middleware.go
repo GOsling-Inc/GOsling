@@ -20,15 +20,17 @@ type Middleware struct {
 	*LoanMiddleware
 	*DepositMiddleware
 	*InsuranceMiddleware
+	*InvestmentMiddleware
 }
 
 func New(s *services.Service) *Middleware {
 	return &Middleware{
-		AuthMiddleware:      NewAuthMiddleware(s),
-		UserMiddleware:      NewUserMiddleware(s),
-		AccountMiddleware:   NewAccountMiddleware(s),
-		LoanMiddleware:      NewLoanMiddleware(s),
-		DepositMiddleware:   NewDepositMiddleware(s),
-		InsuranceMiddleware: NewInsuranceMiddleware(s),
+		AuthMiddleware:       NewAuthMiddleware(s),
+		UserMiddleware:       NewUserMiddleware(s),
+		AccountMiddleware:    NewAccountMiddleware(s),
+		LoanMiddleware:       NewLoanMiddleware(s),
+		DepositMiddleware:    NewDepositMiddleware(s),
+		InsuranceMiddleware:  NewInsuranceMiddleware(s),
+		InvestmentMiddleware: NewInvestmentMiddleware(s),
 	}
 }

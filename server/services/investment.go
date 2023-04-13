@@ -1,0 +1,65 @@
+package services
+
+import (
+	"errors"
+
+	"github.com/GOsling-Inc/GOsling/database"
+	"github.com/GOsling-Inc/GOsling/models"
+)
+
+type InvestmentService struct {
+	database *database.Database
+}
+
+func NewInvestmentService(d *database.Database) *InvestmentService {
+	return &InvestmentService{
+		database: d,
+	}
+}
+
+func (s *InvestmentService) CreateOrder(order models.Order) error {
+	inv, err := s.database.GetInvestment(order.Name)
+	if err != nil || inv.Name == "" {
+		return errors.New("wrong stonck")
+	}
+	acc, err := s.database.GetAccountById(order.AccountId)
+	if err != nil || order.Action == "" {
+		return errors.New("order error")
+	}
+	if order.Action == "BUY" && acc.Amount < float64(order.Count)*order.Price {
+		return errors.New("order error")
+	}
+	if order.Action == "SELL" && order.Count > inv.Investors[order.AccountId] {
+		return errors.New("order error")
+	}
+	err = s.database.CreateOrder(order)
+	return err
+}
+
+func (s *InvestmentService) BuyStock(account models.Account, order models.Order, Count int) error {
+	inv, err := s.database.GetInvestment(order.Name)
+	if err != nil || inv.Name == "" || Count > inv.Investors[order.AccountId] {
+		return errors.New("wrong stonck")
+	}
+	if account.Id != order.AccountId || account.Type != "INVESTMENT" || account.Amount < float64(Count)*order.Price {
+		return errors.New("account error")
+	}
+	err = s.database.Buy(account.Id, order, Count)
+	return err
+}
+
+func (s *InvestmentService) SellStock(account models.Account, order models.Order, Count int) error {
+	inv, err := s.database.GetInvestment(order.Name)
+	if err != nil || inv.Name == "" {
+		return errors.New("wrong stonck")
+	}
+	if account.Id != order.AccountId || account.Type != "INVESTMENT" {
+		return errors.New("account error")
+	}
+	err = s.database.Sell(account.Id, order, Count)
+	return err
+}
+
+func (s *InvestmentService) GetOrder(id int) (models.Order, error) {
+	return s.database.GetOrder(id)
+}

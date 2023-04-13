@@ -27,11 +27,14 @@ func Init(server *echo.Echo, handler *handlers.Handler) {
 		user.GET("/loans", handler.GET_User_Loans)
 		user.POST("/new-loan", handler.POST_Loan)
 
-		user.GET("/deposits", handler.GET_User_Deposits)   
-		user.POST("/new-deposit", handler.POST_NewDeposit) 
+		user.GET("/deposits", handler.GET_User_Deposits)
+		user.POST("/new-deposit", handler.POST_NewDeposit)
 
 		user.GET("/insurances", handler.GET_User_Insurances)
 		user.POST("/new-insurance", handler.POST_NewInsurance)
+
+		user.POST("/stocks/new-order", handler.POST_User_Stocks_NewOrder)
+		user.POST("/stocks/buy", handler.POST_User_Stocks_Buy)
 	}
 	server.POST("/TEST", handler.DBTEST) // DONT TOUCH
 }

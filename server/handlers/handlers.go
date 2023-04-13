@@ -18,15 +18,17 @@ type Handler struct {
 	*LoanHandler
 	*DepositHandler
 	*InsuranceHandler
+	*InvestmentHandler
 }
 
 func New(m *middleware.Middleware) *Handler {
 	return &Handler{
-		AuthHandler:      NewAuthHandler(m),
-		UserHandler:      NewUserHandler(m),
-		AccountHandler:   NewAccountHandler(m),
-		LoanHandler:      NewLoanHandler(m),
-		DepositHandler:   NewDepositHandler(m),
-		InsuranceHandler: NewInsuranceHandler(m),
+		AuthHandler:       NewAuthHandler(m),
+		UserHandler:       NewUserHandler(m),
+		AccountHandler:    NewAccountHandler(m),
+		LoanHandler:       NewLoanHandler(m),
+		DepositHandler:    NewDepositHandler(m),
+		InsuranceHandler:  NewInsuranceHandler(m),
+		InvestmentHandler: NewInvestmentHandler(m),
 	}
 }
