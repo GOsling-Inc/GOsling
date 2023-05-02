@@ -24,12 +24,6 @@ func (d *DepositDatabase) AddDeposit(deposit models.Deposit) error {
 	return err
 }
 
-func (d *DepositDatabase) ConfirmDeposit(deposit models.Deposit) error {
-	query := "UPDATE accounts SET amount = amount - $1, state = $2 WHERE id = $3"
-	_, err := d.db.Exec(query, deposit.Amount, deposit.State, deposit.Id)
-	return err
-}
-
 func (d *DepositDatabase) GetUserDeposits(userId string) ([]models.Deposit, error) {
 	var deposits []models.Deposit
 	query := "SELECT * FROM deposits WHERE userid=$1"

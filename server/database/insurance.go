@@ -24,12 +24,6 @@ func (d *InsuranceDatabase) AddInsurance(insurance models.Insurance) error {
 	return d.db.Get(&id, query, insurance.AccountId, insurance.UserId, insurance.Amount, insurance.Remaining, insurance.Part, insurance.Period, insurance.Deadline)
 }
 
-func (d *DepositDatabase) ConfirmInsurance(deposit models.Deposit) error {
-	query := "UPDATE accounts SET amount = amount - $1, state = $2 WHERE id = $3"
-	_, err := d.db.Exec(query, deposit.Amount, deposit.State, deposit.Id)
-	return err
-}
-
 func (d *InsuranceDatabase) GetUserInsurances(userId string) ([]models.Insurance, error) {
 	var insurances []models.Insurance
 	query := "SELECT * FROM insurances WHERE userid=$1"
