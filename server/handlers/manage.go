@@ -20,6 +20,10 @@ func (h *ManagerHandler) Confirm(c echo.Context) error {
 	if manager_id == "" {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
+	if err := h.middleware.AuthManager(manager_id); err != nil {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+
 	operation_id := c.FormValue("Id")
 	table := c.FormValue("Value")
 	status := c.FormValue("Status")

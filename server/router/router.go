@@ -37,5 +37,11 @@ func Init(server *echo.Echo, handler *handlers.Handler) {
 		user.POST("/stocks/buy", handler.POST_User_Stocks_Buy)
 		user.POST("/stocks/sell", handler.POST_User_Stocks_Sell)
 	}
+
+	manage := server.Group("/manage")
+	{
+		manage.POST("/confirmation", handler.Confirm)
+	}
+
 	server.POST("/TEST", handler.DBTEST) // DONT TOUCH
 }

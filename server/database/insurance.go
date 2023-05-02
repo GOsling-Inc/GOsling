@@ -33,7 +33,7 @@ func (d *InsuranceDatabase) GetUserInsurances(userId string) ([]models.Insurance
 
 func (d *InsuranceDatabase) GetInsuranceById(id string) (models.Insurance, error) {
 	var insurance models.Insurance
-	query := "SELECT * FROM insurances WHERE userid=$1"
+	query := "SELECT * FROM insurances WHERE id=$1"
 	err := d.db.Get(&insurance, query, id)
 	return insurance, err
 }

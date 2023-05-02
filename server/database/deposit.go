@@ -33,7 +33,7 @@ func (d *DepositDatabase) GetUserDeposits(userId string) ([]models.Deposit, erro
 
 func (d *DepositDatabase) GetDepositById(id string) (models.Deposit, error) {
 	var deposit models.Deposit
-	query := "SELECT * FROM deposits WHERE userid=$1"
+	query := "SELECT * FROM deposits WHERE id=$1"
 	err := d.db.Get(&deposit, query, id)
 	return deposit, err
 }
