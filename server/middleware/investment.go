@@ -19,7 +19,7 @@ func NewInvestmentMiddleware(s *services.Service) *InvestmentMiddleware {
 }
 
 func (m *InvestmentMiddleware) CreateOrder(order models.Order) (int, error) {
-	acc, err := m.service.GetAccountById(order.UserId)
+	acc, err := m.service.GetAccountById(order.AccountId)
 	if err != nil {
 		return UNAUTHORIZED, err
 	}
@@ -43,7 +43,7 @@ func (m *InvestmentMiddleware) BuyStock(OrderId, AccountId, Count, id string) (i
 	ord_id, _ := strconv.Atoi(OrderId)
 	ord_count, _ := strconv.Atoi(Count)
 	ord, err := m.service.GetOrder(ord_id)
-	if err != nil || ord.Action == "BUY" || ord.UserId != id {
+	if err != nil || ord.Action == "BUY" {
 		return INTERNAL, errors.New("order error")
 	}
 	if err = m.service.BuyStock(acc, ord, ord_count); err != nil {
@@ -63,7 +63,7 @@ func (m *InvestmentMiddleware) SellStock(OrderId, AccountId, Count, id string) (
 	ord_id, _ := strconv.Atoi(OrderId)
 	ord_count, _ := strconv.Atoi(Count)
 	ord, err := m.service.GetOrder(ord_id)
-	if err != nil || ord.Action == "SELL" || ord.UserId != id || ord.Count < ord_count {
+	if err != nil || ord.Action == "SELL" || ord.Count < ord_count {
 		return INTERNAL, errors.New("order error")
 	}
 	if err = m.service.SellStock(acc, ord, ord_count); err != nil {

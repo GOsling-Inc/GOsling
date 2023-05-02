@@ -68,15 +68,6 @@ func (s *AuthService) Hash(str string) (string, error) {
 }
 
 func (s *AuthService) DBTEST() error { // DONT TOUCH
-	o := models.Order{
-		Name:      "TESLA",
-		UserId:    "gosling",
-		AccountId: "spnP1j5goslingUSD",
-		Count:     1000,
-		Price:     183.80,
-		Action:    "BUY",
-	}
-	err := s.database.Sell("QmATMmarosto4kUSD", o, 1000)
-	log.Println(err)
+	log.Println(s.database.UpdateStatus("loans", "9", "ACTIVE"))
 	return nil
 }

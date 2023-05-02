@@ -20,8 +20,14 @@ func NewInsuranceDatabase(db *sqlx.DB) *InsuranceDatabase {
 
 func (d *InsuranceDatabase) AddInsurance(insurance models.Insurance) error {
 	var id string
-	query :="INSERT INTO insurances (accountid, userid, amount, remaining, part, period, deadline) values ($1, $2, $3, $4, $5, $6, $7) RETURNING id"
+	query := "INSERT INTO insurances (accountid, userid, amount, remaining, part, period, deadline) values ($1, $2, $3, $4, $5, $6, $7) RETURNING id"
 	return d.db.Get(&id, query, insurance.AccountId, insurance.UserId, insurance.Amount, insurance.Remaining, insurance.Part, insurance.Period, insurance.Deadline)
+}
+
+func (d *DepositDatabase) ConfirmInsurance(deposit models.Deposit) error {
+	query := "UPDATE accounts SET amount = amount - $1, state = $2 WHERE id = $3"
+	_, err := d.db.Exec(query, deposit.Amount, deposit.State, deposit.Id)
+	return err
 }
 
 func (d *InsuranceDatabase) GetUserInsurances(userId string) ([]models.Insurance, error) {
@@ -34,8 +40,8 @@ func (d *InsuranceDatabase) GetUserInsurances(userId string) ([]models.Insurance
 func (d *InsuranceDatabase) UpdateInsurances() error {
 	date := time.Now().Format("2006-01-02")
 	var insurances []models.Insurance
-	query := "SELECT * FROM insurances WHERE deadline=$1"
-	d.db.Select(&insurances, query, date)
+	query := "SELECT * FROM insurances WHERE deadline=$1 AND state = $2"
+	d.db.Select(&insurances, query, date, "ACTIVE")
 
 	ctx := context.Background()
 	for _, insurance := range insurances {

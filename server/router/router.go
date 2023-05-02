@@ -35,6 +35,7 @@ func Init(server *echo.Echo, handler *handlers.Handler) {
 
 		user.POST("/stocks/new-order", handler.POST_User_Stocks_NewOrder)
 		user.POST("/stocks/buy", handler.POST_User_Stocks_Buy)
+		user.POST("/stocks/sell", handler.POST_User_Stocks_Sell)
 	}
 	server.POST("/TEST", handler.DBTEST) // DONT TOUCH
 }

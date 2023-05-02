@@ -17,6 +17,8 @@ const (
 	signingKey = "ASIJj983Jf324FJj9fj20JFsif293JFfsdf23432"
 )
 
+var sessions map[string]string = make(map[string]string)
+
 type AuthMiddleware struct {
 	service *services.Service
 }
@@ -58,15 +60,28 @@ func (m *AuthMiddleware) CreateJWT(id string) (string, error) {
 		},
 		ID: id,
 	})
-
-	return token.SignedString([]byte(signingKey))
+	signedToken, err := token.SignedString([]byte(signingKey))
+	if err != nil {
+		return "", err
+	}
+	sessions[id] = signedToken
+	return signedToken, nil
 }
 
 func (m *AuthMiddleware) Auth(header http.Header) string {
 	id := m.parseJWT(header)
-	_, err := m.service.GetUser(id)
+	user, err := m.service.GetUser(id)
 	if err != nil {
 		return ""
+	}
+
+	session, ok := sessions[user.Id]
+	if !ok {
+		sessions[user.Id] = header["Token"][0]
+	} else {
+		if session != header["Token"][0] {
+			return ""
+		}
 	}
 	return id
 }
@@ -90,7 +105,6 @@ func (m *AuthMiddleware) parseToken(accessToken string) (string, error) {
 
 		return []byte(signingKey), nil
 	})
-
 	if err != nil {
 		return "", err
 	}

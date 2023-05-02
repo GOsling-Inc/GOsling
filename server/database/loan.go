@@ -38,6 +38,18 @@ func (d *LoanDatabase) AddLoan(loan models.Loan) error {
 	return err
 }
 
+func (d *InsuranceDatabase) AddLoan(loan models.Loan) error {
+	var id string
+	query := "INSERT INTO loans (accountid, userid, amount, remaining, part, percent, period, deadline) values ($1, $2, $3, $4, $5, $6, $7, $8)"
+	return d.db.Get(&id, query, loan.AccountId, loan.UserId, loan.Amount, loan.Remaining, loan.Part, loan.Percent, loan.Period, loan.Deadline)
+}
+
+func (d *DepositDatabase) ConfirmLoan(loan models.Loan) error {
+	query := "UPDATE accounts SET amount = amount + $1, state = $2 WHERE id = $3"
+	_, err := d.db.Exec(query, loan.Amount, loan.State, loan.Id)
+	return err
+}
+
 func (d *LoanDatabase) GetUserLoans(userId string) ([]models.Loan, error) {
 	var loans []models.Loan
 	query := "SELECT * FROM loans WHERE userid=$1"

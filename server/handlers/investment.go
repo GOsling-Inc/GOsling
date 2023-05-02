@@ -24,11 +24,11 @@ func (h *InvestmentHandler) POST_User_Stocks_NewOrder(c echo.Context) error {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
 	new_order := models.Order{
+		UserId:    id,
 		AccountId: c.FormValue("AccountId"),
 		Name:      c.FormValue("Name"),
 		Action:    c.FormValue("Action"),
 	}
-	new_order.UserId = id
 	new_order.Price, _ = strconv.ParseFloat(c.FormValue("Price"), 64)
 	new_order.Count, _ = strconv.Atoi(c.FormValue("Count"))
 	code, err := h.middleware.CreateOrder(new_order)

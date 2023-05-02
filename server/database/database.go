@@ -15,16 +15,18 @@ type Database struct {
 	*DepositDatabase
 	*InsuranceDatabase
 	*InvestmentDatabase
+	*ManageDatabase
 }
 
 func New(db *sqlx.DB) *Database {
 	return &Database{
-		UserDatabase:    NewUserDatabase(db),
-		AccountDatabase: NewAccountDatabase(db),
-		LoanDatabase:    NewLoanDatabase(db),
-		DepositDatabase: NewDepositDatabase(db),
-		InsuranceDatabase: NewInsuranceDatabase(db),
+		UserDatabase:       NewUserDatabase(db),
+		AccountDatabase:    NewAccountDatabase(db),
+		LoanDatabase:       NewLoanDatabase(db),
+		DepositDatabase:    NewDepositDatabase(db),
+		InsuranceDatabase:  NewInsuranceDatabase(db),
 		InvestmentDatabase: NewInvestmentDatabase(db),
+		ManageDatabase:     NewManageDatabase(db),
 	}
 }
 

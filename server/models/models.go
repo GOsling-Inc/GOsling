@@ -18,7 +18,7 @@ type Account struct {
 	Id     string  `json:"id"`
 	UserId string  `json:"userid"`
 	Name   string  `json:"name"`
-	Type   string  `json:"type"` // BASIC / BUSINESS / DEPOSIT
+	Type   string  `json:"type"` // BASIC / BUSINESS / INVESTMENT
 	Unit   string  `json:"unit"` // BYN / USD / EUR
 	Amount float64 `json:"amount"`
 	State  string  `json:"state"` // ACTIVE / BLOCKED / FROZEN

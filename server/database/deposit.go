@@ -19,22 +19,14 @@ func NewDepositDatabase(db *sqlx.DB) *DepositDatabase {
 }
 
 func (d *DepositDatabase) AddDeposit(deposit models.Deposit) error {
-	ctx := context.Background()
-	tx, err := d.db.BeginTx(ctx, nil)
-	if err != nil {
-		return err
-	}
-	_, err = tx.ExecContext(ctx, "INSERT INTO deposits (accountid, userid, amount, remaining, part, percent, period, deadline) values ($1, $2, $3, $4, $5, $6, $7, $8)", deposit.AccountId, deposit.UserId, deposit.Amount, deposit.Remaining, deposit.Part, deposit.Percent, deposit.Period, deposit.Deadline)
-	if err != nil {
-		tx.Rollback()
-		return err
-	}
-	_, err = tx.ExecContext(ctx, "UPDATE accounts SET amount = amount - $1 WHERE id = $2", deposit.Amount, deposit.AccountId)
-	if err != nil {
-		tx.Rollback()
-		return err
-	}
-	err = tx.Commit()
+	query := "INSERT INTO deposits (accountid, userid, amount, remaining, part, percent, period, deadline) values ($1, $2, $3, $4, $5, $6, $7, $8)"
+	_, err := d.db.Exec(query, deposit.AccountId, deposit.UserId, deposit.Amount, deposit.Remaining, deposit.Part, deposit.Percent, deposit.Period, deposit.Deadline)
+	return err
+}
+
+func (d *DepositDatabase) ConfirmDeposit(deposit models.Deposit) error {
+	query := "UPDATE accounts SET amount = amount - $1, state = $2 WHERE id = $3"
+	_, err := d.db.Exec(query, deposit.Amount, deposit.State, deposit.Id)
 	return err
 }
 
@@ -48,8 +40,8 @@ func (d *DepositDatabase) GetUserDeposits(userId string) ([]models.Deposit, erro
 func (d *DepositDatabase) UpdateDeposits() error {
 	date := time.Now().Format("2006-01-02")
 	var deposits []models.Deposit
-	query := "SELECT * FROM deposits WHERE deadline=$1"
-	d.db.Select(&deposits, query, date)
+	query := "SELECT * FROM deposits WHERE deadline = $1 AND state = $2"
+	d.db.Select(&deposits, query, date, "ACTIVE")
 
 	ctx := context.Background()
 	for _, deposit := range deposits {

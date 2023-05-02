@@ -20,7 +20,7 @@ func NewInvestmentService(d *database.Database) *InvestmentService {
 func (s *InvestmentService) CreateOrder(order models.Order) error {
 	inv, err := s.database.GetInvestment(order.Name)
 	if err != nil || inv.Name == "" {
-		return errors.New("wrong stonck")
+		return errors.New("wrong stock")
 	}
 	acc, err := s.database.GetAccountById(order.AccountId)
 	if err != nil || order.Action == "" {
@@ -38,10 +38,10 @@ func (s *InvestmentService) CreateOrder(order models.Order) error {
 
 func (s *InvestmentService) BuyStock(account models.Account, order models.Order, Count int) error {
 	inv, err := s.database.GetInvestment(order.Name)
-	if err != nil || inv.Name == "" || Count > inv.Investors[order.AccountId] {
-		return errors.New("wrong stonck")
+	if err != nil || inv.Name == "" || Count > order.Count {
+		return errors.New("wrong stock")
 	}
-	if account.Id != order.AccountId || account.Type != "INVESTMENT" || account.Amount < float64(Count)*order.Price {
+	if account.Type != "INVESTMENT" || account.Amount < float64(Count)*order.Price {
 		return errors.New("account error")
 	}
 	err = s.database.Buy(account.Id, order, Count)
@@ -51,9 +51,9 @@ func (s *InvestmentService) BuyStock(account models.Account, order models.Order,
 func (s *InvestmentService) SellStock(account models.Account, order models.Order, Count int) error {
 	inv, err := s.database.GetInvestment(order.Name)
 	if err != nil || inv.Name == "" {
-		return errors.New("wrong stonck")
+		return errors.New("wrong stock")
 	}
-	if account.Id != order.AccountId || account.Type != "INVESTMENT" {
+	if account.Type != "INVESTMENT" {
 		return errors.New("account error")
 	}
 	err = s.database.Sell(account.Id, order, Count)

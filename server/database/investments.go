@@ -57,7 +57,7 @@ func (d *InvestmentDatabase) CreateOrder(order models.Order) error {
 
 func (d *InvestmentDatabase) GetOrders() ([]models.Order, error) {
 	var orders []models.Order
-	query := "SELECT * FROM  Order"
+	query := "SELECT * FROM orders"
 
 	err := d.db.Select(&orders, query)
 	return orders, err
@@ -65,9 +65,9 @@ func (d *InvestmentDatabase) GetOrders() ([]models.Order, error) {
 
 func (d *InvestmentDatabase) GetOrder(id int) (models.Order, error) {
 	var order models.Order
-	query := "SELECT * FROM  Order WHERE id = $1"
+	query := "SELECT * FROM orders WHERE id = $1"
 
-	err := d.db.Select(&order, query, id)
+	err := d.db.Get(&order, query, id)
 	return order, err
 }
 
@@ -153,7 +153,7 @@ func (d *InvestmentDatabase) Sell(accountId string, order models.Order, count in
 			return err
 		}
 	} else {
-		_, err = tx.ExecContext(ctx, "UPDATE orders SET count = $1 WHERE id = $1", order.Count-count, order.Id)
+		_, err = tx.ExecContext(ctx, "UPDATE orders SET count = $1 WHERE id = $2", order.Count-count, order.Id)
 		if err != nil {
 			tx.Rollback()
 			return err
