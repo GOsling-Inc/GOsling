@@ -118,3 +118,8 @@ type JWTClaims struct {
 	jwt.StandardClaims
 	ID string `json:"id"`
 }
+
+type Unconfirmed struct {
+	Table string `json:"table"`
+	Id    string `json:"id"`
+}
