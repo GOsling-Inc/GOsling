@@ -21,7 +21,7 @@ func (d *ManageDatabase) ConfirmLoan(loan models.Loan) error {
 	return err
 }
 
-func (d *ManageDatabase) ConfirmInsurance(deposit models.Deposit) error {
+func (d *ManageDatabase) ConfirmInsurance(deposit models.Insurance) error {
 	query := "UPDATE accounts SET amount = amount - $1, state = $2 WHERE id = $3"
 	_, err := d.db.Exec(query, deposit.Amount, deposit.State, deposit.Id)
 	return err

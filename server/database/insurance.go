@@ -31,6 +31,13 @@ func (d *InsuranceDatabase) GetUserInsurances(userId string) ([]models.Insurance
 	return insurances, err
 }
 
+func (d *InsuranceDatabase) GetInsuranceById(id string) (models.Insurance, error) {
+	var insurance models.Insurance
+	query := "SELECT * FROM insurances WHERE userid=$1"
+	err := d.db.Get(&insurance, query, id)
+	return insurance, err
+}
+
 func (d *InsuranceDatabase) UpdateInsurances() error {
 	date := time.Now().Format("2006-01-02")
 	var insurances []models.Insurance

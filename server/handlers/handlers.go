@@ -19,6 +19,7 @@ type Handler struct {
 	*DepositHandler
 	*InsuranceHandler
 	*InvestmentHandler
+	*ManagerHandler
 }
 
 func New(m *middleware.Middleware) *Handler {
@@ -30,5 +31,6 @@ func New(m *middleware.Middleware) *Handler {
 		DepositHandler:    NewDepositHandler(m),
 		InsuranceHandler:  NewInsuranceHandler(m),
 		InvestmentHandler: NewInvestmentHandler(m),
+		ManagerHandler:    NewManagerHandler(m),
 	}
 }

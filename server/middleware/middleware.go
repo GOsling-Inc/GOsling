@@ -21,6 +21,7 @@ type Middleware struct {
 	*DepositMiddleware
 	*InsuranceMiddleware
 	*InvestmentMiddleware
+	*ManagerMiddleware
 }
 
 func New(s *services.Service) *Middleware {
@@ -32,5 +33,6 @@ func New(s *services.Service) *Middleware {
 		DepositMiddleware:    NewDepositMiddleware(s),
 		InsuranceMiddleware:  NewInsuranceMiddleware(s),
 		InvestmentMiddleware: NewInvestmentMiddleware(s),
+		ManagerMiddleware:    NewManagerMiddleware(s),
 	}
 }

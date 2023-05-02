@@ -12,6 +12,7 @@ type Service struct {
 	*DepositService
 	*InsuranceService
 	*InvestmentService
+	*ManagerService
 }
 
 func New(d *database.Database) *Service {
@@ -23,5 +24,6 @@ func New(d *database.Database) *Service {
 		DepositService:    NewDepositService(d),
 		InsuranceService:  NewInsuranceService(d),
 		InvestmentService: NewInvestmentService(d),
+		ManagerService:    NewManagerService(d),
 	}
 }

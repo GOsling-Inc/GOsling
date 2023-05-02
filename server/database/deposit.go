@@ -31,6 +31,13 @@ func (d *DepositDatabase) GetUserDeposits(userId string) ([]models.Deposit, erro
 	return deposits, err
 }
 
+func (d *DepositDatabase) GetDepositById(id string) (models.Deposit, error) {
+	var deposit models.Deposit
+	query := "SELECT * FROM deposits WHERE userid=$1"
+	err := d.db.Get(&deposit, query, id)
+	return deposit, err
+}
+
 func (d *DepositDatabase) UpdateDeposits() error {
 	date := time.Now().Format("2006-01-02")
 	var deposits []models.Deposit

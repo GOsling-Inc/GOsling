@@ -24,6 +24,13 @@ func (d *InsuranceDatabase) AddLoan(loan models.Loan) error {
 	return d.db.Get(&id, query, loan.AccountId, loan.UserId, loan.Amount, loan.Remaining, loan.Part, loan.Percent, loan.Period, loan.Deadline)
 }
 
+func (d *InsuranceDatabase) GetLoanById(id string) (models.Loan, error) {
+	var loan models.Loan
+	query := "SELECT * FROM loans WHERE userid=$1"
+	err := d.db.Get(&loan, query, id)
+	return loan, err
+}
+
 func (d *LoanDatabase) GetUserLoans(userId string) ([]models.Loan, error) {
 	var loans []models.Loan
 	query := "SELECT * FROM loans WHERE userid=$1"

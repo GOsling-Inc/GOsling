@@ -4,7 +4,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
-	"log"
 	"math/rand"
 
 	"github.com/GOsling-Inc/GOsling/database"
@@ -68,6 +67,6 @@ func (s *AuthService) Hash(str string) (string, error) {
 }
 
 func (s *AuthService) DBTEST() error { // DONT TOUCH
-	log.Println(s.database.UpdateStatus("loans", "9", "ACTIVE"))
+	//log.Println(s.database.UpdateStatus("loans", "9", "ACTIVE"))
 	return nil
 }
