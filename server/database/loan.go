@@ -41,8 +41,8 @@ func (d *LoanDatabase) GetUserLoans(userId string) ([]models.Loan, error) {
 func (d *LoanDatabase) UpdateLoans() error {
 	date := time.Now().Format("2006-01-02")
 	var loans []models.Loan
-	query := "SELECT * FROM loans WHERE deadline=$1"
-	d.db.Select(&loans, query, date)
+	query := "SELECT * FROM loans WHERE deadline = $1 AND state = $2"
+	d.db.Select(&loans, query, date, "ACTIVE")
 	ctx := context.Background()
 	for _, loan := range loans {
 		tx, err := d.db.BeginTx(ctx, nil)

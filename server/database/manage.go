@@ -1,6 +1,8 @@
 package database
 
 import (
+	"context"
+
 	"github.com/GOsling-Inc/GOsling/models"
 	"github.com/jmoiron/sqlx"
 )
@@ -16,19 +18,47 @@ func NewManageDatabase(db *sqlx.DB) *ManageDatabase {
 }
 
 func (d *ManageDatabase) ConfirmLoan(loan models.Loan) error {
-	query := "UPDATE accounts SET amount = amount + $1, state = $2 WHERE id = $3"
-	_, err := d.db.Exec(query, loan.Amount, loan.State, loan.Id)
+	ctx := context.Background()
+	tx, err := d.db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	_, err = tx.ExecContext(ctx, "UPDATE loans SET state = $1 WHERE id = $2", loan.State, loan.Id)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	_, err = tx.ExecContext(ctx, "UPDATE accounts SET amount = amount + $1 WHERE id = $2", loan.Amount, loan.AccountId)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = tx.Commit()
 	return err
 }
 
-func (d *ManageDatabase) ConfirmInsurance(deposit models.Insurance) error {
-	query := "UPDATE accounts SET amount = amount - $1, state = $2 WHERE id = $3"
-	_, err := d.db.Exec(query, deposit.Amount, deposit.State, deposit.Id)
+func (d *ManageDatabase) ConfirmInsurance(insurance models.Insurance) error {
+	query := "UPDATE accounts SET amount = amount - $1 WHERE id = $3"
+	_, err := d.db.Exec(query, insurance.Amount, insurance.UserId)
 	return err
 }
 
 func (d *DepositDatabase) ConfirmDeposit(deposit models.Deposit) error {
-	query := "UPDATE accounts SET amount = amount - $1, state = $2 WHERE id = $3"
-	_, err := d.db.Exec(query, deposit.Amount, deposit.State, deposit.Id)
+	ctx := context.Background()
+	tx, err := d.db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	_, err = tx.ExecContext(ctx, "UPDATE deposits SET state = $1 WHERE id = $2", deposit.State, deposit.Id)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	_, err = tx.ExecContext(ctx, "UPDATE accounts SET amount = amount - $1 WHERE id = $2", deposit.Amount, deposit.AccountId)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = tx.Commit()
 	return err
 }
