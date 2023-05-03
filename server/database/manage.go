@@ -97,28 +97,10 @@ func (d *ManageDatabase) ConfirmDeposit(deposit models.Deposit) error {
 	return err
 }
 
-func (d *ManageDatabase) GetUsers() []models.User {
-	var users []models.User
-
-	query := "SELECT * FROM users"
-	d.db.Select(&users, query)
-
-	for _, u := range users {
-		u.Password = ""
-	}
-	return users
-}
-
-func (d *ManageDatabase) BlockUser(id string) error {
-	query := "UPDATE users SET state = $1 WHERE id = #2"
-	_, err := d.db.Exec(query, "BLOCKED", id)
-	return err
-}
-
 func (d *ManageDatabase) GetTransactions() []models.Trasfer {
 	var transfers []models.Trasfer
 
-	query := "SELECT * FROM transactions"
+	query := "SELECT * FROM transfers"
 	d.db.Select(&transfers, query)
 
 	return transfers
@@ -140,13 +122,32 @@ func (d *ManageDatabase) GetAccounts() []models.Account {
 	return accounts
 }
 
+func (d *AccountDatabase) GetTransferById(id string) (models.Trasfer, error) {
+	var transfer models.Trasfer
+	query := "Select * from transfers WHERE id = $1"
+	err := d.db.Get(&transfer, query, id)
+	return transfer, err
+}
+
 func (d *ManageDatabase) UpdateAccount(id, state string) error {
-	query := "UPDATE users SET state = $1 WHERE id = $2"
+	query := "UPDATE accounts SET state = $1 WHERE id = $2"
 	_, err := d.db.Exec(query, state, id)
 	return err
 }
 
-func (d *ManageDatabase) UpdateRole(id, role string) error {
+func (d *ManageDatabase) GetUsers() []models.User {
+	var users []models.User
+
+	query := "SELECT * FROM users"
+	d.db.Select(&users, query)
+
+	for _, u := range users {
+		u.Password = ""
+	}
+	return users
+}
+
+func (d *ManageDatabase) UpdateUser(id, role string) error {
 	query := "UPDATE users SET role = $1 WHERE id = $2"
 	_, err := d.db.Exec(query, role, id)
 	return err

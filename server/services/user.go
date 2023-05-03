@@ -20,7 +20,7 @@ func NewUserService(d *database.Database) *UserService {
 func (s *UserService) GetUser(id string) (models.User, error) {
 	user, err := s.database.GetUserById(id)
 	if err != nil {
-		return models.User{}, errors.New("incorrect email or password")
+		return models.User{}, errors.New("not found")
 	}
 	return user, nil
 }

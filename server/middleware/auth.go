@@ -97,6 +97,17 @@ func (m *AuthMiddleware) AuthManager(id string) error {
 	return nil
 }
 
+func (m *AuthMiddleware) AuthAdmin(id string) error {
+	user, err := m.service.GetUser(id)
+	if err != nil {
+		return errors.New("incorrect id")
+	}
+	if user.Role != "admin" {
+		return errors.New("access denied")
+	}
+	return nil
+}
+
 func (m *AuthMiddleware) parseJWT(header http.Header) string {
 	if header["Token"] == nil {
 		return ""

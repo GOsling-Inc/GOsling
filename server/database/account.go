@@ -33,7 +33,7 @@ func (d *AccountDatabase) GetUserAccounts(userId string) ([]models.Account, erro
 
 func (d *AccountDatabase) GetAccountById(id string) (models.Account, error) {
 	var account models.Account
-	query := "SELECT * FROM accounts WHERE id=$1"
+	query := "SELECT * FROM accounts WHERE id = $1"
 	err := d.db.Get(&account, query, id)
 	return account, err
 }

@@ -15,6 +15,19 @@ func NewManagerHandler(m *middleware.Middleware) *ManagerHandler {
 	}
 }
 
+func (h *ManagerHandler) GetConfirms(c echo.Context) error {
+	manager_id := h.middleware.Auth(c.Request().Header)
+	if manager_id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+	if err := h.middleware.AuthManager(manager_id); err != nil {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+
+	code, confirms := h.middleware.GetConfirms()
+	return c.JSON(code, JSON{confirms, ""})
+}
+
 func (h *ManagerHandler) Confirm(c echo.Context) error {
 	manager_id := h.middleware.Auth(c.Request().Header)
 	if manager_id == "" {
@@ -32,4 +45,112 @@ func (h *ManagerHandler) Confirm(c echo.Context) error {
 		return c.JSON(code, JSON{nil, err.Error()})
 	}
 	return c.JSON(code, nil)
+}
+
+func (h *ManagerHandler) GetAccounts(c echo.Context) error {
+	manager_id := h.middleware.Auth(c.Request().Header)
+	if manager_id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+	if err := h.middleware.AuthManager(manager_id); err != nil {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+
+	code, accs := h.middleware.GetAccounts()
+	return c.JSON(code, JSON{accs, ""})
+}
+
+func (h *ManagerHandler) FreezeAccount(c echo.Context) error {
+	manager_id := h.middleware.Auth(c.Request().Header)
+	if manager_id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+	if err := h.middleware.AuthManager(manager_id); err != nil {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+	id := c.FormValue("Id")
+	code, err := h.middleware.UpdateAccount(id, "FREEZED")
+	if err != nil {
+		return c.JSON(code, JSON{nil, err.Error()})
+	} else {
+		return c.JSON(code, JSON{nil, ""})
+	}
+}
+
+func (h *ManagerHandler) BlockAccount(c echo.Context) error {
+	manager_id := h.middleware.Auth(c.Request().Header)
+	if manager_id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+	if err := h.middleware.AuthAdmin(manager_id); err != nil {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+	id := c.FormValue("Id")
+	code, err := h.middleware.UpdateAccount(id, "BLOCKED")
+	if err != nil {
+		return c.JSON(code, JSON{nil, err.Error()})
+	} else {
+		return c.JSON(code, JSON{nil, ""})
+	}
+}
+
+func (h *ManagerHandler) GetTransactions(c echo.Context) error {
+	manager_id := h.middleware.Auth(c.Request().Header)
+	if manager_id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+	if err := h.middleware.AuthManager(manager_id); err != nil {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+
+	code, trs := h.middleware.GetTransactions()
+	return c.JSON(code, JSON{trs, ""})
+}
+
+func (h *ManagerHandler) CancelTransaction(c echo.Context) error {
+	manager_id := h.middleware.Auth(c.Request().Header)
+	if manager_id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+	if err := h.middleware.AuthManager(manager_id); err != nil {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+	id := c.FormValue("Id")
+	code, err := h.middleware.CancelTransaction(id)
+	if err != nil {
+		return c.JSON(code, JSON{nil, err.Error()})
+	} else {
+		return c.JSON(code, JSON{nil, ""})
+	}
+}
+
+func (h *ManagerHandler) GetUsers(c echo.Context) error {
+	manager_id := h.middleware.Auth(c.Request().Header)
+	if manager_id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+	if err := h.middleware.AuthAdmin(manager_id); err != nil {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+
+	code, usrs := h.middleware.GetUsers()
+	return c.JSON(code, JSON{usrs, ""})
+}
+
+func (h *ManagerHandler) UpdateUser(c echo.Context) error {
+	manager_id := h.middleware.Auth(c.Request().Header)
+	if manager_id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+	if err := h.middleware.AuthAdmin(manager_id); err != nil {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+	id := c.FormValue("Id")
+	role := c.FormValue("Role")
+	code, err := h.middleware.UpdateUser(id, role)
+	if err != nil {
+		return c.JSON(code, JSON{nil, err.Error()})
+	} else {
+		return c.JSON(code, JSON{nil, ""})
+	}
 }

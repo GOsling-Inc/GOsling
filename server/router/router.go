@@ -40,15 +40,18 @@ func Init(server *echo.Echo, handler *handlers.Handler) {
 
 	manage := server.Group("/manage")
 	{
-		//manage.GET("/confirms", handler.GetConfirms)
+		manage.GET("/confirms", handler.GetConfirms)
 		manage.POST("/confirmation", handler.Confirm)
 
-		//manage.GET("/accounts", handler.GetAccounts)
-		//manage.POST("/freeze-account", handler.FreezeAccount)
-		//manage.POST("/block-account", handler.BlockAccount)
+		manage.GET("/accounts", handler.GetAccounts)
+		manage.POST("/freeze-account", handler.FreezeAccount)
+		manage.POST("/block-account", handler.BlockAccount)
 
-		//manage.GET("/transactions", handler.GetTransactions)
-		//manage.POST("/cancel-transaction", handler.CancelTransaction)
+		manage.GET("/transactions", handler.GetTransactions)
+		manage.POST("/cancel-transaction", handler.CancelTransaction)
+
+		manage.GET("/users", handler.GetUsers)
+		manage.POST("/update-user", handler.UpdateUser)
 
 	}
 
