@@ -71,5 +71,5 @@ func (s *ManagerService) GetUsers() []models.User {
 }
 
 func (s *ManagerService) UpdateUser(id, role string) error {
-	return s.database.UpdateUser(id, role)
+	return s.database.UpdateRole(id, role)
 }
