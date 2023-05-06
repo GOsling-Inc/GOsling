@@ -1,81 +1,108 @@
 package services_test //debug needed
 
 import (
-	"net/http"
+	"errors"
 	"testing"
 
 	"github.com/GOsling-Inc/GOsling/database"
-	"github.com/GOsling-Inc/GOsling/handlers"
 	"github.com/GOsling-Inc/GOsling/models"
-	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	db   database.Database
-	hand handlers.AuthHandler
+	db database.MockDatabase
+	//serv  services.AuthService
+	user0 = models.User{
+		Id:        "1234",
+		Name:      "User",
+		Surname:   "Existing",
+		Email:     "imhere@mail.com",
+		Password:  "secRetec0de",
+		Role:      "user",
+		Birthdate: "1979-09-21",
+	}
 )
 
-func Test_User_SignIn(t *testing.T) {
-
-	server := echo.New()
-	user := models.User{
-		Name:      "ABOBA",
-		Surname:   "ABOBOB",
-		Email:     "examle@gmail.com",
-		Password:  "12345678",
-		Role:      "user",
-		Birthdate: "2020-01-01",
-	}
-	db.AddUser(&user)
+func Test_Auth_SignUp(t *testing.T) {
+	db = *database.NewMock()
+	//serv = *services.NewAuthService(db)
+	db.AddUser(&user0)
 	testCases := []struct {
-		name         string
-		payload      interface{}
-		expectedCode int
+		name        string
+		payload     models.User
+		expectedErr string
 	}{
 		{
 			name: "valid",
-			payload: map[string]string{
-				"email":    user.Email,
-				"password": user.Password,
+			payload: models.User{
+				Id:        "",
+				Name:      "ABOBA",
+				Surname:   "ABOBOV",
+				Email:     "test1@gmail.com",
+				Password:  "154492Ad",
+				Role:      "user",
+				Birthdate: "2002-01-01",
 			},
-			expectedCode: http.StatusAccepted,
+			expectedErr: "",
+		},
+		{
+			name: "user_exists",
+			payload: models.User{
+				Id:        "",
+				Name:      "Same",
+				Surname:   "Email",
+				Email:     "imhere@mail.com",
+				Password:  "154492Ad",
+				Role:      "user",
+				Birthdate: "2002-01-01",
+			},
+			expectedErr: "user with this email already registered",
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			tmp := server.POST("/sign-in", hand.POST_SignIn)
-			assert.Equal(t, tc.expectedCode, tmp)
+
 		})
 	}
 }
 
-func Test_User_SignUp(t *testing.T) {
-	server := echo.New()
+func Test_Auth_SignIn(t *testing.T) {
+	db = *database.NewMock()
+	db.AddUser(&user0)
 	testCases := []struct {
-		name         string
-		payload      interface{}
-		expectedCode int
+		name        string
+		payload     map[string]string
+		expectedErr error
 	}{
 		{
 			name: "valid",
 			payload: map[string]string{
-				"name":      "ABOBA",
-				"surname":   "ABOBOB",
-				"email":     "examle@gmail.com",
-				"password":  "12345678",
-				"role":      "user",
-				"birthdate": "2020-01-01",
+				"Email":    "imhere@mail.com",
+				"Password": "secRetec0de",
 			},
-			expectedCode: http.StatusAccepted,
+			expectedErr: nil,
+		},
+		{
+			name: "wrong_email",
+			payload: map[string]string{
+				"Email":    "wrong_email",
+				"Password": "secRetec0de",
+			},
+			expectedErr: errors.New("incorrect email"),
+		},
+		{
+			name: "wrong_password",
+			payload: map[string]string{
+				"Email":    "imhere@mail.com",
+				"Password": "qwerty123",
+			},
+			expectedErr: errors.New("incorrect password"),
 		},
 	}
-
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			tmp := server.POST("/sign-in", hand.POST_SignUp)
-			assert.Equal(t, tc.expectedCode, tmp)
+			assert.Error(t, tc.expectedErr)
 		})
 	}
 }

@@ -23,10 +23,10 @@ func NewAuthService(d *database.Database) *AuthService {
 func (s *AuthService) SignIn(user *models.User) error {
 	tempUser, err := s.database.GetUserByMail(user.Email)
 	if err != nil {
-		return errors.New("incorrect email or password")
+		return errors.New("incorrect email")
 	}
 	if user.Password != tempUser.Password {
-		return errors.New("incorrect email or password")
+		return errors.New("incorrect password")
 	}
 	user.Id = tempUser.Id
 	return nil
