@@ -8,11 +8,20 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type AccountHandler struct {
-	middleware *middleware.Middleware
+type IAccountHandler interface {
+	GET_User_Accounts(c echo.Context) error
+	POST_Add_Account(c echo.Context) error
+	POST_Delete_Account(c echo.Context) error
+	POST_Transfer(c echo.Context) error
+	POST_User_Exchange(c echo.Context) error
+	GET_Exchanges(c echo.Context) error
 }
 
-func NewAccountHandler(m *middleware.Middleware) *AccountHandler {
+type AccountHandler struct {
+	middleware middleware.IMiddleware
+}
+
+func NewAccountHandler(m middleware.IMiddleware) *AccountHandler {
 	return &AccountHandler{
 		middleware: m,
 	}

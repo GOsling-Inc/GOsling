@@ -19,11 +19,23 @@ const (
 
 var sessions map[string]string = make(map[string]string)
 
-type AuthMiddleware struct {
-	service *services.Service
+type IAuthMiddleware interface {
+	SignIn(*models.User) (int, error)
+	SignUp(*models.User) (int, error)
+	CreateJWT(string) (string, error)
+	Auth(http.Header) string
+	AuthManager(string) error
+	AuthAdmin(string) error
+	parseJWT(http.Header) string
+	parseToken(string) (string, error)
+	Validate(models.User) error
 }
 
-func NewAuthMiddleware(s *services.Service) *AuthMiddleware {
+type AuthMiddleware struct {
+	service services.IService
+}
+
+func NewAuthMiddleware(s services.IService) *AuthMiddleware {
 	return &AuthMiddleware{
 		service: s,
 	}
@@ -144,8 +156,4 @@ func (m *AuthMiddleware) Validate(user models.User) error {
 		validation.Field(&user.Email, validation.Required, is.Email),
 		validation.Field(&user.Password, validation.Required, validation.Length(8, 100)),
 	)
-}
-
-func (m *AuthMiddleware) DBTEST() error {
-	return m.service.DBTEST()
 }

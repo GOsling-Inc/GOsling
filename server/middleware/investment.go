@@ -8,11 +8,17 @@ import (
 	"github.com/GOsling-Inc/GOsling/services"
 )
 
-type InvestmentMiddleware struct {
-	service *services.Service
+type IInvestmentMiddleware interface {
+	CreateOrder(models.Order) (int, error)
+	BuyStock(string, string, string, string) (int, error)
+	SellStock(string, string, string, string) (int, error)
 }
 
-func NewInvestmentMiddleware(s *services.Service) *InvestmentMiddleware {
+type InvestmentMiddleware struct {
+	service services.IService
+}
+
+func NewInvestmentMiddleware(s services.IService) *InvestmentMiddleware {
 	return &InvestmentMiddleware{
 		service: s,
 	}

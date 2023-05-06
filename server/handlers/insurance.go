@@ -8,11 +8,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type InsuranceHandler struct {
-	middleware *middleware.Middleware
+type IInsuranceHandler interface {
+	POST_NewInsurance(echo.Context) error
+	GET_User_Insurances(echo.Context) error
 }
 
-func NewInsuranceHandler(m *middleware.Middleware) *InsuranceHandler {
+type InsuranceHandler struct {
+	middleware middleware.IMiddleware
+}
+
+func NewInsuranceHandler(m middleware.IMiddleware) *InsuranceHandler {
 	return &InsuranceHandler{
 		middleware: m,
 	}

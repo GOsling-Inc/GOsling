@@ -11,26 +11,37 @@ type JSON struct {
 
 type OBJ map[string]interface{}
 
-type Handler struct {
-	*AuthHandler
-	*UserHandler
-	*AccountHandler
-	*LoanHandler
-	*DepositHandler
-	*InsuranceHandler
-	*InvestmentHandler
-	*ManagerHandler
+type IHandler interface {
+	IAuthHandler
+	IUserHandler
+	IAccountHandler
+	ILoanHandler
+	IDepositHandler
+	IInsuranceHandler
+	IInvestmentHandler
+	IManagerHandler
 }
 
-func New(m *middleware.Middleware) *Handler {
+type Handler struct {
+	IAuthHandler
+	IUserHandler
+	IAccountHandler
+	ILoanHandler
+	IDepositHandler
+	IInsuranceHandler
+	IInvestmentHandler
+	IManagerHandler
+}
+
+func New(m middleware.IMiddleware) *Handler {
 	return &Handler{
-		AuthHandler:       NewAuthHandler(m),
-		UserHandler:       NewUserHandler(m),
-		AccountHandler:    NewAccountHandler(m),
-		LoanHandler:       NewLoanHandler(m),
-		DepositHandler:    NewDepositHandler(m),
-		InsuranceHandler:  NewInsuranceHandler(m),
-		InvestmentHandler: NewInvestmentHandler(m),
-		ManagerHandler:    NewManagerHandler(m),
+		IAuthHandler:       NewAuthHandler(m),
+		IUserHandler:       NewUserHandler(m),
+		IAccountHandler:    NewAccountHandler(m),
+		ILoanHandler:       NewLoanHandler(m),
+		IDepositHandler:    NewDepositHandler(m),
+		IInsuranceHandler:  NewInsuranceHandler(m),
+		IInvestmentHandler: NewInvestmentHandler(m),
+		IManagerHandler:    NewManagerHandler(m),
 	}
 }

@@ -8,6 +8,13 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+type IDepositDatabase interface {
+	AddDeposit(models.Deposit) error
+	GetUserDeposits(string) ([]models.Deposit, error)
+	GetDepositById(string) (models.Deposit, error)
+	UpdateDeposits() error
+}
+
 type DepositDatabase struct {
 	db *sqlx.DB
 }

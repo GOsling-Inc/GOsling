@@ -51,9 +51,7 @@ func Init(server *echo.Echo, handler *handlers.Handler) {
 		manage.POST("/cancel-transaction", handler.CancelTransaction)
 
 		manage.GET("/users", handler.GetUsers)
-		manage.POST("/update-user", handler.UpdateUser)
+		manage.POST("/update-user", handler.UpdateRole)
 
 	}
-
-	server.POST("/TEST", handler.DBTEST) // DONT TOUCH
 }

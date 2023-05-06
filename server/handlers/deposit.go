@@ -8,11 +8,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type DepositHandler struct {
-	middleware *middleware.Middleware
+type IDepositHandler interface {
+	POST_NewDeposit(echo.Context) error
+	GET_User_Deposits(echo.Context) error
 }
 
-func NewDepositHandler(m *middleware.Middleware) *DepositHandler {
+type DepositHandler struct {
+	middleware middleware.IMiddleware
+}
+
+func NewDepositHandler(m middleware.IMiddleware) *DepositHandler {
 	return &DepositHandler{
 		middleware: m,
 	}

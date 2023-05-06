@@ -7,11 +7,22 @@ import (
 	"github.com/GOsling-Inc/GOsling/services"
 )
 
-type ManagerMiddleware struct {
-	service *services.Service
+type IManagerMiddleware interface {
+	GetConfirms() (int, []models.Unconfirmed)
+	Confirm(string, string, string) (int, error)
+	GetAccounts() (int, []models.Account)
+	UpdateAccount(string, string) (int, error)
+	GetTransactions() (int, []models.Trasfer)
+	CancelTransaction(string) (int, error)
+	GetUsers() (int, []models.User)
+	UpdateRole(string, string) (int, error)
 }
 
-func NewManagerMiddleware(s *services.Service) *ManagerMiddleware {
+type ManagerMiddleware struct {
+	service services.IService
+}
+
+func NewManagerMiddleware(s services.IService) *ManagerMiddleware {
 	return &ManagerMiddleware{
 		service: s,
 	}
@@ -75,12 +86,12 @@ func (m *ManagerMiddleware) GetUsers() (int, []models.User) {
 	return OK, m.service.GetUsers()
 }
 
-func (m *ManagerMiddleware) UpdateUser(id, role string) (int, error) {
+func (m *ManagerMiddleware) UpdateRole(id, role string) (int, error) {
 	if _, err := m.service.GetUser(id); err != nil {
 		return INTERNAL, err
 	}
 	if role != "user" && role != "manager" {
 		return INTERNAL, errors.New("undefined role")
 	}
-	return OK, m.service.UpdateUser(id, role)
+	return OK, m.service.UpdateRole(id, role)
 }

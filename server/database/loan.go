@@ -8,6 +8,13 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+type ILoanDatabase interface {
+	AddLoan(models.Loan) error
+	GetLoanById(string) (models.Loan, error)
+	GetUserLoans(string) ([]models.Loan, error)
+	UpdateLoans() error
+}
+
 type LoanDatabase struct {
 	db *sqlx.DB
 }
@@ -18,13 +25,13 @@ func NewLoanDatabase(db *sqlx.DB) *LoanDatabase {
 	}
 }
 
-func (d *InsuranceDatabase) AddLoan(loan models.Loan) error {
+func (d *LoanDatabase) AddLoan(loan models.Loan) error {
 	var id string
 	query := "INSERT INTO loans (accountid, userid, amount, remaining, part, percent, period, deadline) values ($1, $2, $3, $4, $5, $6, $7, $8)"
 	return d.db.Get(&id, query, loan.AccountId, loan.UserId, loan.Amount, loan.Remaining, loan.Part, loan.Percent, loan.Period, loan.Deadline)
 }
 
-func (d *InsuranceDatabase) GetLoanById(id string) (models.Loan, error) {
+func (d *LoanDatabase) GetLoanById(id string) (models.Loan, error) {
 	var loan models.Loan
 	query := "SELECT * FROM loans WHERE id=$1"
 	err := d.db.Get(&loan, query, id)

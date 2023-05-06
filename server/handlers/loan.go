@@ -8,11 +8,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type LoanHandler struct {
-	middleware *middleware.Middleware
+type ILoanHandler interface {
+	POST_Loan(echo.Context) error
+	GET_User_Loans(echo.Context) error
 }
 
-func NewLoanHandler(s *middleware.Middleware) *LoanHandler {
+type LoanHandler struct {
+	middleware middleware.IMiddleware
+}
+
+func NewLoanHandler(s middleware.IMiddleware) *LoanHandler {
 	return &LoanHandler{
 		middleware: s,
 	}
@@ -25,7 +30,7 @@ func (h *LoanHandler) POST_Loan(c echo.Context) error {
 	}
 
 	loan := models.Loan{
-		UserId: id,
+		UserId:    id,
 		AccountId: c.FormValue("AccountId"),
 		Period:    c.FormValue("Period"),
 	}

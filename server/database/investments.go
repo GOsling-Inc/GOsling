@@ -9,6 +9,16 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+type IInvestmentDatabase interface {
+	GetInvestments() ([]models.Investment, error)
+	GetInvestment(name string) (models.Investment, error)
+	CreateOrder(order models.Order) error
+	GetOrders() ([]models.Order, error)
+	GetOrder(id int) (models.Order, error)
+	Buy(accountId string, order models.Order, count int) error
+	Sell(accountId string, order models.Order, count int) error
+}
+
 type InvestmentDatabase struct {
 	db *sqlx.DB
 }

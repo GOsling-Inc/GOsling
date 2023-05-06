@@ -430,11 +430,23 @@ func (d *MockDatabase) GetUsers() []models.User {
 	return d.users
 }
 
-func (d *MockDatabase) UpdateUser(id, role string) error {
+func (d *MockDatabase) UpdateRole(id, role string) error {
 	for i, user := range d.users {
 		if user.Id == id {
 			d.users[i].Role = role
 		}
 	}
+	return nil
+}
+
+func (d *MockDatabase) UpdateLoans() error {
+	return nil
+}
+
+func (d *MockDatabase) UpdateInsurances() error {
+	return nil
+}
+
+func (d *MockDatabase) UpdateDeposits() error {
 	return nil
 }

@@ -7,6 +7,19 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+type IAccountDatabase interface {
+	AddAccount(account models.Account) error
+	GetUserAccounts(userId string) ([]models.Account, error)
+	GetAccountById(id string) (models.Account, error)
+	DeleteAccount(id string) error
+	Transfer(senderId, receiverId string, amount float64) error
+	AddTransfer(transfer models.Trasfer) error
+	CancelTransaction(trasaction models.Trasfer) error
+	GetTransferById(id string) (models.Trasfer, error)
+	Exchange(senderId, receiverId string, sender_amount, receiver_amount float64) error
+	AddExchange(exchange models.Exchange) error
+}
+
 type AccountDatabase struct {
 	db *sqlx.DB
 }
@@ -69,6 +82,20 @@ func (d *AccountDatabase) AddTransfer(transfer models.Trasfer) error {
 	query := "INSERT INTO transfers (sender, receiver, amount) values ($1, $2, $3) RETURNING id"
 	err := d.db.Get(&id, query, transfer.Sender, transfer.Receiver, transfer.Amount)
 	return err
+}
+
+func (d *AccountDatabase) CancelTransaction(trasaction models.Trasfer) error {
+	query := "DELETE from transactions WHERE id = $1"
+	d.db.Exec(query, trasaction.Id)
+
+	return d.Transfer(trasaction.Receiver, trasaction.Sender, trasaction.Amount)
+}
+
+func (d *AccountDatabase) GetTransferById(id string) (models.Trasfer, error) {
+	var transfer models.Trasfer
+	query := "Select * from transfers WHERE id = $1"
+	err := d.db.Get(&transfer, query, id)
+	return transfer, err
 }
 
 func (d *AccountDatabase) Exchange(senderId, receiverId string, sender_amount, receiver_amount float64) error {

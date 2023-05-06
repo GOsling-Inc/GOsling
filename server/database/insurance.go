@@ -8,6 +8,13 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+type IInsuranceDatabase interface {
+	AddInsurance(models.Insurance) error
+	GetUserInsurances(string) ([]models.Insurance, error)
+	GetInsuranceById(string) (models.Insurance, error)
+	UpdateInsurances() error
+}
+
 type InsuranceDatabase struct {
 	db *sqlx.DB
 }
