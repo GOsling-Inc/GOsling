@@ -7,17 +7,22 @@ import (
 	"github.com/GOsling-Inc/GOsling/services"
 )
 
-type InsuranceMiddleware struct {
-	service *services.Service
+type IInsuranceMiddleware interface {
+	CreateInsurance(models.Insurance) (int, error)
+	GetUserInsurances(string) (int, []models.Insurance, error)
 }
 
-func NewInsuranceMiddleware(s *services.Service) *InsuranceMiddleware {
+type InsuranceMiddleware struct {
+	service services.IService
+}
+
+func NewInsuranceMiddleware(s services.IService) *InsuranceMiddleware {
 	return &InsuranceMiddleware{
 		service: s,
 	}
 }
 
-func (m *DepositMiddleware) CreateInsurance(insurance models.Insurance) (int, error) {
+func (m *InsuranceMiddleware) CreateInsurance(insurance models.Insurance) (int, error) {
 	acc, err := m.service.GetAccountById(insurance.AccountId)
 	if err != nil {
 		return UNAUTHORIZED, err
@@ -31,7 +36,7 @@ func (m *DepositMiddleware) CreateInsurance(insurance models.Insurance) (int, er
 	return ACCEPTED, nil
 }
 
-func (m *DepositMiddleware) GetUserInsurances(userId string) (int, []models.Insurance, error) {
+func (m *InsuranceMiddleware) GetUserInsurances(userId string) (int, []models.Insurance, error) {
 	insurances, err := m.service.GetUserInsurances(userId)
 	if err != nil {
 		return INTERNAL, nil, err

@@ -7,11 +7,16 @@ import (
 	"github.com/GOsling-Inc/GOsling/services"
 )
 
-type LoanMiddleware struct {
-	service *services.Service
+type ILoanMiddleware interface {
+	ProvideLoan(models.Loan) (int, error)
+	GetUserLoans(string) (int, []models.Loan, error)
 }
 
-func NewLoanMiddleware(s *services.Service) *LoanMiddleware {
+type LoanMiddleware struct {
+	service services.IService
+}
+
+func NewLoanMiddleware(s services.IService) *LoanMiddleware {
 	return &LoanMiddleware{
 		service: s,
 	}

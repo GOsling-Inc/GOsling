@@ -16,7 +16,7 @@ import (
 
 func main() {
 	server := echo.New()
-	database := database.New(database.Connect())
+	database := database.NewMock()
 	services := services.New(database)
 	middleware := middleware.New(services)
 	handlers := handlers.New(middleware)
@@ -29,7 +29,7 @@ func main() {
 			database.UpdateInsurances()
 			time.Sleep(30 * time.Minute)
 		}
-	} ()
+	}()
 
 	router.Init(server, handlers)
 

@@ -8,11 +8,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type InvestmentHandler struct {
-	middleware *middleware.Middleware
+type IInvestmentHandler interface {
+	POST_User_Stocks_NewOrder(c echo.Context) error
+	POST_User_Stocks_Buy(c echo.Context) error
+	POST_User_Stocks_Sell(c echo.Context) error
 }
 
-func NewInvestmentHandler(m *middleware.Middleware) *InvestmentHandler {
+type InvestmentHandler struct {
+	middleware middleware.IMiddleware
+}
+
+func NewInvestmentHandler(m middleware.IMiddleware) *InvestmentHandler {
 	return &InvestmentHandler{
 		middleware: m,
 	}

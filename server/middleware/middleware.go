@@ -13,26 +13,37 @@ const (
 	INTERNAL     = 500
 )
 
-type Middleware struct {
-	*AuthMiddleware
-	*UserMiddleware
-	*AccountMiddleware
-	*LoanMiddleware
-	*DepositMiddleware
-	*InsuranceMiddleware
-	*InvestmentMiddleware
-	*ManagerMiddleware
+type IMiddleware interface {
+	IAuthMiddleware
+	IUserMiddleware
+	IAccountMiddleware
+	ILoanMiddleware
+	IDepositMiddleware
+	IInsuranceMiddleware
+	IInvestmentMiddleware
+	IManagerMiddleware
 }
 
-func New(s *services.Service) *Middleware {
+type Middleware struct {
+	IAuthMiddleware
+	IUserMiddleware
+	IAccountMiddleware
+	ILoanMiddleware
+	IDepositMiddleware
+	IInsuranceMiddleware
+	IInvestmentMiddleware
+	IManagerMiddleware
+}
+
+func New(s services.IService) *Middleware {
 	return &Middleware{
-		AuthMiddleware:       NewAuthMiddleware(s),
-		UserMiddleware:       NewUserMiddleware(s),
-		AccountMiddleware:    NewAccountMiddleware(s),
-		LoanMiddleware:       NewLoanMiddleware(s),
-		DepositMiddleware:    NewDepositMiddleware(s),
-		InsuranceMiddleware:  NewInsuranceMiddleware(s),
-		InvestmentMiddleware: NewInvestmentMiddleware(s),
-		ManagerMiddleware:    NewManagerMiddleware(s),
+		IAuthMiddleware:       NewAuthMiddleware(s),
+		IUserMiddleware:       NewUserMiddleware(s),
+		IAccountMiddleware:    NewAccountMiddleware(s),
+		ILoanMiddleware:       NewLoanMiddleware(s),
+		IDepositMiddleware:    NewDepositMiddleware(s),
+		IInsuranceMiddleware:  NewInsuranceMiddleware(s),
+		IInvestmentMiddleware: NewInvestmentMiddleware(s),
+		IManagerMiddleware:    NewManagerMiddleware(s),
 	}
 }

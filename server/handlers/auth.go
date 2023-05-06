@@ -6,11 +6,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type AuthHandler struct {
-	middleware *middleware.Middleware
+type IAuthHandler interface {
+	POST_SignUp(echo.Context) error
+	POST_SignIn(echo.Context) error
 }
 
-func NewAuthHandler(m *middleware.Middleware) *AuthHandler {
+type AuthHandler struct {
+	middleware middleware.IMiddleware
+}
+
+func NewAuthHandler(m middleware.IMiddleware) *AuthHandler {
 	return &AuthHandler{
 		middleware: m,
 	}
@@ -56,8 +61,4 @@ func (h *AuthHandler) POST_SignIn(c echo.Context) error {
 	}
 
 	return c.JSON(code, JSON{OBJ{"Token": token}, ""})
-}
-
-func (h *AuthHandler) DBTEST(c echo.Context) error { // DONT TOUCH
-	return h.middleware.DBTEST()
 }

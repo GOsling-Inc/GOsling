@@ -6,11 +6,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type UserHandler struct {
-	middleware *middleware.Middleware
+type IUserHandler interface {
+	POST_User(echo.Context) error
+	POST_Change_Main(echo.Context) error
+	POST_Change_Password(echo.Context) error
 }
 
-func NewUserHandler(m *middleware.Middleware) *UserHandler {
+type UserHandler struct {
+	middleware middleware.IMiddleware
+}
+
+func NewUserHandler(m middleware.IMiddleware) *UserHandler {
 	return &UserHandler{
 		middleware: m,
 	}

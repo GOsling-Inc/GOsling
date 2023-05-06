@@ -5,11 +5,23 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type ManagerHandler struct {
-	middleware *middleware.Middleware
+type IManagerHandler interface {
+	GetConfirms(echo.Context) error
+	Confirm(echo.Context) error
+	GetAccounts(echo.Context) error
+	FreezeAccount(echo.Context) error
+	BlockAccount(echo.Context) error
+	GetTransactions(c echo.Context) error
+	CancelTransaction(c echo.Context) error
+	GetUsers(c echo.Context) error
+	UpdateRole(c echo.Context) error
 }
 
-func NewManagerHandler(m *middleware.Middleware) *ManagerHandler {
+type ManagerHandler struct {
+	middleware middleware.IMiddleware
+}
+
+func NewManagerHandler(m middleware.IMiddleware) *ManagerHandler {
 	return &ManagerHandler{
 		middleware: m,
 	}
@@ -137,7 +149,7 @@ func (h *ManagerHandler) GetUsers(c echo.Context) error {
 	return c.JSON(code, JSON{usrs, ""})
 }
 
-func (h *ManagerHandler) UpdateUser(c echo.Context) error {
+func (h *ManagerHandler) UpdateRole(c echo.Context) error {
 	manager_id := h.middleware.Auth(c.Request().Header)
 	if manager_id == "" {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
@@ -147,7 +159,7 @@ func (h *ManagerHandler) UpdateUser(c echo.Context) error {
 	}
 	id := c.FormValue("Id")
 	role := c.FormValue("Role")
-	code, err := h.middleware.UpdateUser(id, role)
+	code, err := h.middleware.UpdateRole(id, role)
 	if err != nil {
 		return c.JSON(code, JSON{nil, err.Error()})
 	} else {

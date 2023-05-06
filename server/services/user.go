@@ -7,11 +7,17 @@ import (
 	"github.com/GOsling-Inc/GOsling/models"
 )
 
-type UserService struct {
-	database *database.Database
+type IUserService interface {
+	GetUser(string) (models.User, error)
+	Change_Main_Info(models.User) error
+	Change_Password(models.User) error
 }
 
-func NewUserService(d *database.Database) *UserService {
+type UserService struct {
+	database database.IDatabase
+}
+
+func NewUserService(d database.IDatabase) *UserService {
 	return &UserService{
 		database: d,
 	}

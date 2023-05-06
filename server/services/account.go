@@ -3,8 +3,8 @@ package services
 import (
 	"encoding/json"
 	"errors"
-	"os"
 	"net/http"
+	"os"
 
 	"github.com/GOsling-Inc/GOsling/database"
 	"github.com/GOsling-Inc/GOsling/models"
@@ -15,11 +15,23 @@ var (
 	byn_eur float64
 )
 
-type AccountService struct {
-	database *database.Database
+type IAccountService interface {
+	AddAccount(string, models.Account) error
+	GetAccountById(string) (models.Account, error)
+	GetUserAccounts(string) ([]models.Account, error)
+	DeleteAccount(string) error
+	ProvideTransfer(models.Trasfer) error
+	ProvideExchange(models.Exchange) error
+	UpdateExchanges()
+	BYN_USD() float64
+	BYN_EUR() float64
 }
 
-func NewAccountService(d *database.Database) *AccountService {
+type AccountService struct {
+	database database.IDatabase
+}
+
+func NewAccountService(d database.IDatabase) *AccountService {
 	return &AccountService{
 		database: d,
 	}

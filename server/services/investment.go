@@ -7,11 +7,18 @@ import (
 	"github.com/GOsling-Inc/GOsling/models"
 )
 
-type InvestmentService struct {
-	database *database.Database
+type IInvestmentService interface {
+	CreateOrder(models.Order) error
+	BuyStock(models.Account, models.Order, int) error
+	SellStock(models.Account, models.Order, int) error
+	GetOrder(int) (models.Order, error)
 }
 
-func NewInvestmentService(d *database.Database) *InvestmentService {
+type InvestmentService struct {
+	database database.IDatabase
+}
+
+func NewInvestmentService(d database.IDatabase) *InvestmentService {
 	return &InvestmentService{
 		database: d,
 	}

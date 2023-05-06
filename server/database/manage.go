@@ -7,6 +7,18 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+type IManageDatabase interface {
+	GetUnconfirmed() []models.Unconfirmed
+	ConfirmLoan(models.Loan) error
+	ConfirmInsurance(models.Insurance) error
+	ConfirmDeposit(models.Deposit) error
+	GetUsers() []models.User
+	GetTransactions() []models.Trasfer
+	GetAccounts() []models.Account
+	UpdateAccount(string, string) error
+	UpdateRole(string, string) error
+}
+
 type ManageDatabase struct {
 	db *sqlx.DB
 }
@@ -109,12 +121,6 @@ func (d *ManageDatabase) GetUsers() []models.User {
 	return users
 }
 
-func (d *ManageDatabase) BlockUser(id string) error {
-	query := "UPDATE users SET state = $1 WHERE id = #2"
-	_, err := d.db.Exec(query, "BLOCKED", id)
-	return err
-}
-
 func (d *ManageDatabase) GetTransactions() []models.Trasfer {
 	var transfers []models.Trasfer
 
@@ -124,13 +130,6 @@ func (d *ManageDatabase) GetTransactions() []models.Trasfer {
 	return transfers
 }
 
-func (d *AccountDatabase) CancelTransaction(trasaction models.Trasfer) error {
-	query := "DELETE from transactions WHERE id = $1"
-	d.db.Exec(query, trasaction.Id)
-
-	return d.Transfer(trasaction.Receiver, trasaction.Sender, trasaction.Amount)
-}
-
 func (d *ManageDatabase) GetAccounts() []models.Account {
 	var accounts []models.Account
 
@@ -138,13 +137,6 @@ func (d *ManageDatabase) GetAccounts() []models.Account {
 	d.db.Select(&accounts, query)
 
 	return accounts
-}
-
-func (d *AccountDatabase) GetTransferById(id string) (models.Trasfer, error) {
-	var transfer models.Trasfer
-	query := "Select * from transfers WHERE id = $1"
-	err := d.db.Get(&transfer, query, id)
-	return transfer, err
 }
 
 func (d *ManageDatabase) UpdateAccount(id, state string) error {

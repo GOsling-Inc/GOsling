@@ -7,11 +7,22 @@ import (
 	"github.com/GOsling-Inc/GOsling/services"
 )
 
-type AccountMiddleware struct {
-	service *services.Service
+type IAccountMiddleware interface {
+	GetUserAccounts(string) (int, []models.Account, error)
+	AddAccount(string, models.Account) (int, error)
+	GetAccountById(string) (models.Account, error)
+	DeleteAccount(string, string, string) (int, error)
+	ProvideTransfer(string, models.Trasfer) (int, error)
+	ProvideExchange(string, models.Exchange) (int, error)
+	BYN_USD() float64
+	BYN_EUR() float64
 }
 
-func NewAccountMiddleware(s *services.Service) *AccountMiddleware {
+type AccountMiddleware struct {
+	service services.IService
+}
+
+func NewAccountMiddleware(s services.IService) *AccountMiddleware {
 	return &AccountMiddleware{
 		service: s,
 	}
@@ -38,7 +49,7 @@ func (a *AccountMiddleware) GetAccountById(userId string) (models.Account, error
 	return a.service.GetAccountById(userId)
 }
 
-func (a *AccountMiddleware) DeleteAccount(userId, accountId string, password string) (int, error) {
+func (a *AccountMiddleware) DeleteAccount(userId, accountId, password string) (int, error) {
 	password, err := a.service.Hash(password)
 	if err != nil {
 		return UNAUTHORIZED, err

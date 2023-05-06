@@ -10,11 +10,18 @@ import (
 	"github.com/GOsling-Inc/GOsling/models"
 )
 
-type AuthService struct {
-	database *database.Database
+type IAuthService interface {
+	SignIn(user *models.User) error
+	SignUp(user *models.User) error
+	MakeID() string
+	Hash(str string) (string, error)
 }
 
-func NewAuthService(d *database.Database) *AuthService {
+type AuthService struct {
+	database database.IDatabase
+}
+
+func NewAuthService(d database.IDatabase) *AuthService {
 	return &AuthService{
 		database: d,
 	}
@@ -64,9 +71,4 @@ func (s *AuthService) Hash(str string) (string, error) {
 	}
 
 	return hex.EncodeToString(hash.Sum(nil)), nil
-}
-
-func (s *AuthService) DBTEST() error { // DONT TOUCH
-	//log.Println(s.database.UpdateStatus("loans", "9", "ACTIVE"))
-	return nil
 }
