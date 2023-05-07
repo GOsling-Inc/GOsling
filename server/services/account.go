@@ -92,14 +92,11 @@ func (s *AccountService) ProvideExchange(exchange models.Exchange) error {
 		return errors.New("sender account error, transaction cancelled")
 	}
 	reciever_acc, err := s.database.GetAccountById(exchange.Receiver)
-	if err != nil || reciever_acc.Unit == sender_acc.Unit {
+	if err != nil || reciever_acc.Unit == sender_acc.Unit || reciever_acc.State != "ACTIVE" {
 		return errors.New("reciever account error, transaction cancelled")
 	}
 	if sender_acc.UserId != reciever_acc.UserId {
 		return errors.New("incorrect account")
-	}
-	if sender_acc.State != "ACTIVE" || reciever_acc.State != "ACTIVE" {
-		return errors.New("one of accounts is not active")
 	}
 
 	if sender_acc.Unit == "BYN" && reciever_acc.Unit == "USD" {

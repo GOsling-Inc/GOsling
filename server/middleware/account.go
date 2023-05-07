@@ -40,7 +40,7 @@ func (a *AccountMiddleware) AddAccount(id string, acc models.Account) (int, erro
 	acc.Id = a.service.MakeID() + id + acc.Unit
 	acc.UserId = id
 	if err := a.service.AddAccount(id, acc); err != nil {
-		return UNAUTHORIZED, err
+		return INTERNAL, err
 	}
 	return CREATED, nil
 }

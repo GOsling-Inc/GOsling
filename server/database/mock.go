@@ -107,10 +107,15 @@ func (d *MockDatabase) GetAccountById(id string) (models.Account, error) {
 }
 
 func (d *MockDatabase) DeleteAccount(id string) error {
+	check := false
 	for i, acc := range d.accounts {
 		if acc.Id == id {
+			check = true
 			d.accounts[i] = d.accounts[len(d.accounts)-1]
 		}
+	}
+	if !check {
+		return errors.New("error")
 	}
 	d.accounts = d.accounts[:len(d.accounts)-1]
 	return nil
@@ -196,6 +201,11 @@ func (d *MockDatabase) GetInsuranceById(id string) (models.Insurance, error) {
 		}
 	}
 	return models.Insurance{}, errors.New("not found")
+}
+
+func (d *MockDatabase) AddInvestment(investment models.Investment) error {
+	d.investments = append(d.investments, investment)
+	return nil
 }
 
 func (d *MockDatabase) GetInvestments() ([]models.Investment, error) {
@@ -421,9 +431,10 @@ func (d *MockDatabase) UpdateAccount(id, state string) error {
 	for i, acc := range d.accounts {
 		if acc.Id == id {
 			d.accounts[i].State = state
+			return nil
 		}
 	}
-	return nil
+	return errors.New("not found")
 }
 
 func (d *MockDatabase) GetUsers() []models.User {
@@ -434,9 +445,10 @@ func (d *MockDatabase) UpdateRole(id, role string) error {
 	for i, user := range d.users {
 		if user.Id == id {
 			d.users[i].Role = role
+			return nil
 		}
 	}
-	return nil
+	return errors.New("not found")
 }
 
 func (d *MockDatabase) UpdateLoans() error {

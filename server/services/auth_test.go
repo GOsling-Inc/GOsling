@@ -1,4 +1,4 @@
-package services_test //debug needed
+package services_test
 
 import (
 	"errors"
@@ -6,12 +6,12 @@ import (
 
 	"github.com/GOsling-Inc/GOsling/database"
 	"github.com/GOsling-Inc/GOsling/models"
+	"github.com/GOsling-Inc/GOsling/services"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	db database.MockDatabase
-	//serv  services.AuthService
+	db    *database.MockDatabase
 	user0 = models.User{
 		Id:        "1234",
 		Name:      "User",
@@ -24,13 +24,13 @@ var (
 )
 
 func Test_Auth_SignUp(t *testing.T) {
-	db = *database.NewMock()
-	//serv = *services.NewAuthService(db)
+	db = database.NewMock()
+	serv := services.NewAuthService(db)
 	db.AddUser(&user0)
 	testCases := []struct {
 		name        string
 		payload     models.User
-		expectedErr string
+		expectedErr error
 	}{
 		{
 			name: "valid",
@@ -43,7 +43,7 @@ func Test_Auth_SignUp(t *testing.T) {
 				Role:      "user",
 				Birthdate: "2002-01-01",
 			},
-			expectedErr: "",
+			expectedErr: nil,
 		},
 		{
 			name: "user_exists",
@@ -56,53 +56,53 @@ func Test_Auth_SignUp(t *testing.T) {
 				Role:      "user",
 				Birthdate: "2002-01-01",
 			},
-			expectedErr: "user with this email already registered",
+			expectedErr: errors.New("user with this email already registered"),
 		},
 	}
-
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-
+			assert.Equal(t, tc.expectedErr, serv.SignUp(&tc.payload))
 		})
 	}
 }
 
 func Test_Auth_SignIn(t *testing.T) {
-	db = *database.NewMock()
+	db = database.NewMock()
+	serv := services.NewAuthService(db)
 	db.AddUser(&user0)
 	testCases := []struct {
 		name        string
-		payload     map[string]string
+		payload     models.User
 		expectedErr error
 	}{
 		{
 			name: "valid",
-			payload: map[string]string{
-				"Email":    "imhere@mail.com",
-				"Password": "secRetec0de",
+			payload: models.User{
+				Email:    "imhere@mail.com",
+				Password: "secRetec0de",
 			},
 			expectedErr: nil,
 		},
 		{
 			name: "wrong_email",
-			payload: map[string]string{
-				"Email":    "wrong_email",
-				"Password": "secRetec0de",
+			payload: models.User{
+				Email:    "wrong_email@aboba.com",
+				Password: "secRetec0de",
 			},
 			expectedErr: errors.New("incorrect email"),
 		},
 		{
 			name: "wrong_password",
-			payload: map[string]string{
-				"Email":    "imhere@mail.com",
-				"Password": "qwerty123",
+			payload: models.User{
+				Email:    "imhere@mail.com",
+				Password: "wr0nG_pa$$w0rD",
 			},
 			expectedErr: errors.New("incorrect password"),
 		},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			assert.Error(t, tc.expectedErr)
+			assert.Equal(t, tc.expectedErr, serv.SignIn(&tc.payload))
 		})
 	}
 }
