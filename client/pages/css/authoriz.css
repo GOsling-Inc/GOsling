@@ -19,6 +19,7 @@ body {
 }
 
 .head {
+    color: #000000;
 float: left;
 padding-top: 2px;
 padding-left: 20px;
@@ -60,7 +61,7 @@ font-weight: 350;
 }
 
 .author {
-    font-size: 30px;
+    font-size: 35px;
 }
 
 form input {

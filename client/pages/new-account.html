@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/new-account.css" type="text/css">
+    <title>GOsling.Открытие счёта</title>
+</head>
+<body>
+    <div class="headBack">
+        <a href="user.html"><h1 class="head">GOsling</h1></a>
+    </div>
+    <div class="form">
+        <p class="author">Открытие счёта</p>
+        <hr style="width: 74%; margin-top: 8px; margin-left: 13%;">
+        <input placeholder="Название счёта" class="name"></input>
+        <p style="margin-top: 20px; font-size: 17px; margin-left: 15px;">Выберите тип валюты</p>
+        <select class="valuta">
+            <option value="BYN">BYN</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+        </select>
+        <p style="margin-top: 20px; font-size: 17px; margin-left: 15px;">Выберите тип счёта
+            <div class="cl"><img src="img/question.png" class="what">
+                <div class="clue">
+                    <p style="letter-spacing: 1px;">1) базовый счет: <br>
+                        - переводы до 10000 BYN (или эквивалент в переводе на другую валюту по курсу банка “GOsling”) для переводов<br>
+                        - комиссия 2% для переводов меньше 1000 BYN (5% в ином случае)<br>
+                        - бесплатное обслуживание<br>
+                        <br>
+                        <hr style="width: 88%; margin-left: 6%;">
+                        <br>
+                    </p>
+                    <p style="letter-spacing: 1px;">2) бизнес счет:<br>
+                            - неограниченная сумма переводов.<br>
+                            - стоимость обслуживания: 2% от общей суммы переводов за месяц (не ниже 100 BYN)<br>
+                            - комиссия 1.5% для любых переводов<br>
+                            <br>
+                        <hr style="width: 88%; margin-left: 6%;">
+                        <br>
+                        </p>
+                    <p style="letter-spacing: 1px;">3) инвестиционный счет:<br>
+                        - стоимость обслуживания: 3% от общей суммы сделок за месяц (при условии общей суммы сделок не менее 1000 BYN, <br>в противном случае 50 BYN)<br>
+                        - переводы до 100000 BYN (или эквивалент в переводе на другую валюту по курсу банка “GOsling”) для переводов <br>
+                        - комиссия 5% для переводов меньше 500  BYN (7% в ином случае)<br>
+                        </p>
+                </div>
+            </div></p>
+    
+        <select class="acc">
+            <option value="Базовый счёт">Базовый счёт</option>
+            <option value="Бизнес счёт">Бизнес счёт</option>
+            <option value="Инвестиционный счёт">Инвестиционный счёт</option>
+        </select>
+        <button class="open">Открыть</button>  
+    </div>
+    <div class="help">
+        <p class="info">© 2023. GOsling</p>
+        <a class="support" href="">Служба поддержки</a>
+    </div>
+
+</body>
+</html>

@@ -20,40 +20,21 @@ body {
 
 .head {
     color: #000000;
-    float: left;
-    padding-top: 2px;
-    padding-left: 20px;
-    font-size: 40px;
-    font-weight: 350;
+float: left;
+padding-top: 2px;
+padding-left: 20px;
+font-size: 40px;
+font-weight: 350;
 }
 
-.ent {  
-    background-color: #4a4a4a00;
-    width: 100px;
-    font-weight: 300;
-    margin-top: 5px;
-    margin-right: 10px;
-    color: #000000;
-    font-size: 15px;
-    padding: 10px 16px;
-    border-radius: 6%;
-    float: right;
-    outline: none;
-}
 
-.ent:hover{
-    transform: scale(1.01);
-    cursor: pointer;
-}
+
 
 .form {
-    margin-top: 120px;
-    margin-left: 34%;
-    width: 32%;
-    height: 750px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin-top: 160px;
+    margin-left: 39%;
+    width: 20%;
+    height: 320px;
     border: 2px solid #000000;
     border-radius: 6px;
     padding-top: 20px;
@@ -61,61 +42,59 @@ body {
 }
 
 .author {
-    font-size: 35px;
+    font-size: 30px;
+    margin-left: 23%;
+    
 }
 
-form input:not(.date) {
+.name {
     font-weight: 300;
-    width: 300px;
     margin-bottom: 10px;
-    margin-top: 40px;
+    margin-top: 30px;
+    margin-left: 16%;
+    width: 64%;
     background: #ffffff;
     color: #000000;
-    font-size: 15px;
+    font-size: 16px;
     padding: 10px 2%;
     border: 0;
     border-bottom: 4px solid #000000;
     outline: none;
+
 }
 
-.date {
+.open {
+    float: right;
     font-weight: 300;
-    width: 300px;
-    margin-bottom: 10px;
     margin-top: 40px;
     background: #ffffff;
     color: #000000;
     font-size: 15px;
-    padding: 10px 2%;
-    border: 0;
-    border: 1px solid #000000;
-    outline: none;
-}
-
-form button {
-    font-weight: 300;
-    margin-bottom: 10px;
-    margin-top: 50px;
-    background: #ffffff;
-    color: #000000;
-    font-size: 15px;
-    padding: 10px 20px;
+    padding: 10px 15px;
     border-radius: 6%;
+    margin-right: 20px;
+    letter-spacing: 1px;
 }
 
-form button:hover{
+.open:hover{
     transform: scale(1.01);
     cursor: pointer;
 }
 
+
+
+
+
+
 .help {
-    margin-top: 120px;
+    margin-top: 150px;
     margin-left: 15%;
     margin-right: 15%;
     width: 70%;
     height: 100px;
     background-color: #f0f0ef;
     border-radius: 10px 10px 0 0;
+    
 }
 
 .support {
@@ -139,3 +118,5 @@ form button:hover{
     margin-top: 65px;
     margin-left: 20px;
 }
+
+
