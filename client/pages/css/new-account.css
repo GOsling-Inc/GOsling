@@ -25,6 +25,7 @@ padding-top: 2px;
 padding-left: 20px;
 font-size: 40px;
 font-weight: 350;
+letter-spacing: 1px;
 }
 
 
@@ -43,7 +44,8 @@ font-weight: 350;
 
 .author {
     font-size: 32px;
-    margin-left: 15%;
+    text-align: center;
+    letter-spacing: 1px;
     
 }
 
@@ -60,7 +62,7 @@ font-weight: 350;
     border: 0;
     border-bottom: 4px solid #000000;
     outline: none;
-
+    letter-spacing: 1px;
 }
 
 .valuta {
@@ -79,6 +81,7 @@ font-weight: 350;
     margin-left: 8%;
     margin-left: 25px;
     margin-top: 10px;
+    letter-spacing: 1px;
 }
 
 
@@ -88,7 +91,7 @@ font-weight: 350;
     height: 20px;
     cursor: pointer;
     position: relative;
-    left: 165px;
+    left: 180px;
     bottom: 19px;
 }
 

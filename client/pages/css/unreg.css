@@ -24,6 +24,7 @@ body {
     padding-left: 20px;
     font-size: 40px;
     font-weight: 350;
+    letter-spacing: 1px;
 }
 
 .ent {  
@@ -38,6 +39,7 @@ body {
     border-radius: 6%;
     float: right;
     outline: none;
+    letter-spacing: 1px;
 }
 
 .ent:hover{
@@ -57,6 +59,7 @@ body {
     border-radius: 6%;
     float: right;
     outline: none;
+    letter-spacing: 1px;
 }
 
 .reg:hover{
@@ -101,8 +104,8 @@ body {
 .about{
     width: 54%;
     margin-left: 23%;
-    height: 270px;
-    margin-top: 60px;
+    height: 290px;
+    margin-top: 90px;
     font-size: 17px;
     text-align: center;
     border-radius: 1%;
@@ -117,15 +120,16 @@ body {
 
 .fulling{
     word-spacing: 15px;
-    line-height: 45px;
-    padding: 0px 8%;   
+    line-height: 40px;
+    padding: 5px 8%; 
+    letter-spacing: 1px;  
 }
 
 
 
 
 .help {
-    margin-top: 43px;
+    margin-top: 100px;
     margin-left: 15%;
     width: 70%;
     height: 100px;

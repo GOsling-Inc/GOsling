@@ -25,6 +25,7 @@ body {
     padding-left: 20px;
     font-size: 40px;
     font-weight: 350;
+    letter-spacing: 1px;
 }
 
 .ent {  
@@ -39,6 +40,7 @@ body {
     border-radius: 6%;
     float: right;
     outline: none;
+    letter-spacing: 1px;
 }
 
 .ent:hover{
@@ -50,7 +52,7 @@ body {
     margin-top: 120px;
     margin-left: 34%;
     width: 32%;
-    height: 750px;
+    height: 730px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -61,7 +63,8 @@ body {
 }
 
 .author {
-    font-size: 35px;
+    font-size: 32px;
+    letter-spacing: 1px;
 }
 
 form input:not(.date) {
@@ -76,6 +79,7 @@ form input:not(.date) {
     border: 0;
     border-bottom: 4px solid #000000;
     outline: none;
+    letter-spacing: 1px;
 }
 
 .date {
@@ -90,6 +94,7 @@ form input:not(.date) {
     border: 0;
     border: 1px solid #000000;
     outline: none;
+    letter-spacing: 1px;
 }
 
 form button {
@@ -101,6 +106,7 @@ form button {
     font-size: 15px;
     padding: 10px 20px;
     border-radius: 6%;
+    letter-spacing: 1px;
 }
 
 form button:hover{
