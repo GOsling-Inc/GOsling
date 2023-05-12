@@ -19,7 +19,7 @@ func Init(server *echo.Echo, handler *handlers.Handler) {
 		user.POST("/new-account", handler.POST_Add_Account)
 		user.POST("/delete-account", handler.POST_Delete_Account)
 		user.GET("/accounts", handler.GET_User_Accounts)
-
+		//gettransfers
 		user.POST("/transfer", handler.POST_Transfer)
 
 		user.POST("/exchange", handler.POST_User_Exchange)
@@ -32,7 +32,7 @@ func Init(server *echo.Echo, handler *handlers.Handler) {
 
 		user.GET("/insurances", handler.GET_User_Insurances)
 		user.POST("/new-insurance", handler.POST_NewInsurance)
-
+		//getstocks
 		user.POST("/stocks/new-order", handler.POST_User_Stocks_NewOrder)
 		user.POST("/stocks/buy", handler.POST_User_Stocks_Buy)
 		user.POST("/stocks/sell", handler.POST_User_Stocks_Sell)
