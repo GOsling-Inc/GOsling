@@ -38,7 +38,7 @@ body {
     padding: 0;
 }
 
-.action a{
+.action a {
     width: 14.27%;
     height: 90px;
 
@@ -52,7 +52,7 @@ body {
     color: #484848;
     font-weight: bold;
     font-size: 18px;
-}   
+}
 
 .action button:hover {
     background-color: #c9c8c8;
@@ -72,38 +72,162 @@ body {
     float: left;
     height: 30px;
     width: 100%;
-    
+
 }
 
-.actAccount{
+.actAccount {
     background-color: #ffffff;
     width: 60%;
     height: 500px;
-    box-shadow: 0.8px 0.8px 2px 0px  #000000;
+    box-shadow: 0.8px 0.8px 2px 0px #000000;
     overflow-x: hidden;
     border-radius: 3%;
 }
 
-.actLoan{
+.actAccountTitle {
+    text-align: center;
+    font-size: 22px;
+    margin: 12px 0px;
+    letter-spacing: 2px;
+}
+
+.actAccount hr {
+    width: 80%;
+    margin-left: 10%;
+}
+
+.example {
+    margin-top: 30px;
+    width: 70%;
+    height: 210px;
+    margin-left: 15%;
+    font-size: 18px;
+    letter-spacing: 1px;
+    box-shadow: 3px 3px 11px 0px #878787;
+
+}
+
+
+
+.divName {
+    height: 15%; 
+    width: 100%; 
+    background-color: #f1f1f1;
+}
+
+.divName p{
+    margin-left: 3%; 
+    padding-top: 3px;
+}
+
+.balance {
+    height: 60%; 
+    width: 100%; 
+    font-size: 40px;
+}
+
+.balance hr{
+    width: 66%; 
+    margin-left: 17%;
+}
+
+.remainderName {
+    font-size: 14px; 
+    padding-top: 5px; 
+    text-align: right; 
+    padding-right: 15px;
+}
+
+.remainder {
+    text-align: center; 
+    padding-top: 15px;
+}
+
+.close {
+    height: 25%; 
+    width: 100%; 
+    background-color: rgb(185, 223, 255);
+}
+
+
+.close button{
+    float: left;
+    padding: 0.6% 1%;
+    margin-top: 12px;
+    margin-left: 7px;
+    letter-spacing: 1px;
+    font-size: 15px;
+    background-color: rgb(185, 223, 255);
+    border: 0;
+    box-shadow: 2px 2px 6px 0px #000000;
+
+}
+
+.close1 {
+    width: 15%;
+}
+
+.close2 {
+    width: 20%;
+}
+
+.close p{
+    margin-right: 3%; 
+    padding-top: 20px; 
+    float: right;
+}
+
+.close1:hover, .close2:hover{
+    cursor: pointer;
+    transform: scale(1.01);
+}
+
+
+
+
+.actLoan {
     margin-top: 120px;
     background-color: #ffffff;
     width: 60%;
     height: 500px;
-    box-shadow: 0.8px 0.8px 2px 0px  #000000;
+    box-shadow: 0.8px 0.8px 2px 0px #000000;
     overflow-x: hidden;
     border-radius: 3%;
 }
 
-.history{
+.actLoan p {
+    text-align: center;
+    font-size: 22px;
+    margin: 12px 0px;
+    letter-spacing: 2px;
+}
+
+.actLoan hr {
+    width: 80%;
+    margin-left: 10%;
+}
+
+.history {
     float: right;
     background-color: #ffffff;
     width: 25%;
     height: 500px;
-    box-shadow: 0.8px 0.8px 2px 0px  #000000;
+    box-shadow: 0.8px 0.8px 2px 0px #000000;
     overflow-x: hidden;
     border-radius: 3%;
 }
 
+.history p {
+    text-align: center;
+    font-size: 22px;
+    margin: 10px 0px;
+    letter-spacing: 2px;
+}
+
+.history hr {
+    width: 86%;
+    margin-left: 7%;
+}
 
 
 
@@ -126,6 +250,7 @@ body {
     margin-left: 29.7%;
     text-decoration: none;
 }
+
 .support:hover {
     transform: scale(1.01);
     color: #7e7e7e;

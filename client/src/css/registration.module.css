@@ -67,7 +67,12 @@ body {
     letter-spacing: 1px;
 }
 
-form input:not(.date) {
+.form hr {
+    width: 70%; 
+    margin-top: 8px;
+}
+
+.form input:not(.date) {
     font-weight: 300;
     width: 300px;
     margin-bottom: 10px;
@@ -97,7 +102,7 @@ form input:not(.date) {
     letter-spacing: 1px;
 }
 
-form button {
+.form button {
     font-weight: 300;
     margin-bottom: 10px;
     margin-top: 50px;
@@ -105,11 +110,12 @@ form button {
     color: #000000;
     font-size: 15px;
     padding: 10px 20px;
+    border: 2px solid #000000;
     border-radius: 6%;
     letter-spacing: 1px;
 }
 
-form button:hover{
+.form button:hover{
     transform: scale(1.01);
     cursor: pointer;
 }

@@ -28,34 +28,14 @@ font-weight: 350;
 letter-spacing: 1px;
 }
 
-.reg {
-    background-color: #4a4a4a00;
-    width: 150px;
-    font-weight: 300;
-    margin-top: 5px;
-    margin-right: 10px;
-    color: #000000;
-    font-size: 15px;
-    padding: 10px 16px;
-    border-radius: 6%;
-    float: right;
-    outline: none;
-    letter-spacing: 1px;
-}
 
-.reg:hover{
-    transform: scale(1.01);
-    cursor: pointer;
-}
+
 
 .form {
     margin-top: 160px;
-    margin-left: 39%;
-    width: 20%;
-    height: 325px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin-left: 37%;
+    width: 24%;
+    height: 500px;
     border: 2px solid #000000;
     border-radius: 6px;
     padding-top: 20px;
@@ -64,16 +44,26 @@ letter-spacing: 1px;
 
 .author {
     font-size: 32px;
+    text-align: center;
     letter-spacing: 1px;
+    
 }
 
-form input {
+.form hr{
+    width: 70%; 
+    margin-top: 8px; 
+    margin-left: 15%;
+}
+
+.name {
     font-weight: 300;
     margin-bottom: 10px;
-    margin-top: 35px;
+    margin-top: 30px;
+    margin-left: 16%;
+    width: 64%;
     background: #ffffff;
     color: #000000;
-    font-size: 15px;
+    font-size: 16px;
     padding: 10px 2%;
     border: 0;
     border-bottom: 4px solid #000000;
@@ -81,31 +71,87 @@ form input {
     letter-spacing: 1px;
 }
 
-form button {
+.valuta {
+    width: 25%;
+    padding: 2.6% 1%;
+    font-size: 16px;
+    margin-left: 40px;
+    margin-top: 10px;
+}
+
+.acc {
+    width: 75%;
+    padding: 2.6% 1%;
+    font-size: 16px;
+    margin-left: 40px;
+    margin-top: 10px;
+    letter-spacing: 1px;
+}
+
+
+
+.what {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    position: relative;
+    left: 180px;
+    bottom: 19px;
+}
+
+.cl {
+    width: 0px;
+    height: 0px;
+}
+
+.clue {
+    width: 280px;
+    height: 430px;
+    position:relative;
+    display:none;
+    box-shadow: 3px 3px 10px 0px  #878787;
+    background-color: #f6f6f6;
+    left: 220px;
+    bottom: 220px;
+    padding: 13px 14px;
+}
+
+.cl:hover .clue{
+    display: block;
+}
+
+.open {
+    float: right;
     font-weight: 300;
-    margin-bottom: 10px;
     margin-top: 40px;
     background: #ffffff;
     color: #000000;
     font-size: 15px;
-    padding: 10px 20px;
+    padding: 10px 15px;
     border-radius: 6%;
+    margin-right: 20px;
     letter-spacing: 1px;
 }
 
-form button:hover{
+.open:hover{
     transform: scale(1.01);
     cursor: pointer;
 }
 
+
+
+
+
+
 .help {
-    margin-top: 145px;
+    margin-top: 120px;
     margin-left: 15%;
     margin-right: 15%;
     width: 70%;
     height: 100px;
     background-color: #f0f0ef;
     border-radius: 10px 10px 0 0;
+    
 }
 
 .support {
