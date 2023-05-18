@@ -9,9 +9,6 @@ class User extends React.Component {
     render() {
         return (
             <div>
-                <div className={cl.headBack}>
-                    <h1 className={cl.head}>GOsling</h1>
-                </div>
                 <div className={cl.action}>
                     <NavLink to="/user/stocks"><button>Инвестирование</button></NavLink>
                     <NavLink to="/user/new-account"><button>Открытие счёта</button></NavLink>
