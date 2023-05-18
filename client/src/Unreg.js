@@ -18,15 +18,15 @@ class Unreg extends React.Component {
                 </div>
 
                 <div className={cl.but}>
-                    <div className={cl.stocks} >
+                <NavLink to="/stocks"><div className={cl.stocks} >
                         <div><img src={photoForStocks} alt="Акции" className={cl.photoForStocks} /></div>
                         <p style={{ textAlign: "center", fontSize: 20, letterSpacing: 4 }}>Акции</p>
-                    </div>
+                    </div></NavLink>
 
-                    <div className={cl.exchange}>
+                    <NavLink to="/exchanges"><div className={cl.exchange}>
                         <div><img src={photoForExchange} alt="Курс" className={cl.photoForExchange} /></div>
                         <p style={{ textAlign: "center", fontSize: 20, letterSpacing: 4, wordSpacing: 8 }}>Курсы валют</p>
-                    </div>
+                    </div></NavLink>
                 </div>
 
                 <div className={cl.about}>

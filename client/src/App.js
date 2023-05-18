@@ -12,6 +12,14 @@ import Insurance from "./pages/Insurance";
 import Loan from "./pages/Loan";
 import NewAccount from "./pages/NewAccount";
 import Stocks from "./pages/Stocks";
+import UnregExchange from "./pages/UnregExchange";
+import UnregStocks from "./pages/UnregStocks";
+import Manage from "./pages/Manage";
+import Confirmation from "./pages/Confirmation"
+import Accounts from "./pages/Accounts"
+import Transactions from "./pages/Transactions"
+import Roles from "./pages/Roles"
+import ManagerSupport from "./pages/ManagerSupport"
 
 function App() {
     return(
@@ -31,6 +39,14 @@ function App() {
                     <Route exact path="/user/loan" Component={Loan} />
                     <Route exact path="/user/new-account" Component={NewAccount} />
                     <Route exact path="/user/stocks" Component={Stocks} />
+                    <Route exact path="/exchanges" Component={UnregExchange} />
+                    <Route exact path="/stocks" Component={UnregStocks} />
+                    <Route exact path="/manage" Component={Manage} />
+                    <Route exact path="/manage/confirmation" Component={Confirmation} />
+                    <Route exact path="/manage/accounts" Component={Accounts} />
+                    <Route exact path="/manage/transactions" Component={Transactions} />
+                    <Route exact path="/manage/roles" Component={Roles} />
+                    <Route exact path="/manage/support" Component={ManagerSupport} />
                 </Routes>
             </BrowserRouter>
 

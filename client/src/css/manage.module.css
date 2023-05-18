@@ -1,0 +1,115 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #ffffff;
+    color: #000000;
+    font-weight: 300;
+}
+
+.headBack {
+    width: 100%;
+    height: 60px;
+    background-color: #4a4a4a5f;
+    backdrop-filter: blur(8px);
+    position: fixed;
+    top: 0;
+}
+
+.head {
+    color: #000000;
+float: left;
+padding-top: 2px;
+padding-left: 20px;
+font-size: 40px;
+font-weight: 350;
+letter-spacing: 1px;
+}
+
+.together {
+    width: 100%;
+    height: 600px;
+}
+
+
+.blocks1 {
+    width: 100%;
+    height: 200px;
+    margin-top: 150px;
+}
+
+.blocks2 {
+    margin-top: 70px;
+    width: 100%;
+    height: 140px;
+}
+
+.accounts {
+    width: 20%;
+    height: 140px;
+    box-shadow: 3px 3px 11px 0px  #878787;
+    float: left;
+    margin-left: 25%;
+    color: #494949;
+}
+
+.confirmations {
+    width: 20%;
+    height: 140px;
+    box-shadow: 3px 3px 11px 0px  #878787;
+    float: right;
+    margin-right: 25%;
+    color: #494949;
+}
+
+.transactions {
+    width: 20%;
+    margin-left: 25%;
+    height: 140px;
+    box-shadow: 3px 3px 11px 0px  #878787;
+    float: left;
+    color: #494949;
+}
+
+.support {
+    width: 20%;
+    height: 140px;
+    box-shadow: 3px 3px 11px 0px  #878787;
+    float: right;
+    margin-right: 25%;
+    color: #494949;
+}
+
+.roles {
+    width: 15%;
+    height: 100px;
+    box-shadow: 3px 3px 11px 0px  #878787;
+    float: right;
+    margin-right: 5%;
+    margin-top: 50px;
+    color: #494949;
+}
+
+.accounts:hover, .confirmations:hover, .transactions:hover, .support:hover, .roles:hover{
+    transform: scale(1.01);
+    cursor: pointer;
+}
+
+.text {
+    font-size: 22px;
+    letter-spacing: 1px;
+    text-align: center;
+    padding-top: 15%;
+    font-weight: bold;
+}
+
+hr{
+    margin-top: 10px;
+    width: 60%;
+    margin-left: 20%;
+}
+
+
+

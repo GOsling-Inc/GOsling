@@ -1,39 +1,17 @@
 import React from 'react';
-import cs from '../css/exchange.module.css';
+import cs from '../css/unregExchange.module.css';
 import { NavLink } from "react-router-dom";
 
-class Exchange extends React.Component {
+class UnregExchange extends React.Component {
 
     render() {
         return (
             <div>
                 <div className={cs.headBack}>
-                    <NavLink to="/user"><h1 className={cs.head}>GOsling</h1></NavLink>
+                    <NavLink to="/"><h1 className={cs.head}>GOsling</h1></NavLink>
                 </div>
 
                 <div className={cs.together}>
-                    <div className={cs.form}>
-                        <p className={cs.author}>Валюта</p>
-                        <hr />
-                        <p className={cs.selectType} >Выберите тип 1 валюты</p>
-                        <select className={cs.valuta}>
-                            <option value="BYN">BYN</option>
-                            <option value="USD">USD</option>
-                            <option value="EUR">EUR</option>
-                        </select>
-                        <p className={cs.selectType} >Выберите тип 2 валюты</p>
-                        <select className={cs.valuta}>
-                            <option value="BYN">BYN</option>
-                            <option value="USD">USD</option>
-                            <option value="EUR">EUR</option>
-                        </select>
-                        <input placeholder="Сумма" className={cs.name}></input>
-                        <input placeholder="Номер счёта 1 валюты" className={cs.name}></input>
-                        <input placeholder="Номер счёта 2 валюты " className={cs.name}></input>
-
-                        <button className={cs.open}>Выполнить</button>
-                    </div>
-
                     <div className={cs.rate}>
                         <p className={cs.pRate}>Курсы</p>
                         <div>
@@ -60,6 +38,7 @@ class Exchange extends React.Component {
                                 <div className={cs.euro}>
                                     <p style={{fontSize: 22}}>?</p>
                                 </div>
+
                             </div>
                             <div className={cs.sell}>
                                 <div className={cs.exch}>
@@ -80,11 +59,10 @@ class Exchange extends React.Component {
 
                 <div className={cs.help}>
                     <p className={cs.info}>© 2023. GOsling</p>
-                    <NavLink className={cs.support} to="/support">Служба поддержки</NavLink>
                 </div>
             </div>
         );
     }
 }
 
-export default Exchange
+export default UnregExchange
