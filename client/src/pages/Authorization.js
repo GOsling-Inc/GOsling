@@ -8,7 +8,7 @@ class Authorization extends React.Component {
     constructor(props) {
         super(props);
         this.state = {email: "", password: "", error: ""};
-        this.onSubmit = this.onSubmit.bind(this)
+        this.onSubmit = this.onSubmit.bind(this) 
     }
 
     async onSubmit(e) {
@@ -21,6 +21,7 @@ class Authorization extends React.Component {
             },
             body: JSON.stringify({"email": this.state.email, "password": this.state.password})
         })
+        
         const data = await response.json()
         if (data["error"] == "") {
             const cookies = new Cookies();
