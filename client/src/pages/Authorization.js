@@ -43,8 +43,8 @@ class Authorization extends React.Component {
                     <div>{this.state.error}</div>
                     <p className={cl.author}>Авторизация</p>
                     <hr />
-                    <input type="email" value={this.state.email} onChange={(e) => this.setState({email: e.target.value})} placeholder="Почта" ></input>
-                    <input type="text" value={this.state.password} onChange={(e) => this.setState({password: e.target.value})} placeholder="Пароль"></input>
+                    <input required type="email" value={this.state.email} onChange={(e) => this.setState({email: e.target.value})} placeholder="Почта" ></input>
+                    <input required type="password" value={this.state.password} onChange={(e) => this.setState({password: e.target.value})} placeholder="Пароль"></input>
                     <button type="submit">Войти</button>
                 </form>
                 <div className={cl.help}>
