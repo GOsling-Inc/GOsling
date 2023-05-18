@@ -9,6 +9,8 @@ class UnregExchange extends React.Component {
             <div>
                 <div className={cs.headBack}>
                     <NavLink to="/"><h1 className={cs.head}>GOsling</h1></NavLink>
+                    <NavLink to="/registration"><button className={cs.reg}>Регистрация</button></NavLink>
+                    <NavLink to="/authorization"><button className={cs.ent}>Войти</button></NavLink>
                 </div>
 
                 <div className={cs.together}>

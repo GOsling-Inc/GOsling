@@ -21,14 +21,14 @@ body {
 
 .action a {
     width: 14.27%;
-    height: 50px;
+    height: 60px;
 
 }
 
 .action a button {
     background-color: #429f6d;
     width: 100%;
-    height: 50px;
+    height: 60px;
     border: 0;
     border-left: 1px solid #939292;
     color: #ffffff;
@@ -44,7 +44,7 @@ body {
 
 
 .event {
-    margin-top: 220px;
+    margin-top: 150px;
     width: 86%;
     height: 1150px;
     margin-left: 7%;
@@ -85,14 +85,9 @@ body {
     margin-left: 15%;
     font-size: 18px;
     letter-spacing: 1px;
-<<<<<<< HEAD
-    box-shadow: 3px 3px 11px 0px #878787;
-    
-=======
     box-shadow: 0px 0px 6px 2px #bfbfbf;
     border-radius: 15px;
 
->>>>>>> 2329c3ea557db2815090ae49a1926e13e67eaf06
 }
 
 
@@ -182,7 +177,7 @@ body {
 
 .close1:hover, .close2:hover{
     cursor: pointer;
-    transform: scale(1.01);
+    transform: scale(1.03);
 }
 
 

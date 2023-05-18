@@ -10,6 +10,8 @@ class UnregStocks extends React.Component {
             <div>
                 <div className={cl.headBack}>
                     <NavLink to="/"><h1 className={cl.head}>GOsling</h1></NavLink>
+                    <NavLink to="/registration"><button className={cl.reg}>Регистрация</button></NavLink>
+                    <NavLink to="/authorization"><button className={cl.ent}>Войти</button></NavLink>
                 </div>
                 <div className={cl.together}>
                     <div className={cl.stock}>

@@ -17,6 +17,7 @@ class Accounts extends React.Component {
                         <input placeholder="Номер счёта" className={cl.input}></input>
                         <button className={cl.button}>Информация</button>
                         <button className={cl.button}>Заморозить</button>
+                        <button className={cl.button}>Заблокировать</button>
                     </div>
                     <div className={cl.information}>
 

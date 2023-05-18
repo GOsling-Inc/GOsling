@@ -12,20 +12,20 @@ body {
 .headBack {
     width: 100%;
     height: 60px;
-    background-color: #4a4a4a5f;
+    background-color: #429f6d;
     backdrop-filter: blur(8px);
     position: fixed;
     top: 0;
 }
 
 .head {
-    color: #000000;
-float: left;
-padding-top: 2px;
-padding-left: 20px;
-font-size: 40px;
-font-weight: 350;
-letter-spacing: 1px;
+    float: left;
+    padding-top: 2px;
+    padding-left: 30px;
+    font-size: 40px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #ffffff;
 }
 
 
@@ -72,7 +72,6 @@ letter-spacing: 1px;
 
 .open {
     float: right;
-    font-weight: 300;
     margin-top: 40px;
     background: #ffffff;
     color: #000000;
@@ -94,25 +93,23 @@ letter-spacing: 1px;
 
 
 .help {
-    margin-top: 150px;
-    margin-left: 15%;
-    margin-right: 15%;
-    width: 70%;
-    height: 100px;
+    margin-top: 209px;
+    margin-bottom: 0    ;
+    width: 100%;
+    height: 40px;
     background-color: #f0f0ef;
     border-radius: 10px 10px 0 0;
-    
 }
 
 .support {
     color: #5e5e5e;
     font-weight: bold;
     font-size: 18px;
-    float: left;
-    margin-top: 30px;
-    margin-left: 29.7%;
     text-decoration: none;
+    float: left;
+    margin: 10px 50px;
 }
+
 .support:hover {
     transform: scale(1.01);
     color: #7e7e7e;
@@ -122,8 +119,5 @@ letter-spacing: 1px;
     color: #4b4a4a;
     font-size: 18px;
     float: left;
-    margin-top: 65px;
-    margin-left: 20px;
+    margin: 10px auto;
 }
-
-

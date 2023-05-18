@@ -12,21 +12,58 @@ body {
 .headBack {
     width: 100%;
     height: 60px;
-    background-color: #4a4a4a5f;
-    backdrop-filter: blur(8px);
+    background-color: #429f6d;
     position: fixed;
     top: 0;
-    z-index: 9999;
 }
 
 .head {
-    color: #000000;
-float: left;
-padding-top: 2px;
-padding-left: 20px;
-font-size: 40px;
-font-weight: 350;
-letter-spacing: 1px;
+    float: left;
+    padding-top: 2px;
+    padding-left: 30px;
+    font-size: 40px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #ffffff;
+}
+
+.ent {
+    width: 110px;
+    margin-top: 8px;
+    padding: 10px 16px;
+    float: right;
+    outline: none;
+    letter-spacing: 1px;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 18px;
+    border: 0;
+    background-color: #429f6d;
+}
+
+.ent:hover {
+    transform: scale(1.04);
+    cursor: pointer;
+}
+
+.reg {
+    width: 160px;
+    margin-top: 8px;
+    margin-right: 10px;
+    padding: 10px 16px;
+    float: right;
+    outline: none;
+    letter-spacing: 1px;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 18px;
+    border: 0;
+    background-color: #429f6d;
+}
+
+.reg:hover {
+    transform: scale(1.04);
+    cursor: pointer;
 }
 
 
@@ -115,25 +152,23 @@ letter-spacing: 1px;
 
 
 .help {
-    margin-top: 100px;
-    margin-left: 15%;
-    margin-right: 15%;
-    width: 70%;
-    height: 100px;
+    margin-top: 88px;
+    margin-bottom: 0    ;
+    width: 100%;
+    height: 40px;
     background-color: #f0f0ef;
     border-radius: 10px 10px 0 0;
-    
 }
 
 .support {
     color: #5e5e5e;
     font-weight: bold;
     font-size: 18px;
-    float: left;
-    margin-top: 30px;
-    margin-left: 29.7%;
     text-decoration: none;
+    float: left;
+    margin: 10px 50px;
 }
+
 .support:hover {
     transform: scale(1.01);
     color: #7e7e7e;
@@ -143,8 +178,7 @@ letter-spacing: 1px;
     color: #4b4a4a;
     font-size: 18px;
     float: left;
-    margin-top: 65px;
-    margin-left: 20px;
+    margin: 10px auto;
 }
 
 
