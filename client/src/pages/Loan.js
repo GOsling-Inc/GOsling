@@ -9,7 +9,7 @@ import Cookies from 'universal-cookie';
 class Loan extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { valutaType: "BYN", sum: "", loanType: "Потребительский", accountNumber: "", error: "" };
+        this.state = { Amount: 0, Period: "", Percent: 0, AccountId: "", error: "" };
         this.onSubmit = this.onSubmit.bind(this)
     }
 
@@ -22,11 +22,11 @@ class Loan extends React.Component {
                 'Content-type': 'application/json',
                 "Token": Cookies.get('Token')
             },
-            body: JSON.stringify({ "valutaType": this.state.valutaType, "sum": this.state.sum, "loanType": this.state.loanType, "accountNumber": this.state.accountNumber })
+            body: JSON.stringify({ "AccountId": this.state.AccountId, "Period": this.state.Period, "Amount ": this.state.Amount, "Percent  ": this.state.Percent })
         })
         const data = await response.json()
         if (data["error"] == "") {
-           
+
         }
         else {
             this.setState({ error: data["error"] })
@@ -42,18 +42,12 @@ class Loan extends React.Component {
                 </div>
 
                 <form className={cs.form} onSubmit={this.onSubmit}>
-                <div>{this.state.error}</div>
+                    <div>{this.state.error}</div>
                     <p className={cs.author}>Кредитование</p>
                     <hr />
-                    <p className={cs.pType} style={{ marginTop: 20 }}>Выберите тип валюты</p>
-                    <select className={cs.valuta} value={this.state.valutaType} onChange={(e) => this.setState({ valutaType: e.target.value })}>
-                        <option value="BYN">BYN</option>
-                        <option value="USD">USD</option>
-                        <option value="EUR">EUR</option>
-                    </select>
-                    <input required type="text" value={this.state.sum} onChange={(e) => this.setState({ sum: e.target.value })} placeholder="Сумма" className={cs.name}></input>
+                    <input required type="number" onChange={(e) => this.setState({ Amount: e.target.value })} placeholder="Сумма" className={cs.name}></input>
 
-                    <p className={cs.pType} style={{ marginTop: 30 }}>Выберите вид кредита
+                    <p className={cs.pType} style={{ marginTop: 0 }}>
                         <div className={cs.cl}><img src={photoQuestion} className={cs.what} />
                             <div className={cs.clue}>
                                 <p style={{ letterSpacing: 1, fontSize: 18 }}>1) Потребительский:<br /><br />
@@ -73,13 +67,12 @@ class Loan extends React.Component {
                             </div>
                         </div></p>
 
-                    <select className={cs.acc} value={this.state.loanType} onChange={(e) => this.setState({ loanType: e.target.value })}>
-                        <option value="Потребительский">Потребительский</option>
-                        <option value="Ссуда под развитие бизнеса">Ссуда под развитие бизнеса</option>
-                        <option value="Ипотека">Ипотека</option>
-                    </select>
+                    <div>
+                        <input required type="number" onChange={(e) => this.setState({ Percent: e.target.value })} placeholder="Процент" className={cs.percent}></input>
+                        <input required type="text" value={this.state.Period} onChange={(e) => this.setState({ Period: e.target.value })} placeholder="Срок" className={cs.period}></input>
+                    </div>
 
-                    <input required type="text" value={this.state.accountNumber} onChange={(e) => this.setState({ accountNumber: e.target.value })} placeholder="Номер счёта" className={cs.name}></input>
+                    <input required type="text" value={this.state.AccountId} onChange={(e) => this.setState({ AccountId: e.target.value })} placeholder="Номер счёта" className={cs.name}></input>
 
                     <button className={cs.open} type="submit">Оформить</button>
                 </form>

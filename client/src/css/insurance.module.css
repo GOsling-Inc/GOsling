@@ -55,7 +55,6 @@ body {
 }
 
 .name {
-    font-weight: 300;
     margin-bottom: 10px;
     margin-top: 35px;
     margin-left: 16%;
@@ -69,6 +68,38 @@ body {
     outline: none;
     letter-spacing: 1px;
 }   
+
+.amount {
+    margin-bottom: 10px;
+    margin-top: 35px;
+    margin-left: 16%;
+    width: 24%;
+    background: #ffffff;
+    color: #000000;
+    font-size: 16px;
+    padding: 10px 2%;
+    border: 0;
+    border-bottom: 4px solid #000000;
+    outline: none;
+    letter-spacing: 1px;
+    float: left;
+}
+
+.period {
+    float: right;
+    margin-bottom: 10px;
+    margin-top: 35px;
+    margin-right: 16%;
+    width: 24%;
+    background: #ffffff;
+    color: #000000;
+    font-size: 16px;
+    padding: 10px 2%;
+    border: 0;
+    border-bottom: 4px solid #000000;
+    outline: none;
+    letter-spacing: 1px;
+}
 
 .open {
     float: right;

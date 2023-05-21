@@ -7,7 +7,7 @@ import Cookies from 'universal-cookie';
 class Insurance extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { name: "", sum: "", error: "" };
+        this.state = { AccountId: "", Amount: 0, Period: "", error: "" };
         this.onSubmit = this.onSubmit.bind(this)
     }
 
@@ -20,11 +20,11 @@ class Insurance extends React.Component {
                 'Content-type': 'application/json',
                 "Token": Cookies.get('Token')
             },
-            body: JSON.stringify({ "name": this.state.name, "sum": this.state.sum })
+            body: JSON.stringify({ "AccountId": this.state.AccountId, "Period ": this.state.Period, "Amount ": this.state.Amount })
         })
         const data = await response.json()
         if (data["error"] == "") {
-            
+
         }
         else {
             this.setState({ error: data["error"] })
@@ -42,9 +42,11 @@ class Insurance extends React.Component {
                     <div>{this.state.error}</div>
                     <p className={cl.author}>Страхование</p>
                     <hr />
-                    <input required type="text" value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} placeholder="Наименование имущества" className={cl.name}></input>
-                    <input required type="text" value={this.state.sum} onChange={(e) => this.setState({ sum: e.target.value })} placeholder="Сумма" className={cl.name}></input>
-
+                    <input required type="text" value={this.state.AccountId} onChange={(e) => this.setState({ AccountId: e.target.value })} placeholder="Номер счёта" className={cl.name}></input>
+                    <div>
+                        <input required type="number" onChange={(e) => this.setState({ Amount: e.target.value })} placeholder="Сумма" className={cl.amount}></input>
+                        <input required type="text" value={this.state.Period} onChange={(e) => this.setState({ Period: e.target.value })} placeholder="Срок" className={cl.period}></input>
+                    </div>
                     <button type="submit" className={cl.open}>Застраховать</button>
                 </form>
                 <div className={cl.help}>

@@ -35,7 +35,7 @@ body {
     margin-top: 140px;
     margin-left: 37%;
     width: 24%;
-    height: 505px;
+    height: 400px;
     border: 2px solid #000000;
     border-radius: 6px;
     padding-top: 20px;
@@ -77,21 +77,37 @@ body {
     letter-spacing: 1px;
 }
 
-.valuta {
-    width: 25%;
-    padding: 2.6% 1%;
+
+.percent{
+    margin-bottom: 10px;
+    margin-top: 30px;
+    margin-left: 16%;
+    width: 24%;
+    background: #ffffff;
+    color: #000000;
     font-size: 16px;
-    margin-left: 40px;
-    margin-top: 10px;
+    padding: 10px 2%;
+    border: 0;
+    border-bottom: 4px solid #000000;
+    outline: none;
+    letter-spacing: 1px;
+    float: left;
 }
 
-.acc {
-    width: 75%;
-    padding: 2.6% 1%;
+.period {
+    margin-bottom: 10px;
+    margin-top: 30px;
+    margin-right: 16%;
+    width: 24%;
+    background: #ffffff;
+    color: #000000;
     font-size: 16px;
-    margin-left: 40px;
-    margin-top: 10px;
+    padding: 10px 2%;
+    border: 0;
+    border-bottom: 4px solid #000000;
+    outline: none;
     letter-spacing: 1px;
+    float: right;
 }
 
 
@@ -101,8 +117,8 @@ body {
     height: 20px;
     cursor: pointer;
     position: relative;
-    left: 190px;
-    bottom: 19px;
+    left: 260px;
+    bottom: 115px;
 }
 
 .cl {
@@ -117,8 +133,8 @@ body {
     display:none;
     box-shadow: 3px 3px 10px 0px  #878787;
     background-color: #f6f6f6;
-    left: 250px;
-    bottom: 220px;
+    left: 290px;
+    bottom: 280px;
     padding: 13px 14px;
 }
 
@@ -150,7 +166,7 @@ body {
 
 
 .help {
-    margin-top: 44px;
+    margin-top: 149px;
     margin-bottom: 0    ;
     width: 100%;
     height: 40px;

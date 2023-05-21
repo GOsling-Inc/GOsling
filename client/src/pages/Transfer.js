@@ -7,7 +7,7 @@ import Cookies from 'universal-cookie';
 class Transfer extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { sendAccount: "", beneficAccount: "", sum: "", error: "" };
+        this.state = { Sender: "", Receiver: "", Amount: 0, error: "" };
         this.onSubmit = this.onSubmit.bind(this)
     }
 
@@ -20,7 +20,7 @@ class Transfer extends React.Component {
                 'Content-type': 'application/json',
                 "Token": Cookies.get('Token')
             },
-            body: JSON.stringify({ "sendAccount": this.state.sendAccount, "beneficAccount": this.state.beneficAccount, "sum": this.state.sum })
+            body: JSON.stringify({ "Sender": this.state.Sender, "Receiver": this.state.Receiver, "sum": this.state.Amount })
         })
         const data = await response.json()
         if (data["error"] == "") {
@@ -43,9 +43,9 @@ class Transfer extends React.Component {
                     <div>{this.state.error}</div>
                     <p className={cl.author}>Перевод средств</p>
                     <hr />
-                    <input required type="text" value={this.state.sendAccount} onChange={(e) => this.setState({sendAccount: e.target.value})} placeholder="Счет отправителя" className={cl.name} style={{ marginTop: 40 }}></input>
-                    <input required type="text" value={this.state.beneficAccount} onChange={(e) => this.setState({beneficAccount: e.target.value})} placeholder="Счет получателя" className={cl.name}></input>
-                    <input required type="text" value={this.state.sum} onChange={(e) => this.setState({sum: e.target.value})} placeholder="Сумма перевода" className={cl.name}></input>
+                    <input required type="text" value={this.state.Sender} onChange={(e) => this.setState({ Sender: e.target.value })} placeholder="Счет отправителя" className={cl.name} style={{ marginTop: 40 }}></input>
+                    <input required type="text" value={this.state.Receiver} onChange={(e) => this.setState({ Receiver: e.target.value })} placeholder="Счет получателя" className={cl.name}></input>
+                    <input required type="number" onChange={(e) => this.setState({ Amount: e.target.value })} placeholder="Сумма перевода" className={cl.name}></input>
                     <button className={cl.open} type="submit">Перевести</button>
                 </form>
                 <div className={cl.help}>
