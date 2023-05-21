@@ -13,7 +13,6 @@ body {
     width: 100%;
     height: 60px;
     background-color: #429f6d;
-    backdrop-filter: blur(8px);
     position: fixed;
     top: 0;
 }
@@ -28,39 +27,70 @@ body {
     color: #ffffff;
 }
 
+.ent {
+    width: 110px;
+    margin-top: 8px;
+    padding: 10px 16px;
+    float: right;
+    outline: none;
+    letter-spacing: 1px;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 18px;
+    border: 0;
+    background-color: #429f6d;
+}
+
+.ent:hover {
+    transform: scale(1.04);
+    cursor: pointer;
+}
+
+.reg {
+    width: 160px;
+    margin-top: 8px;
+    margin-right: 10px;
+    padding: 10px 16px;
+    float: right;
+    outline: none;
+    letter-spacing: 1px;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 18px;
+    border: 0;
+    background-color: #429f6d;
+}
+
+.reg:hover {
+    transform: scale(1.04);
+    cursor: pointer;
+}
+
+
 
 
 .together {
     width: 100%; 
     height: 560px; 
-    margin-top: 120px;
-}
-
-.form {
-    width: 40%;
-    margin-left: 5%;
-    height: 550px;
-    box-shadow: 3px 3px 11px 0px  #878787;
-    border-radius: 6px;
-    float: left;
-}
+    margin-top: 110px;
+}   
 
 .stock {
-    float: right;
     width: 40%;
     margin-right: 5%;
     height: 550px;
     box-shadow: 3px 3px 11px 0px  #878787;
     border-radius: 6px;
+    margin-left: 30%;
+    overflow-x: hidden;
 }
 
-.form hr, .stock hr{
+.stock hr{
     width: 70%; 
     margin-left: 15%;
-    margin-top: 0;
 }
 
-.form p, .stock p{
+.stock p{
     text-align: center; 
     font-size: 24px; 
     padding: 12px 0px; 
@@ -69,8 +99,8 @@ body {
 }
 
 .help {
-    margin-top: 33px;
-    margin-bottom: 0    ;
+    margin-top: 43px;
+    margin-bottom: 0;
     width: 100%;
     height: 40px;
     background-color: #f0f0ef;
@@ -97,5 +127,4 @@ body {
     float: left;
     margin: 10px auto;
 }
-
 

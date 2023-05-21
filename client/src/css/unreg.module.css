@@ -12,7 +12,7 @@ body {
 .headBack {
     width: 100%;
     height: 60px;
-    background-color: #4a4a4a5f;
+    background-color: #429f6d;
     backdrop-filter: blur(8px);
     position: fixed;
     top: 0;
@@ -21,49 +21,49 @@ body {
 .head {
     float: left;
     padding-top: 2px;
-    padding-left: 20px;
+    padding-left: 30px;
     font-size: 40px;
-    font-weight: 350;
+    font-weight: bold;
     letter-spacing: 1px;
+    color: #ffffff;
 }
 
 .ent {
-    background-color: #4a4a4a00;
-    width: 100px;
-    font-weight: 300;
-    margin-top: 5px;
-    margin-right: 10px;
-    color: #000000;
-    font-size: 15px;
+    width: 110px;
+    margin-top: 8px;
     padding: 10px 16px;
-    border-radius: 6%;
     float: right;
     outline: none;
     letter-spacing: 1px;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 18px;
+    border: 0;
+    background-color: #429f6d;
 }
 
 .ent:hover {
-    transform: scale(1.01);
+    transform: scale(1.04);
     cursor: pointer;
 }
 
 .reg {
-    background-color: #4a4a4a00;
-    width: 150px;
-    font-weight: 300;
-    margin-top: 5px;
+    width: 160px;
+    margin-top: 8px;
     margin-right: 10px;
-    color: #000000;
-    font-size: 15px;
     padding: 10px 16px;
-    border-radius: 6%;
     float: right;
     outline: none;
     letter-spacing: 1px;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 18px;
+    border: 0;
+    background-color: #429f6d;
 }
 
 .reg:hover {
-    transform: scale(1.01);
+    transform: scale(1.04);
     cursor: pointer;
 }
 
@@ -82,7 +82,7 @@ body {
     float: left;
     margin-left: 20%;
     border: 0;
-
+    color: #000000;
 }
 
 .photoForStocks {
@@ -99,12 +99,13 @@ body {
 .exchange {
     width: 20%;
     height: 170px;
-    background: #ffffff;
+    background: #ededed;
     box-shadow: 3px 3px 30px #000000;
     float: right;
     margin-right: 20%;
     border: 0;
     overflow: hidden;
+    color: #000000;
 }
 
 .stocks:hover,
@@ -141,10 +142,10 @@ body {
 
 
 .help {
-    margin-top: 100px;
-    margin-left: 15%;
-    width: 70%;
-    height: 100px;
+    margin-top: 53px;
+    margin-bottom: 0    ;
+    width: 100%;
+    height: 40px;
     background-color: #f0f0ef;
     border-radius: 10px 10px 0 0;
 }
@@ -153,22 +154,19 @@ body {
     color: #5e5e5e;
     font-weight: bold;
     font-size: 18px;
-    float: left;
-    margin-top: 30px;
-    margin-left: 29%;
     text-decoration: none;
+    float: left;
+    margin: 10px 50px;
 }
 
 .support:hover {
     transform: scale(1.01);
     color: #7e7e7e;
-    cursor: pointer;
 }
 
 .info {
     color: #4b4a4a;
     font-size: 18px;
     float: left;
-    margin-top: 65px;
-    margin-left: 20px;
+    margin: 10px auto;
 }

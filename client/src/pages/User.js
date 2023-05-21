@@ -1,6 +1,7 @@
 import React from 'react';
 import cl from '../css/user.module.css';
 import { NavLink } from "react-router-dom";
+import photoArrow from "../img/arrow.png"
 
 
 class User extends React.Component {
@@ -24,34 +25,44 @@ class User extends React.Component {
                             <p className={cl.actAccountTitle}>Активные счета</p>
                             <hr />
 
-                                <div className={cl.example}>
-                                    <div className={cl.divName}>
-                                        <p>Example</p>
-                                    </div>
-
-                                    <div className={cl.balance}>
-                                        <p className={cl.remainderName} >Остаток на счёте:</p>
-                                        <p className={cl.remainder} >1233.08 BYN</p>
-                                        <hr />
-                                    </div>
-
-                                    <div className={cl.close} >
-                                        <button className={cl.close1}>Закрыть</button>
-                                        <button className={cl.close2}>Заморозить</button>
-                                        <p >Вид счёта: базовый</p>
-                                    </div>
-
+                            <div className={cl.exampleAccount}>
+                                <div className={cl.divName}>
+                                    <p>Example</p>
                                 </div>
 
+                                <div className={cl.balance}>
+                                    <div className={cl.aboutAccount}>
+                                        <p className={cl.numberAccount} >Номер счёта:</p>
+                                        <p className={cl.remainderName} >Остаток на счёте:</p>
+                                    </div>
+                                    <p className={cl.remainder} >1233.08 BYN</p>
+                                    <hr />
+                                </div>
+
+                                <div className={cl.close} >
+                                    <button className={cl.close1}>Закрыть</button>
+                                    <button className={cl.close2}>Заморозить</button>
+                                    <p >Вид счёта: базовый</p>
+                                </div>
+
+                            </div>
+
                         </div>
+
                         <div className={cl.actLoan}>
                             <p>Активные кредиты</p>
                             <hr />
                         </div>
                     </div>
+
                     <div className={cl.history}>
                         <p>Последние переводы</p>
-                        <hr/>
+                        <hr />
+
+                        <div className={cl.exampleHistory}>
+                            <p className={cl.aboutTransfer}>123121 <img src={photoArrow} className={cl.arrow} /> 123113 <b>:</b> 311 BYN</p>
+                        </div>
+
                     </div>
                 </div>
 

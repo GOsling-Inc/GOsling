@@ -13,7 +13,6 @@ body {
     width: 100%;
     height: 60px;
     background-color: #429f6d;
-    backdrop-filter: blur(8px);
     position: fixed;
     top: 0;
 }
@@ -28,93 +27,58 @@ body {
     color: #ffffff;
 }
 
-.together{
-    width: 100%;
-    height: 585px;
-    margin-top: 160px;
-}
-
-.form {
-    width: 24%;
-    margin-left: 15%;
-    height: 560px;
-    border: 2px solid #000000;
-    border-radius: 6px;
-    padding-top: 20px;
-    float: left;
-}
-
-.author {
-    font-size: 30px;
-    text-align: center;
-    letter-spacing: 1px;
-    
-}
-
-.form hr{
-    width: 70%; 
-    margin-top: 8px; 
-    margin-left: 15%;
-}
-
-.selectType {
-    margin-top: 20px; 
-    font-size: 17px; 
-    margin-left: 25px; 
-    letter-spacing: 1px;
-}
-
-.name {
-    font-weight: 300;
-    margin-bottom: 10px;
-    margin-top: 25px;
-    margin-left: 16%;
-    width: 64%;
-    background: #ffffff;
-    color: #000000;
-    font-size: 16px;
-    padding: 10px 2%;
-    border: 0;
-    border-bottom: 4px solid #000000;
+.ent {
+    width: 110px;
+    margin-top: 8px;
+    padding: 10px 16px;
+    float: right;
     outline: none;
     letter-spacing: 1px;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 18px;
+    border: 0;
+    background-color: #429f6d;
 }
 
-.valuta {
-    width: 25%;
-    padding: 2.6% 1%;
-    font-size: 16px;
-    margin-left: 40px;
-    margin-top: 10px;
+.ent:hover {
+    transform: scale(1.04);
+    cursor: pointer;
 }
 
-.open {
+.reg {
+    width: 160px;
+    margin-top: 8px;
+    margin-right: 10px;
+    padding: 10px 16px;
     float: right;
-    font-weight: 300;
-    margin-top: 40px;
-    background: #ffffff;
-    color: #000000;
-    font-size: 15px;
-    padding: 10px 15px;
-    border-radius: 6%;
-    margin-right: 20px;
+    outline: none;
     letter-spacing: 1px;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 18px;
+    border: 0;
+    background-color: #429f6d;
 }
 
-.open:hover{
-    transform: scale(1.01);
+.reg:hover {
+    transform: scale(1.04);
     cursor: pointer;
 }
 
 
+.together{
+    width: 100%;
+    height: 465px;
+    margin-top: 160px;
 
+}
 
 .rate {
-    float: right;
     width: 30%;
-    margin-right: 15%;
-    height: 560px;
+    height: 460px;
     border-radius: 6px;
+    margin-left: 35%;
 }
 
 .pRate{
@@ -128,8 +92,7 @@ body {
 .val {
     float: left;
     width: 40%;
-    height: 500px;
-
+    height: 460px;
 }
 
 .exch {
@@ -157,13 +120,13 @@ body {
 .buy {
     float: left;
     width: 30%;
-    height: 500px;
+    height: 460px;
 }
 
 .sell {
     float: left;
     width: 30%;
-    height: 500px;
+    height: 460px;
 }
 
 .dollar {
@@ -189,7 +152,7 @@ body {
 
 
 .help {
-    margin-top: 50px;
+    margin-top: 88px;
     margin-bottom: 0    ;
     width: 100%;
     height: 40px;
