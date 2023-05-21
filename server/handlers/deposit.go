@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"strconv"
+	"encoding/json"
 
 	"github.com/GOsling-Inc/GOsling/middleware"
 	"github.com/GOsling-Inc/GOsling/models"
@@ -29,13 +29,17 @@ func (h *DepositHandler) POST_NewDeposit(c echo.Context) error {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
 
+	decoder := json.NewDecoder(c.Request().Body)
+	var t map[string]interface{}
+	decoder.Decode(&t)
+
 	beta_depos := models.Deposit{
 		UserId:    id,
-		AccountId: c.FormValue("AccountId"),
-		Period:    c.FormValue("Period"),
+		AccountId: t["AccountId"].(string),
+		Period:    t["Period"].(string),
 	}
-	beta_depos.Amount, _ = strconv.ParseFloat(c.FormValue("Amount"), 64)
-	beta_depos.Percent, _ = strconv.ParseFloat(c.FormValue("Percent"), 64)
+	beta_depos.Amount = t["Amount"].(float64)
+	beta_depos.Percent = t["Percent"].(float64)
 
 	code, err := h.middleware.CreateDeposit(beta_depos)
 	if err != nil {

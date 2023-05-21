@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"encoding/json"
+
 	"github.com/GOsling-Inc/GOsling/middleware"
 	"github.com/GOsling-Inc/GOsling/models"
 	"github.com/labstack/echo/v4"
@@ -45,11 +47,15 @@ func (h *UserHandler) POST_Change_Main(c echo.Context) error {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
 
+	decoder := json.NewDecoder(c.Request().Body)
+	var t map[string]interface{}
+	decoder.Decode(&t)
+
 	temp_user := models.User{
 		Id:        id,
-		Name:      c.FormValue("Name"),
-		Surname:   c.FormValue("Surname"),
-		Birthdate: c.FormValue("Birthdate"),
+		Name:      t["Name"].(string),
+		Surname:   t["Surname"].(string),
+		Birthdate: t["Birthdate"].(string),
 	}
 
 	code, err := h.middleware.Change_Main_Info(temp_user)
@@ -64,8 +70,13 @@ func (h *UserHandler) POST_Change_Password(c echo.Context) error {
 	if id == "" {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
-	newPassword := c.FormValue("NewPassword")
-	oldPassword := c.FormValue("OldPassword")
+
+	decoder := json.NewDecoder(c.Request().Body)
+	var t map[string]interface{}
+	decoder.Decode(&t)
+
+	newPassword := t["NewPassword"].(string)
+	oldPassword := t["OldPassword"].(string)
 
 	code, err := h.middleware.Change_Password(id, oldPassword, newPassword)
 	if err != nil {

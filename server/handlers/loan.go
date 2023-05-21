@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"strconv"
+	"encoding/json"
 
 	"github.com/GOsling-Inc/GOsling/middleware"
 	"github.com/GOsling-Inc/GOsling/models"
@@ -29,13 +29,17 @@ func (h *LoanHandler) POST_Loan(c echo.Context) error {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
 
+	decoder := json.NewDecoder(c.Request().Body)
+	var t map[string]interface{}
+	decoder.Decode(&t)
+
 	loan := models.Loan{
 		UserId:    id,
-		AccountId: c.FormValue("AccountId"),
-		Period:    c.FormValue("Period"),
+		AccountId: t["AccountId"].(string),
+		Period:    t["Period"].(string),
 	}
-	loan.Amount, _ = strconv.ParseFloat(c.FormValue("Amount"), 64)
-	loan.Percent, _ = strconv.ParseFloat(c.FormValue("Percent"), 64)
+	loan.Amount = t["Amount"].(float64)
+	loan.Percent = t["Percent"].(float64)
 
 	code, err := h.middleware.ProvideLoan(loan)
 	if err != nil {

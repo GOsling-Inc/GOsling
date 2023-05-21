@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"strconv"
+	"encoding/json"
 
 	"github.com/GOsling-Inc/GOsling/middleware"
 	"github.com/GOsling-Inc/GOsling/models"
@@ -28,12 +28,17 @@ func (h *InsuranceHandler) POST_NewInsurance(c echo.Context) error {
 	if id == "" {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
+
+	decoder := json.NewDecoder(c.Request().Body)
+	var t map[string]interface{}
+	decoder.Decode(&t)
+
 	insurance := models.Insurance{
 		UserId:    id,
-		AccountId: c.FormValue("AccountId"),
-		Period:    c.FormValue("Period"),
+		AccountId: t["AccountId"].(string),
+		Period:    t["Period"].(string),
 	}
-	insurance.Amount, _ = strconv.ParseFloat(c.FormValue("Amount"), 64)
+	insurance.Amount = t["Amount"].(float64)
 	code, err := h.middleware.CreateInsurance(insurance)
 	if err != nil {
 		return c.JSON(code, JSON{nil, err.Error()})

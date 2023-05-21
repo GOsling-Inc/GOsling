@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"encoding/json"
+
 	"github.com/GOsling-Inc/GOsling/middleware"
 	"github.com/labstack/echo/v4"
 )
@@ -49,9 +51,14 @@ func (h *ManagerHandler) Confirm(c echo.Context) error {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
 
-	operation_id := c.FormValue("Id")
-	table := c.FormValue("Value")
-	status := c.FormValue("Status")
+	decoder := json.NewDecoder(c.Request().Body)
+	var t map[string]interface{}
+	decoder.Decode(&t)
+
+	operation_id := t["Id"].(string)
+	table := t["Value"].(string)
+	status := t["Status"].(string)
+
 	code, err := h.middleware.Confirm(operation_id, table, status)
 	if err != nil {
 		return c.JSON(code, JSON{nil, err.Error()})
@@ -80,7 +87,12 @@ func (h *ManagerHandler) FreezeAccount(c echo.Context) error {
 	if err := h.middleware.AuthManager(manager_id); err != nil {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
-	id := c.FormValue("Id")
+
+	decoder := json.NewDecoder(c.Request().Body)
+	var t map[string]interface{}
+	decoder.Decode(&t)
+
+	id := t["Id"].(string)
 	code, err := h.middleware.UpdateAccount(id, "FREEZED")
 	if err != nil {
 		return c.JSON(code, JSON{nil, err.Error()})
@@ -97,7 +109,12 @@ func (h *ManagerHandler) BlockAccount(c echo.Context) error {
 	if err := h.middleware.AuthAdmin(manager_id); err != nil {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
-	id := c.FormValue("Id")
+
+	decoder := json.NewDecoder(c.Request().Body)
+	var t map[string]interface{}
+	decoder.Decode(&t)
+
+	id := t["Id"].(string)
 	code, err := h.middleware.UpdateAccount(id, "BLOCKED")
 	if err != nil {
 		return c.JSON(code, JSON{nil, err.Error()})
@@ -127,7 +144,13 @@ func (h *ManagerHandler) CancelTransaction(c echo.Context) error {
 	if err := h.middleware.AuthManager(manager_id); err != nil {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
-	id := c.FormValue("Id")
+
+	decoder := json.NewDecoder(c.Request().Body)
+	var t map[string]interface{}
+	decoder.Decode(&t)
+
+	id := t["Id"].(string)
+
 	code, err := h.middleware.CancelTransaction(id)
 	if err != nil {
 		return c.JSON(code, JSON{nil, err.Error()})
@@ -157,8 +180,13 @@ func (h *ManagerHandler) UpdateRole(c echo.Context) error {
 	if err := h.middleware.AuthAdmin(manager_id); err != nil {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
-	id := c.FormValue("Id")
-	role := c.FormValue("Role")
+
+	decoder := json.NewDecoder(c.Request().Body)
+	var t map[string]interface{}
+	decoder.Decode(&t)
+
+	id := t["Id"].(string)
+	role := t["Role"].(string)
 	code, err := h.middleware.UpdateRole(id, role)
 	if err != nil {
 		return c.JSON(code, JSON{nil, err.Error()})

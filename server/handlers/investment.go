@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"strconv"
+	"encoding/json"
 
 	"github.com/GOsling-Inc/GOsling/middleware"
 	"github.com/GOsling-Inc/GOsling/models"
@@ -29,14 +29,19 @@ func (h *InvestmentHandler) POST_User_Stocks_NewOrder(c echo.Context) error {
 	if id == "" {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
+
+	decoder := json.NewDecoder(c.Request().Body)
+	var t map[string]interface{}
+	decoder.Decode(&t)
+
 	new_order := models.Order{
 		UserId:    id,
-		AccountId: c.FormValue("AccountId"),
-		Name:      c.FormValue("Name"),
-		Action:    c.FormValue("Action"),
+		AccountId: t["AccountId"].(string),
+		Name:      t["Name"].(string),
+		Action:    t["Action"].(string),
 	}
-	new_order.Price, _ = strconv.ParseFloat(c.FormValue("Price"), 64)
-	new_order.Count, _ = strconv.Atoi(c.FormValue("Count"))
+	new_order.Price, _ = t["Price"].(float64)
+	new_order.Count, _ = t["Count"].(int)
 	code, err := h.middleware.CreateOrder(new_order)
 	if err != nil {
 		return c.JSON(code, JSON{nil, err.Error()})
@@ -49,7 +54,12 @@ func (h *InvestmentHandler) POST_User_Stocks_Buy(c echo.Context) error {
 	if id == "" {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
-	code, err := h.middleware.BuyStock(c.FormValue("OrderId"), c.FormValue("AccountId"), c.FormValue("Count"), id)
+
+	decoder := json.NewDecoder(c.Request().Body)
+	var t map[string]interface{}
+	decoder.Decode(&t)
+
+	code, err := h.middleware.BuyStock(t["OrderId"].(string), t["AccountId"].(string), t["Count"].(string), id)
 	if err != nil {
 		return c.JSON(code, JSON{nil, err.Error()})
 	}
@@ -61,7 +71,12 @@ func (h *InvestmentHandler) POST_User_Stocks_Sell(c echo.Context) error {
 	if id == "" {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
-	code, err := h.middleware.SellStock(c.FormValue("OrderId"), c.FormValue("AccountId"), c.FormValue("Count"), id)
+
+	decoder := json.NewDecoder(c.Request().Body)
+	var t map[string]interface{}
+	decoder.Decode(&t)
+
+	code, err := h.middleware.SellStock(t["OrderId"].(string), t["AccountId"].(string), t["Count"].(string), id)
 	if err != nil {
 		return c.JSON(code, JSON{nil, err.Error()})
 	}

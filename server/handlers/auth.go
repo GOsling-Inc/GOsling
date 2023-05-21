@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"encoding/json"
+
 	"github.com/GOsling-Inc/GOsling/middleware"
 	"github.com/GOsling-Inc/GOsling/models"
 	"github.com/labstack/echo/v4"
@@ -22,13 +24,17 @@ func NewAuthHandler(m middleware.IMiddleware) *AuthHandler {
 }
 
 func (h *AuthHandler) POST_SignUp(c echo.Context) error {
+	decoder := json.NewDecoder(c.Request().Body)
+	var t map[string]interface{}
+	decoder.Decode(&t)
+
 	user := models.User{
-		Name:      c.FormValue("Name"),
-		Surname:   c.FormValue("Surname"),
-		Email:     c.FormValue("Email"),
-		Password:  c.FormValue("Password"),
+		Name:      t["Name"].(string),
+		Surname:   t["Surname"].(string),
+		Email:     t["Email"].(string),
+		Password:  t["Password"].(string),
 		Role:      "user",
-		Birthdate: c.FormValue("Birthdate"),
+		Birthdate: t["Birthdate"].(string),
 	}
 
 	code, err := h.middleware.SignUp(&user)
@@ -45,9 +51,13 @@ func (h *AuthHandler) POST_SignUp(c echo.Context) error {
 }
 
 func (h *AuthHandler) POST_SignIn(c echo.Context) error {
+	decoder := json.NewDecoder(c.Request().Body)
+	var t map[string]interface{}
+	decoder.Decode(&t)
+
 	user := models.User{
-		Email:    c.FormValue("Email"),
-		Password: c.FormValue("Password"),
+		Email:    t["Email"].(string),
+		Password: t["Password"].(string),
 	}
 
 	code, err := h.middleware.SignIn(&user)
