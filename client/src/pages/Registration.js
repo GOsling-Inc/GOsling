@@ -19,7 +19,7 @@ class Registration extends React.Component {
                 'Accept': 'application/json',
                 'Content-type': 'application/json',
             },
-            body: JSON.stringify({ "firstName": this.state.firstName, "lastName": this.state.lastName, "date": this.state.date, "email": this.state.email, "password": this.state.password, "passwordConfirm": this.state.passwordConfirm, })
+            body: JSON.stringify({ "Name": this.state.firstName, "Surname": this.state.lastName, "Birthdate": this.state.date, "Email": this.state.email, "Password": this.state.password })
         })
         const data = await response.json()
         if (data["error"] == "") {

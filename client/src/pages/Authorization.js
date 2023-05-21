@@ -19,7 +19,7 @@ class Authorization extends React.Component {
               'Accept': 'application/json',
               'Content-type': 'application/json',
             },
-            body: JSON.stringify({"email": this.state.email, "password": this.state.password})
+            body: JSON.stringify({"Email": this.state.email, "Password": this.state.password})
         })
         
         const data = await response.json()
