@@ -13,6 +13,7 @@ class Loan extends React.Component {
         this.onSubmit = this.onSubmit.bind(this)
     }
 
+    
     async onSubmit(e) {
         e.preventDefault();
         const cookies = new Cookies();
