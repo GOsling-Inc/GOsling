@@ -12,10 +12,12 @@ import (
 	"github.com/GOsling-Inc/GOsling/router"
 	"github.com/GOsling-Inc/GOsling/services"
 	"github.com/labstack/echo/v4"
+	m "github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
 	server := echo.New()
+	server.Use(m.CORS())
 	database := database.New(database.Connect())
 	services := services.New(database)
 	middleware := middleware.New(services)
@@ -29,7 +31,7 @@ func main() {
 			database.UpdateInsurances()
 			time.Sleep(30 * time.Minute)
 		}
-	} ()
+	}()
 
 	router.Init(server, handlers)
 
