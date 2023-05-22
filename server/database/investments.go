@@ -13,7 +13,7 @@ type IInvestmentDatabase interface {
 	GetInvestments() ([]models.Investment, error)
 	GetInvestment(name string) (models.Investment, error)
 	CreateOrder(order models.Order) error
-	GetOrders() ([]models.Order, error)
+	Orders() []models.Order
 	GetOrder(id int) (models.Order, error)
 	Buy(accountId string, order models.Order, count int) error
 	Sell(accountId string, order models.Order, count int) error
@@ -65,12 +65,12 @@ func (d *InvestmentDatabase) CreateOrder(order models.Order) error {
 	return d.db.Get(&id, query, order.Name, order.UserId, order.AccountId, order.Count, order.Action, order.Price)
 }
 
-func (d *InvestmentDatabase) GetOrders() ([]models.Order, error) {
+func (d *InvestmentDatabase) Orders() []models.Order {
 	var orders []models.Order
 	query := "SELECT * FROM orders"
 
-	err := d.db.Select(&orders, query)
-	return orders, err
+	d.db.Select(&orders, query)
+	return orders
 }
 
 func (d *InvestmentDatabase) GetOrder(id int) (models.Order, error) {

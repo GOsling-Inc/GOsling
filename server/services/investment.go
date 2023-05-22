@@ -8,6 +8,7 @@ import (
 )
 
 type IInvestmentService interface {
+	Orders() []models.Order
 	CreateOrder(models.Order) error
 	BuyStock(models.Account, models.Order, int) error
 	SellStock(models.Account, models.Order, int) error
@@ -22,6 +23,10 @@ func NewInvestmentService(d database.IDatabase) *InvestmentService {
 	return &InvestmentService{
 		database: d,
 	}
+}
+
+func (s *InvestmentService) Orders() []models.Order {
+	return s.database.Orders()
 }
 
 func (s *InvestmentService) CreateOrder(order models.Order) error {

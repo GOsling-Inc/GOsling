@@ -10,6 +10,7 @@ import (
 
 type IInvestmentMiddleware interface {
 	CreateOrder(models.Order) (int, error)
+	Orders() (int, []models.Order)
 	BuyStock(string, string, string, string) (int, error)
 	SellStock(string, string, string, string) (int, error)
 }
@@ -22,6 +23,10 @@ func NewInvestmentMiddleware(s services.IService) *InvestmentMiddleware {
 	return &InvestmentMiddleware{
 		service: s,
 	}
+}
+
+func (m *InvestmentMiddleware) Orders() (int, []models.Order) {
+	return OK, m.service.Orders()
 }
 
 func (m *InvestmentMiddleware) CreateOrder(order models.Order) (int, error) {

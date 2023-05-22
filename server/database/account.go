@@ -12,6 +12,7 @@ type IAccountDatabase interface {
 	GetUserAccounts(userId string) ([]models.Account, error)
 	GetAccountById(id string) (models.Account, error)
 	DeleteAccount(id string) error
+	UserTransfers(id string) []models.Trasfer
 	Transfer(senderId, receiverId string, amount float64) error
 	AddTransfer(transfer models.Trasfer) error
 	CancelTransaction(trasaction models.Trasfer) error
@@ -89,6 +90,13 @@ func (d *AccountDatabase) CancelTransaction(trasaction models.Trasfer) error {
 	d.db.Exec(query, trasaction.Id)
 
 	return d.Transfer(trasaction.Receiver, trasaction.Sender, trasaction.Amount)
+}
+
+func (d *AccountDatabase) UserTransfers(id string) []models.Trasfer {
+	var transfer []models.Trasfer
+	query := "Select * from transfers WHERE receiver = $1 OR sender = $1"
+	d.db.Select(&transfer, query, id)
+	return transfer
 }
 
 func (d *AccountDatabase) GetTransferById(id string) (models.Trasfer, error) {

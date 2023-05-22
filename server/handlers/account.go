@@ -11,6 +11,7 @@ import (
 type IAccountHandler interface {
 	GET_User_Accounts(c echo.Context) error
 	POST_Add_Account(c echo.Context) error
+	GET_User_Transfers(c echo.Context) error
 	POST_Delete_Account(c echo.Context) error
 	POST_Transfer(c echo.Context) error
 	POST_User_Exchange(c echo.Context) error
@@ -81,6 +82,16 @@ func (h *AccountHandler) POST_Delete_Account(c echo.Context) error {
 		return c.JSON(code, JSON{nil, err.Error()})
 	}
 	return c.JSON(code, JSON{"ok", ""})
+}
+
+func (h *AccountHandler) GET_User_Transfers(c echo.Context) error {
+	id := h.middleware.Auth(c.Request().Header)
+	if id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+
+	code, trs := h.middleware.UserTransfers(id)
+	return c.JSON(code, JSON{trs, ""})
 }
 
 func (h *AccountHandler) POST_Transfer(c echo.Context) error {

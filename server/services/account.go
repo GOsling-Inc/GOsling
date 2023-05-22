@@ -20,6 +20,7 @@ type IAccountService interface {
 	GetAccountById(string) (models.Account, error)
 	GetUserAccounts(string) ([]models.Account, error)
 	DeleteAccount(string) error
+	UserTransfers(string) []models.Trasfer
 	ProvideTransfer(models.Trasfer) error
 	ProvideExchange(models.Exchange) error
 	UpdateExchanges()
@@ -65,6 +66,10 @@ func (s *AccountService) DeleteAccount(accountId string) error {
 		return errors.New("incorrect account")
 	}
 	return nil
+}
+
+func (s *AccountService) UserTransfers(id string) []models.Trasfer {
+	return s.database.UserTransfers(id)
 }
 
 func (s *AccountService) ProvideTransfer(transfer models.Trasfer) error {

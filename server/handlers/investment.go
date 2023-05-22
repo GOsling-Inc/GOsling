@@ -9,6 +9,7 @@ import (
 )
 
 type IInvestmentHandler interface {
+	GET_Orders(c echo.Context) error
 	POST_User_Stocks_NewOrder(c echo.Context) error
 	POST_User_Stocks_Buy(c echo.Context) error
 	POST_User_Stocks_Sell(c echo.Context) error
@@ -22,6 +23,15 @@ func NewInvestmentHandler(m middleware.IMiddleware) *InvestmentHandler {
 	return &InvestmentHandler{
 		middleware: m,
 	}
+}
+
+func (h *InvestmentHandler) GET_Orders(c echo.Context) error {
+	id := h.middleware.Auth(c.Request().Header)
+	if id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+	code, orders := h.middleware.Orders()
+	return c.JSON(code, JSON{orders, ""})
 }
 
 func (h *InvestmentHandler) POST_User_Stocks_NewOrder(c echo.Context) error {

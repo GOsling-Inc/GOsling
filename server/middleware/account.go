@@ -12,6 +12,7 @@ type IAccountMiddleware interface {
 	AddAccount(string, models.Account) (int, error)
 	GetAccountById(string) (models.Account, error)
 	DeleteAccount(string, string, string) (int, error)
+	UserTransfers(id string) (int, []models.Trasfer)
 	ProvideTransfer(string, models.Trasfer) (int, error)
 	ProvideExchange(string, models.Exchange) (int, error)
 	BYN_USD() float64
@@ -69,6 +70,10 @@ func (a *AccountMiddleware) DeleteAccount(userId, accountId, password string) (i
 		return INTERNAL, err
 	}
 	return ACCEPTED, nil
+}
+
+func (m *AccountMiddleware) UserTransfers(id string) (int, []models.Trasfer) {
+	return OK, m.service.UserTransfers(id)
 }
 
 func (m *AccountMiddleware) ProvideTransfer(id string, transfer models.Trasfer) (int, error) {

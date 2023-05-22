@@ -133,6 +133,16 @@ func (d *MockDatabase) Transfer(senderId, receiverId string, amount float64) err
 	return nil
 }
 
+func (d *MockDatabase) UserTransfers(id string) []models.Trasfer {
+	var trs []models.Trasfer
+	for _, t := range d.transfers {
+		if t.Receiver == id || t.Sender == id {
+			trs = append(trs, t)
+		}
+	}
+	return trs
+}
+
 func (d *MockDatabase) AddTransfer(transfer models.Trasfer) error {
 	d.transfers = append(d.transfers, transfer)
 	return nil

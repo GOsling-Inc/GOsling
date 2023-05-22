@@ -12,11 +12,13 @@ import (
 	"github.com/GOsling-Inc/GOsling/router"
 	"github.com/GOsling-Inc/GOsling/services"
 	"github.com/labstack/echo/v4"
+	m "github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
 	server := echo.New()
-	database := database.NewMock()
+	server.Use(m.CORS())
+	database := database.New(database.Connect())
 	services := services.New(database)
 	middleware := middleware.New(services)
 	handlers := handlers.New(middleware)
