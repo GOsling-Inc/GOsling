@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/GOsling-Inc/GOsling/models"
 	"github.com/jmoiron/sqlx"
@@ -94,14 +95,15 @@ func (d *AccountDatabase) CancelTransaction(trasaction models.Trasfer) error {
 
 func (d *AccountDatabase) UserTransfers(id string) []models.Trasfer {
 	var transfer []models.Trasfer
-	query := "Select * from transfers WHERE receiver = $1 OR sender = $1"
-	d.db.Select(&transfer, query, id)
+	query := fmt.Sprintf("SELECT * from transfers WHERE receiver LIKE '%%%s%%' OR sender LIKE '%%%s%%'", id)
+	err := d.db.Select(&transfer, query)
+	fmt.Println(id, err, transfer)
 	return transfer
 }
 
 func (d *AccountDatabase) GetTransferById(id string) (models.Trasfer, error) {
 	var transfer models.Trasfer
-	query := "Select * from transfers WHERE id = $1"
+	query := "SELECT * from transfers WHERE id = $1"
 	err := d.db.Get(&transfer, query, id)
 	return transfer, err
 }

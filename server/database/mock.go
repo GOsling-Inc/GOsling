@@ -472,3 +472,7 @@ func (d *MockDatabase) UpdateInsurances() error {
 func (d *MockDatabase) UpdateDeposits() error {
 	return nil
 }
+
+func (d *MockDatabase) Orders() []models.Order {
+	return d.orders
+}
