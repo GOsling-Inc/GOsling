@@ -7,7 +7,7 @@ import Cookies from 'universal-cookie';
 class Authorization extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {email: "", password: "", error: ""};
+        this.state = {Email: "", Password: "", error: ""};
         this.onSubmit = this.onSubmit.bind(this) 
     }
 
@@ -19,7 +19,7 @@ class Authorization extends React.Component {
               'Accept': 'application/json',
               'Content-type': 'application/json',
             },
-            body: JSON.stringify({"Email": this.state.email, "Password": this.state.password})
+            body: JSON.stringify({"Email": this.state.Email, "Password": this.state.Password})
         })
         
         const data = await response.json()
@@ -41,11 +41,11 @@ class Authorization extends React.Component {
                     <NavLink to="/registration"><button className={cl.reg}>Регистрация</button></NavLink>
                 </div>
                 <form className={cl.form} onSubmit={this.onSubmit}>
-                    <div>{this.state.error}</div>
                     <p className={cl.author}>Авторизация</p>
                     <hr />
-                    <input required type="email" value={this.state.email} onChange={(e) => this.setState({email: e.target.value})} placeholder="Почта" ></input>
-                    <input required type="password" value={this.state.password} onChange={(e) => this.setState({password: e.target.value})} placeholder="Пароль"></input>
+                    <div style={{ marginTop: 0, height: 0 }}><p style={{ color: "red", position: "relative", top: 15, textAlign: "center"}}>{this.state.error}</p></div>
+                    <input required type="email" value={this.state.Email} onChange={(e) => this.setState({Email: e.target.value})} placeholder="Почта" ></input>
+                    <input required type="password" value={this.state.Password} onChange={(e) => this.setState({Password: e.target.value})} placeholder="Пароль"></input>
                     <button type="submit">Войти</button>
                 </form>
                 <div className={cl.help}>

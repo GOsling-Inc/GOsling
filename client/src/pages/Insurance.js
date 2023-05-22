@@ -7,24 +7,25 @@ import Cookies from 'universal-cookie';
 class Insurance extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { name: "", sum: "", error: "" };
+        this.state = { AccountId: "", Amount: 0, Period: "", error: "" };
         this.onSubmit = this.onSubmit.bind(this)
     }
 
     async onSubmit(e) {
         e.preventDefault();
+        const cookies = new Cookies();
         const response = await fetch("http://localhost:1337/user/insurance", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-type': 'application/json',
-                "Token": Cookies.get('Token')
+                "Token": cookies.get('Token')
             },
-            body: JSON.stringify({ "name": this.state.name, "sum": this.state.sum })
+            body: JSON.stringify({ "AccountId": this.state.AccountId, "Period ": this.state.Period, "Amount ": this.state.Amount })
         })
         const data = await response.json()
         if (data["error"] == "") {
-            
+
         }
         else {
             this.setState({ error: data["error"] })
@@ -39,12 +40,14 @@ class Insurance extends React.Component {
                     <NavLink to="/user"><h1 className={cl.head}>GOsling</h1></NavLink>
                 </div>
                 <form className={cl.form} onSubmit={this.onSubmit}>
-                    <div>{this.state.error}</div>
                     <p className={cl.author}>Страхование</p>
                     <hr />
-                    <input required type="text" value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} placeholder="Наименование имущества" className={cl.name}></input>
-                    <input required type="text" value={this.state.sum} onChange={(e) => this.setState({ sum: e.target.value })} placeholder="Сумма" className={cl.name}></input>
-
+                    <div style={{ marginTop: 0, height: 0 }}><p style={{ color: "red", position: "relative", top: 15, textAlign: "center"}}>{this.state.error}</p></div>
+                    <input required type="text" value={this.state.AccountId} onChange={(e) => this.setState({ AccountId: e.target.value })} placeholder="Номер счёта" className={cl.name}></input>
+                    <div>
+                        <input required type="number" onChange={(e) => this.setState({ Amount: e.target.value })} placeholder="Сумма" className={cl.amount}></input>
+                        <input required type="text" value={this.state.Period} onChange={(e) => this.setState({ Period: e.target.value })} placeholder="Срок" className={cl.period}></input>
+                    </div>
                     <button type="submit" className={cl.open}>Застраховать</button>
                 </form>
                 <div className={cl.help}>

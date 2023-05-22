@@ -2,7 +2,7 @@ import React from 'react';
 import cl from '../css/user.module.css';
 import { NavLink } from "react-router-dom";
 import photoArrow from "../img/arrow.png"
-
+import AllAccounts from './AllAccounts';
 
 class User extends React.Component {
 
@@ -24,29 +24,7 @@ class User extends React.Component {
                         <div className={cl.actAccount}>
                             <p className={cl.actAccountTitle}>Активные счета</p>
                             <hr />
-
-                            <div className={cl.exampleAccount}>
-                                <div className={cl.divName}>
-                                    <p>Example</p>
-                                </div>
-
-                                <div className={cl.balance}>
-                                    <div className={cl.aboutAccount}>
-                                        <p className={cl.numberAccount} >Номер счёта:</p>
-                                        <p className={cl.remainderName} >Остаток на счёте:</p>
-                                    </div>
-                                    <p className={cl.remainder} >1233.08 BYN</p>
-                                    <hr />
-                                </div>
-
-                                <div className={cl.close} >
-                                    <button className={cl.close1}>Закрыть</button>
-                                    <button className={cl.close2}>Заморозить</button>
-                                    <p >Вид счёта: базовый</p>
-                                </div>
-
-                            </div>
-
+                            <AllAccounts/>
                         </div>
 
                         <div className={cl.actLoan}>
