@@ -20,6 +20,7 @@ import Accounts from "./pages/Accounts"
 import Transactions from "./pages/Transactions"
 import Roles from "./pages/Roles"
 import ManagerSupport from "./pages/ManagerSupport"
+import CloseAccount from "./pages/CloseAccount";
 
 function App() {
     return(
@@ -47,6 +48,7 @@ function App() {
                     <Route exact path="/manage/transactions" Component={Transactions} />
                     <Route exact path="/manage/roles" Component={Roles} />
                     <Route exact path="/manage/support" Component={ManagerSupport} />
+                    <Route exact path="/user/closeAccount" Component={CloseAccount} />
                 </Routes>
             </BrowserRouter>
 

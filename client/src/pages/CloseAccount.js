@@ -4,24 +4,24 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import Cookies from 'universal-cookie';
 
-class Insurance extends React.Component {
+class CloseAccount extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { AccountId: "", Amount: 0, Period: "", error: "" };
+        this.state = { accountId : "", password : "", error: "" };
         this.onSubmit = this.onSubmit.bind(this)
     }
 
     async onSubmit(e) {
         e.preventDefault();
         const cookies = new Cookies();
-        const response = await fetch("http://localhost:1337/user/new-insurance", {
+        const response = await fetch("http://localhost:1337/user/delete-account", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-type': 'application/json',
                 "Token": cookies.get('Token')
             },
-            body: JSON.stringify({ "AccountId": this.state.AccountId, "Period ": this.state.Period, "Amount ": this.state.Amount })
+            body: JSON.stringify({ "accountId ": this.state.accountId , "password  ": this.state.password })
         })
         const data = await response.json()
         if (data["error"] == "") {
@@ -40,15 +40,12 @@ class Insurance extends React.Component {
                     <NavLink to="/user"><h1 className={cl.head}>GOsling</h1></NavLink>
                 </div>
                 <form className={cl.form} onSubmit={this.onSubmit}>
-                    <p className={cl.author}>Страхование</p>
+                    <p className={cl.author}>Закрыть счёт</p>
                     <hr />
                     <div style={{ marginTop: 0, height: 0 }}><p style={{ color: "red", position: "relative", top: 15, textAlign: "center"}}>{this.state.error}</p></div>
-                    <input required type="text" value={this.state.AccountId} onChange={(e) => this.setState({ AccountId: e.target.value })} placeholder="Номер счёта" className={cl.name}></input>
-                    <div>
-                        <input required type="number" onChange={(e) => this.setState({ Amount: e.target.value })} placeholder="Сумма" className={cl.amount}></input>
-                        <input required type="text" value={this.state.Period} onChange={(e) => this.setState({ Period: e.target.value })} placeholder="Срок" className={cl.period}></input>
-                    </div>
-                    <button type="submit" className={cl.open}>Застраховать</button>
+                    <input required type="text" value={this.state.accountId } onChange={(e) => this.setState({ accountId : e.target.value })} placeholder="Номер счёта" className={cl.name}></input>
+                    <input required type="password" onChange={(e) => this.setState({ password : e.target.value })} placeholder="Пароль" className={cl.name}></input>
+                    <button type="submit" className={cl.open}>Закрыть</button>
                 </form>
                 <div className={cl.help}>
                     <p className={cl.info}>© 2023. GOsling</p>
@@ -59,4 +56,4 @@ class Insurance extends React.Component {
     }
 }
 
-export default Insurance
+export default CloseAccount

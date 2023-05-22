@@ -16,7 +16,7 @@ class Deposits extends React.Component {
     async onSubmit(e) {
         e.preventDefault();
         const cookies = new Cookies();
-        const response = await fetch("http://localhost:1337/user/deposits", {
+        const response = await fetch("http://localhost:1337/user/new-deposit", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',

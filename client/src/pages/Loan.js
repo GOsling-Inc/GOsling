@@ -9,10 +9,9 @@ import Cookies from 'universal-cookie';
 class Loan extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { Amount: 0, Period: "", Percent: 0, AccountId: "", error: "" };
+        this.state = {Amount: 0, Period: "", Percent: 0, AccountId: "", error: "" };
         this.onSubmit = this.onSubmit.bind(this)
     }
-
 
     async onSubmit(e) {
         e.preventDefault();
@@ -24,7 +23,7 @@ class Loan extends React.Component {
                 'Content-type': 'application/json',
                 "Token": cookies.get('Token')
             },
-            body: JSON.stringify({ "AccountId": this.state.AccountId, "Period": this.state.Period, "Amount ": this.state.Amount, "Percent  ": this.state.Percent })
+            body: JSON.stringify({"AccountId": this.state.AccountId, "Period": this.state.Period, "Amount": this.state.Amount, "Percent": this.state.Percent})
         })
         const data = await response.json()
         if (data["error"] == "") {
@@ -46,7 +45,7 @@ class Loan extends React.Component {
                 <form className={cs.form} onSubmit={this.onSubmit}>
                     <p className={cs.author}>Кредитование</p>
                     <hr />
-                    <div style={{ marginTop: 0, height: 0 }}><p style={{ color: "red", position: "relative", top: 15, textAlign: "center"}}>{this.state.error}</p></div>
+                    <div style={{ marginTop: 0, height: 0 }}><p style={{ color: "red", position: "relative", top: 15, textAlign: "center" }}>{this.state.error}</p></div>
                     <input required type="number" onChange={(e) => this.setState({ Amount: e.target.value })} placeholder="Сумма" className={cs.name}></input>
 
                     <p className={cs.pType} style={{ marginTop: 0 }}>

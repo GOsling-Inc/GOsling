@@ -1,6 +1,7 @@
 import React from 'react';
 import cl from '../css/user.module.css';
 import Cookies from 'universal-cookie';
+import { NavLink } from "react-router-dom";
 
 
 class AllAccounts extends React.Component {
@@ -17,11 +18,9 @@ class AllAccounts extends React.Component {
                 'Content-type': 'application/json',
                 "Token": cookies.get('Token')
             },
-        }).then(res => res.json()).then(data => this.setState({accounts: data.data}))
+        }).then(res => res.json()).then(data => this.setState({ accounts: data.data }))
 
     }
-
-
 
     render() {
         if (this.state.accounts != null)
@@ -43,8 +42,7 @@ class AllAccounts extends React.Component {
                             </div>
 
                             <div className={cl.close} >
-                                <button className={cl.close1}>Закрыть</button>
-                                <button className={cl.close2}>Заморозить</button>
+                                <NavLink to="/user/closeAccount"><button className={cl.close1}>Закрыть</button></NavLink>
                                 <p >Вид: {el.type}</p>
                             </div>
 
