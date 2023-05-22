@@ -1,8 +1,10 @@
 import React from 'react';
 import cl from '../css/user.module.css';
 import { NavLink } from "react-router-dom";
-import photoArrow from "../img/arrow.png"
 import AllAccounts from './AllAccounts';
+import AllLoans from './AllLoans';
+import AllTransfers from './AllTransfers';
+
 
 class User extends React.Component {
 
@@ -24,12 +26,13 @@ class User extends React.Component {
                         <div className={cl.actAccount}>
                             <p className={cl.actAccountTitle}>Активные счета</p>
                             <hr />
-                            <AllAccounts/>
+                            <AllAccounts />
                         </div>
 
                         <div className={cl.actLoan}>
-                            <p>Активные кредиты</p>
+                            <p className={cl.actLoanText}>Активные кредиты</p>
                             <hr />
+                            <AllLoans />
                         </div>
                     </div>
 
@@ -37,9 +40,7 @@ class User extends React.Component {
                         <p>Последние переводы</p>
                         <hr />
 
-                        <div className={cl.exampleHistory}>
-                            <p className={cl.aboutTransfer}>123121 <img src={photoArrow} className={cl.arrow} /> 123113 <b>:</b> 311 BYN</p>
-                        </div>
+                        <AllTransfers />
 
                     </div>
                 </div>
