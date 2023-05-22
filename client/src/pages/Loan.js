@@ -15,12 +15,13 @@ class Loan extends React.Component {
 
     async onSubmit(e) {
         e.preventDefault();
+        const cookies = new Cookies();
         const response = await fetch("http://localhost:1337/user/loan", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-type': 'application/json',
-                "Token": Cookies.get('Token')
+                "Token": cookies.get('Token')
             },
             body: JSON.stringify({ "AccountId": this.state.AccountId, "Period": this.state.Period, "Amount ": this.state.Amount, "Percent  ": this.state.Percent })
         })
@@ -42,9 +43,9 @@ class Loan extends React.Component {
                 </div>
 
                 <form className={cs.form} onSubmit={this.onSubmit}>
-                    <div>{this.state.error}</div>
                     <p className={cs.author}>Кредитование</p>
                     <hr />
+                    <div style={{ marginTop: 0, height: 0 }}><p style={{ color: "red", position: "relative", top: 15, textAlign: "center"}}>{this.state.error}</p></div>
                     <input required type="number" onChange={(e) => this.setState({ Amount: e.target.value })} placeholder="Сумма" className={cs.name}></input>
 
                     <p className={cs.pType} style={{ marginTop: 0 }}>

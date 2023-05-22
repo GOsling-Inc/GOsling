@@ -13,12 +13,13 @@ class Insurance extends React.Component {
 
     async onSubmit(e) {
         e.preventDefault();
+        const cookies = new Cookies();
         const response = await fetch("http://localhost:1337/user/insurance", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-type': 'application/json',
-                "Token": Cookies.get('Token')
+                "Token": cookies.get('Token')
             },
             body: JSON.stringify({ "AccountId": this.state.AccountId, "Period ": this.state.Period, "Amount ": this.state.Amount })
         })
@@ -39,9 +40,9 @@ class Insurance extends React.Component {
                     <NavLink to="/user"><h1 className={cl.head}>GOsling</h1></NavLink>
                 </div>
                 <form className={cl.form} onSubmit={this.onSubmit}>
-                    <div>{this.state.error}</div>
                     <p className={cl.author}>Страхование</p>
                     <hr />
+                    <div style={{ marginTop: 0, height: 0 }}><p style={{ color: "red", position: "relative", top: 15, textAlign: "center"}}>{this.state.error}</p></div>
                     <input required type="text" value={this.state.AccountId} onChange={(e) => this.setState({ AccountId: e.target.value })} placeholder="Номер счёта" className={cl.name}></input>
                     <div>
                         <input required type="number" onChange={(e) => this.setState({ Amount: e.target.value })} placeholder="Сумма" className={cl.amount}></input>

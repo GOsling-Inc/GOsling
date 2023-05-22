@@ -3,7 +3,7 @@ import cs from '../css/new-account.module.css';
 import { NavLink } from "react-router-dom";
 import photoQuestion from "../img/question.png"
 import { useState } from "react";
-import Cookies from 'universal-cookie';
+import Сookies from 'universal-cookie';
 
 
 class NewAccount extends React.Component {
@@ -15,18 +15,18 @@ constructor(props) {
 
     async onSubmit(e) {
         e.preventDefault();
+        const cookies = new Сookies();
         const response = await fetch("http://localhost:1337/user/new-account", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-type': 'application/json',
-                "Token": Cookies.get('Token')
+                "Token": cookies.get('Token')
             },
             body: JSON.stringify({ "Name": this.state.Name, "Unit": this.state.Unit, "Type": this.state.Type })
         })
         const data = await response.json()
         if (data["error"] == "") {
-           
         }
         else {
             this.setState({ error: data["error"] })
@@ -42,9 +42,9 @@ constructor(props) {
                 </div>
 
                 <form className={cs.form} onSubmit={this.onSubmit}>
-                <div>{this.state.error}</div>
                     <p className={cs.author}>Открытие счёта</p>
                     <hr />
+                    <div style={{ marginTop: 0, height: 0 }}><p style={{ color: "red", position: "relative", top: 15, textAlign: "center"}}>{this.state.error}</p></div>
                     <input required type="text" value={this.state.Name} onChange={(e) => this.setState({ Name: e.target.value })} placeholder="Название счёта" className={cs.name}></input>
                     <p className={cs.pType}>Выберите тип валюты</p>
                     <select className={cs.valuta} value={this.state.Unit} onChange={(e) => this.setState({ Unit: e.target.value })}>

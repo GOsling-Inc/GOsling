@@ -31,6 +31,7 @@ class Registration extends React.Component {
             }
             else {
                 this.setState({ error: data["error"] })
+                console.log(data["error"])
             }
         }
         else {

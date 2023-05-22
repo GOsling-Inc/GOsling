@@ -40,9 +40,9 @@ class Authorization extends React.Component {
                     <NavLink to="/registration"><button className={cl.reg}>Регистрация</button></NavLink>
                 </div>
                 <form className={cl.form} onSubmit={this.onSubmit}>
-                    <div>{this.state.error}</div>
                     <p className={cl.author}>Авторизация</p>
                     <hr />
+                    <div style={{ marginTop: 0, height: 0 }}><p style={{ color: "red", position: "relative", top: 15, textAlign: "center"}}>{this.state.error}</p></div>
                     <input required type="email" value={this.state.Email} onChange={(e) => this.setState({Email: e.target.value})} placeholder="Почта" ></input>
                     <input required type="password" value={this.state.Password} onChange={(e) => this.setState({Password: e.target.value})} placeholder="Пароль"></input>
                     <button type="submit">Войти</button>
