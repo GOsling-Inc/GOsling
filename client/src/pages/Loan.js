@@ -13,11 +13,11 @@ class Loan extends React.Component {
         this.onSubmit = this.onSubmit.bind(this)
     }
 
-    
+
     async onSubmit(e) {
         e.preventDefault();
         const cookies = new Cookies();
-        const response = await fetch("http://localhost:1337/user/loan", {
+        const response = await fetch("http://localhost:1337/user/new-loan", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
