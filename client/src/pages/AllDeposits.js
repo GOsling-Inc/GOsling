@@ -1,5 +1,5 @@
 import React from 'react';
-import cl from '../css/exampleDeposits.module.css';
+import cl from '../css/exampleLoan.module.css';
 import Cookies from 'universal-cookie';
 
 
@@ -31,7 +31,7 @@ class AllDeposits extends React.Component {
                         <div className={cl.exampleLoan} key={el.id}>
 
                             <div className={cl.divName}>
-                                <p>Вклад на номер счёта:</p>
+                                <p>Вклад на номер счёта: {el.accountId}</p>
                             </div>
 
                             <div className={cl.blocks}>
@@ -40,7 +40,7 @@ class AllDeposits extends React.Component {
                                         <p className={cl.textAbout}>Процент</p>
                                     </div>
                                     <div className={cl.aboutAm}>
-                                        <p className={cl.textIn}>1%</p>
+                                        <p className={cl.textIn}>{el.percent}%</p>
                                     </div>
                                 </div>
 
@@ -49,20 +49,47 @@ class AllDeposits extends React.Component {
                                         <p className={cl.textAbout}>Сумма</p>
                                     </div>
                                     <div className={cl.aboutAm}>
-                                        <p className={cl.textIn}>321 BYN</p>
+                                        <p className={cl.textIn}>{el.amount}</p>
                                     </div>
                                 </div>
 
-                                <div className={cl.time}>
+                                <div className={cl.amount}>
+                                    <div className={cl.textAboutBack}>
+                                        <p className={cl.textAbout}>Статус</p>
+                                    </div>
+                                    <div className={cl.aboutAm}>
+                                        <p className={cl.textIn}>{el.state}</p>
+                                    </div>
+                                </div>
+
+                                <div className={cl.percent}>
+                                    <div className={cl.textAboutBack}>
+                                        <p className={cl.textAbout}>Осталось</p>
+                                    </div>
+                                    <div className={cl.aboutAm}>
+                                        <p className={cl.textIn}>{el.remaining}</p>
+                                    </div>
+                                </div>
+
+                                <div className={cl.percent}>
+                                    <div className={cl.textAboutBack}>
+                                        <p className={cl.textAbout}>Часть</p>
+                                    </div>
+                                    <div className={cl.aboutAm}>
+                                        <p className={cl.textIn}>{el.part}</p>
+                                    </div>
+                                </div>
+
+                                <div className={cl.percent}>
                                     <div className={cl.textAboutBack}>
                                         <p className={cl.textAbout}>Срок</p>
                                     </div>
                                     <div className={cl.aboutAm}>
-                                        <p className={cl.textIn}>1 год</p>
+                                        <p className={cl.textIn}>{el.deadline}</p>
                                     </div>
                                 </div>
                             </div>
-                            
+
 
                         </div>))}
                 </div>

@@ -83,12 +83,11 @@ body {
 }
 
 .roles {
-    width: 15%;
-    height: 100px;
+    width: 20%;
+    height: 140px;
     box-shadow: 3px 3px 11px 0px  #878787;
     float: right;
-    margin-right: 5%;
-    margin-top: 50px;
+    margin-right: 25%;
     color: #494949;
 }
 

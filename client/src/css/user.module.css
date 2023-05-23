@@ -213,6 +213,7 @@ body {
     box-shadow: 0px 0px 12px 2px #bfbfbf;
     overflow-x: hidden;
     border-radius: 3%;
+    margin-top: 80px;
 }
 
 .history p:not(.aboutTransfer) {

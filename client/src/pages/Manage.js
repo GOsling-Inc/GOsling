@@ -32,16 +32,13 @@ class Manage extends React.Component {
                             <hr/>
                         </div></NavLink>
 
-                        <NavLink to="/manage/support"><div className={cl.support}>
-                            <p className={cl.text}>Служба поддержки</p>
-                            <hr/>
-                        </div></NavLink>
-                    </div>
-
-                    <NavLink to="/manage/roles"><div className={cl.roles}>
+                        <NavLink to="/manage/roles"><div className={cl.roles}>
                         <p className={cl.text}>Роли</p>
                         <hr/>
                     </div></NavLink>
+                    </div>
+
+                    
 
                 </div>
 

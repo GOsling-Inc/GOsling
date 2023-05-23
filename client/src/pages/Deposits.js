@@ -85,7 +85,6 @@ class Deposits extends React.Component {
 
                 <div className={cs.help}>
                     <p className={cs.info}>© 2023. GOsling</p>
-                    <NavLink className={cs.support} to="/support">Служба поддержки</NavLink>
                 </div>
             </div>
         );

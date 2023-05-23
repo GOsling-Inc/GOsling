@@ -26,7 +26,6 @@ class Stocks extends React.Component {
                 </div>
                 <div className={cl.help}>
                     <p className={cl.info}>© 2023. GOsling</p>
-                    <NavLink className={cl.support} to="/support">Служба поддержки</NavLink>
                 </div>
             </div>
         );

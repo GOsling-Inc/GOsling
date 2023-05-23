@@ -1,14 +1,13 @@
 import React from 'react';
 import cl from '../css/user.module.css';
 import Cookies from 'universal-cookie';
-import { NavLink } from "react-router-dom";
 
 
-class AllAccounts extends React.Component {
+class AllAccForManager extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            accounts: [ ]
+            accounts: []
         };
         const cookies = new Cookies();
         fetch("http://localhost:1337/user/accounts", {
@@ -42,20 +41,14 @@ class AllAccounts extends React.Component {
                             </div>
 
                             <div className={cl.close} >
-                                <NavLink to="/user/closeAccount"><button className={cl.close1}>Закрыть</button></NavLink>
                                 <p >Вид: {el.type}</p>
                             </div>
 
                         </div>))}
                 </div>
             )
-        else
-            return (
-                <div >
-                    <p style={{ textAlign: "center", paddingTop: 50, fontSize: 22, letterSpacing: 1 }}>У вас нет активных счётов</p>
-                </div>
-            )
+
     }
 }
 
-export default AllAccounts
+export default AllAccForManager
