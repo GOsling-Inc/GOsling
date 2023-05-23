@@ -7,11 +7,17 @@ import (
 	"github.com/GOsling-Inc/GOsling/models"
 )
 
-type UserService struct {
-	database *database.Database
+type IUserService interface {
+	GetUser(string) (models.User, error)
+	Change_Main_Info(models.User) error
+	Change_Password(models.User) error
 }
 
-func NewUserService(d *database.Database) *UserService {
+type UserService struct {
+	database database.IDatabase
+}
+
+func NewUserService(d database.IDatabase) *UserService {
 	return &UserService{
 		database: d,
 	}
@@ -20,7 +26,7 @@ func NewUserService(d *database.Database) *UserService {
 func (s *UserService) GetUser(id string) (models.User, error) {
 	user, err := s.database.GetUserById(id)
 	if err != nil {
-		return models.User{}, errors.New("incorrect email or password")
+		return models.User{}, errors.New("not found")
 	}
 	return user, nil
 }

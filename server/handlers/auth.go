@@ -8,11 +8,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type AuthHandler struct {
-	middleware *middleware.Middleware
+type IAuthHandler interface {
+	POST_SignUp(echo.Context) error
+	POST_SignIn(echo.Context) error
 }
 
-func NewAuthHandler(m *middleware.Middleware) *AuthHandler {
+type AuthHandler struct {
+	middleware middleware.IMiddleware
+}
+
+func NewAuthHandler(m middleware.IMiddleware) *AuthHandler {
 	return &AuthHandler{
 		middleware: m,
 	}

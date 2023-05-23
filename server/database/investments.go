@@ -9,6 +9,16 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+type IInvestmentDatabase interface {
+	GetInvestments() ([]models.Investment, error)
+	GetInvestment(name string) (models.Investment, error)
+	CreateOrder(order models.Order) error
+	Orders() []models.Order
+	GetOrder(id int) (models.Order, error)
+	Buy(accountId string, order models.Order, count int) error
+	Sell(accountId string, order models.Order, count int) error
+}
+
 type InvestmentDatabase struct {
 	db *sqlx.DB
 }
@@ -55,19 +65,19 @@ func (d *InvestmentDatabase) CreateOrder(order models.Order) error {
 	return d.db.Get(&id, query, order.Name, order.UserId, order.AccountId, order.Count, order.Action, order.Price)
 }
 
-func (d *InvestmentDatabase) GetOrders() ([]models.Order, error) {
+func (d *InvestmentDatabase) Orders() []models.Order {
 	var orders []models.Order
-	query := "SELECT * FROM  Order"
+	query := "SELECT * FROM orders"
 
-	err := d.db.Select(&orders, query)
-	return orders, err
+	d.db.Select(&orders, query)
+	return orders
 }
 
 func (d *InvestmentDatabase) GetOrder(id int) (models.Order, error) {
 	var order models.Order
-	query := "SELECT * FROM  Order WHERE id = $1"
+	query := "SELECT * FROM orders WHERE id = $1"
 
-	err := d.db.Select(&order, query, id)
+	err := d.db.Get(&order, query, id)
 	return order, err
 }
 
@@ -153,7 +163,7 @@ func (d *InvestmentDatabase) Sell(accountId string, order models.Order, count in
 			return err
 		}
 	} else {
-		_, err = tx.ExecContext(ctx, "UPDATE orders SET count = $1 WHERE id = $1", order.Count-count, order.Id)
+		_, err = tx.ExecContext(ctx, "UPDATE orders SET count = $1 WHERE id = $2", order.Count-count, order.Id)
 		if err != nil {
 			tx.Rollback()
 			return err

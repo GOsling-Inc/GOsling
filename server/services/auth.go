@@ -4,18 +4,24 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
-	"log"
 	"math/rand"
 
 	"github.com/GOsling-Inc/GOsling/database"
 	"github.com/GOsling-Inc/GOsling/models"
 )
 
-type AuthService struct {
-	database *database.Database
+type IAuthService interface {
+	SignIn(user *models.User) error
+	SignUp(user *models.User) error
+	MakeID() string
+	Hash(str string) (string, error)
 }
 
-func NewAuthService(d *database.Database) *AuthService {
+type AuthService struct {
+	database database.IDatabase
+}
+
+func NewAuthService(d database.IDatabase) *AuthService {
 	return &AuthService{
 		database: d,
 	}
@@ -24,10 +30,10 @@ func NewAuthService(d *database.Database) *AuthService {
 func (s *AuthService) SignIn(user *models.User) error {
 	tempUser, err := s.database.GetUserByMail(user.Email)
 	if err != nil {
-		return errors.New("incorrect email or password")
+		return errors.New("incorrect email")
 	}
 	if user.Password != tempUser.Password {
-		return errors.New("incorrect email or password")
+		return errors.New("incorrect password")
 	}
 	user.Id = tempUser.Id
 	return nil
@@ -65,18 +71,4 @@ func (s *AuthService) Hash(str string) (string, error) {
 	}
 
 	return hex.EncodeToString(hash.Sum(nil)), nil
-}
-
-func (s *AuthService) DBTEST() error { // DONT TOUCH
-	o := models.Order{
-		Name:      "TESLA",
-		UserId:    "gosling",
-		AccountId: "spnP1j5goslingUSD",
-		Count:     1000,
-		Price:     183.80,
-		Action:    "BUY",
-	}
-	err := s.database.Sell("QmATMmarosto4kUSD", o, 1000)
-	log.Println(err)
-	return nil
 }

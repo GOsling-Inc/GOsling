@@ -20,6 +20,7 @@ func Init(server *echo.Echo, handler *handlers.Handler) {
 		user.POST("/delete-account", handler.POST_Delete_Account)
 		user.GET("/accounts", handler.GET_User_Accounts)
 
+		user.GET("/transfers", handler.GET_User_Transfers)
 		user.POST("/transfer", handler.POST_Transfer)
 
 		user.POST("/exchange", handler.POST_User_Exchange)
@@ -32,6 +33,27 @@ func Init(server *echo.Echo, handler *handlers.Handler) {
 
 		user.GET("/insurances", handler.GET_User_Insurances)
 		user.POST("/new-insurance", handler.POST_NewInsurance)
+
+		user.GET("/stocks", handler.GET_Orders)
+		user.POST("/stocks/new-order", handler.POST_User_Stocks_NewOrder)
+		user.POST("/stocks/buy", handler.POST_User_Stocks_Buy)
+		user.POST("/stocks/sell", handler.POST_User_Stocks_Sell)
 	}
-	server.POST("/TEST", handler.DBTEST) // DONT TOUCH
+
+	manage := server.Group("/manage")
+	{
+		manage.GET("/confirms", handler.GetConfirms)
+		manage.POST("/confirmation", handler.Confirm)
+
+		manage.GET("/accounts", handler.GetAccounts)
+		manage.POST("/freeze-account", handler.FreezeAccount)
+		manage.POST("/block-account", handler.BlockAccount)
+
+		manage.GET("/transactions", handler.GetTransactions)
+		manage.POST("/cancel-transaction", handler.CancelTransaction)
+
+		manage.GET("/users", handler.GetUsers)
+		manage.POST("/update-user", handler.UpdateRole)
+
+	}
 }

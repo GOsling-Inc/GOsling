@@ -5,6 +5,14 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+type IUserDatabase interface {
+	GetUserByMail(string) (models.User, error)
+	GetUserById(string) (models.User, error)
+	AddUser(*models.User) error
+	UpdatePasswordUser(string, string) error
+	UpdateUserData(string, string, string, string) error
+}
+
 type UserDatabase struct {
 	db *sqlx.DB
 }

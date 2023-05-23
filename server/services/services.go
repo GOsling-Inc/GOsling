@@ -4,22 +4,37 @@ import (
 	"github.com/GOsling-Inc/GOsling/database"
 )
 
-type Service struct {
-	*AuthService
-	*UserService
-	*AccountService
-	*LoanService
-	*DepositService
-	*InsuranceService
+type IService interface {
+	IAuthService
+	IUserService
+	IAccountService
+	ILoanService
+	IDepositService
+	IInsuranceService
+	IInvestmentService
+	IManageService
 }
 
-func New(d *database.Database) *Service {
+type Service struct {
+	IAuthService
+	IUserService
+	IAccountService
+	ILoanService
+	IDepositService
+	IInsuranceService
+	IInvestmentService
+	IManageService
+}
+
+func New(d database.IDatabase) *Service {
 	return &Service{
-		AuthService:      NewAuthService(d),
-		UserService:      NewUserService(d),
-		AccountService:   NewAccountService(d),
-		LoanService:      NewLoanService(d),
-		DepositService:   NewDepositService(d),
-		InsuranceService: NewInsuranceService(d),
+		IAuthService:       NewAuthService(d),
+		IUserService:       NewUserService(d),
+		IAccountService:    NewAccountService(d),
+		ILoanService:       NewLoanService(d),
+		IDepositService:    NewDepositService(d),
+		IInsuranceService:  NewInsuranceService(d),
+		IInvestmentService: NewInvestmentService(d),
+		IManageService:     NewManageService(d),
 	}
 }

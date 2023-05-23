@@ -3,6 +3,25 @@ import cs from '../css/unregExchange.module.css';
 import { NavLink } from "react-router-dom";
 
 class UnregExchange extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            BU: 0,
+            BE: 0,
+        };
+
+        fetch("http://localhost:1337/exchanges", {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json',
+            },
+        }).then(res => res.json()).then(data => {
+            this.setState({BU: data["BYN/USD"]})
+            this.setState({BE: data["BYN/EUR"]})
+        })
+
+    }
 
     render() {
         return (
@@ -31,28 +50,16 @@ class UnregExchange extends React.Component {
                             </div>
                             <div className={cs.buy}>
                                 <div className={cs.exch}>
-                                    <p >Покупка</p>
+                                    <p >BYN</p>
                                 </div>
 
                                 <div className={cs.dollar}>
-                                    <p style={{fontSize: 22}}>?</p>
+                                    <p style={{fontSize: 22}}>{this.state.BU}</p>
                                 </div>
                                 <div className={cs.euro}>
-                                    <p style={{fontSize: 22}}>?</p>
+                                    <p style={{fontSize: 22}}>{this.state.BE}</p>
                                 </div>
 
-                            </div>
-                            <div className={cs.sell}>
-                                <div className={cs.exch}>
-                                    <p >Продажа</p>
-                                </div>
-
-                                <div className={cs.dollar}>
-                                    <p style={{fontSize: 22}}>?</p>
-                                </div>
-                                <div className={cs.euro}>
-                                    <p style={{fontSize: 22}}>?</p>
-                                </div>
                             </div>
                         </div>
                     </div>

@@ -21,7 +21,7 @@ class CloseAccount extends React.Component {
                 'Content-type': 'application/json',
                 "Token": cookies.get('Token')
             },
-            body: JSON.stringify({ "accountId ": this.state.accountId , "password  ": this.state.password })
+            body: JSON.stringify({ "AccountId": this.state.accountId , "Password": this.state.password })
         })
         const data = await response.json()
         if (data["error"] == "") {

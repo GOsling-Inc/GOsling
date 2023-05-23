@@ -8,6 +8,15 @@ import Cookies from 'universal-cookie';
 class Exchange extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            BU: 0,
+            BE: 0,
+            accounts: [],
+            SenderAmount: 0,
+            Sender: "",
+            Receiver: "",
+            error: ""
+        };
 
         fetch("http://localhost:1337/exchanges", {
             method: "GET",
@@ -15,15 +24,11 @@ class Exchange extends React.Component {
                 'Accept': 'application/json',
                 'Content-type': 'application/json',
             },
-        }).then(res => res.json()).then(data => console.log(data))
+        }).then(res => res.json()).then(data => {
+            this.setState({BU: data["BYN/USD"]})
+            this.setState({BE: data["BYN/EUR"]})
+        })
 
-        this.state = {
-            accounts: [],
-            SenderAmount: 0,
-            Sender: "",
-            Receiver: "",
-            error: ""
-        };
         this.onSubmit = this.onSubmit.bind(this)
     }
 
@@ -37,7 +42,7 @@ class Exchange extends React.Component {
                 'Content-type': 'application/json',
                 "Token": cookies.get('Token')
             },
-            body: JSON.stringify({ "Sender": this.state.Sender, "Receiver": this.state.Receiver, "SenderAmount": this.state.SenderAmount })
+            body: JSON.stringify({ "Sender": this.state.Sender, "Receiver": this.state.Receiver, "Sender_Amount": this.state.SenderAmount })
         })
         const data = await response.json()
         if (data["error"] == "") {
@@ -87,26 +92,14 @@ class Exchange extends React.Component {
                             </div>
                             <div className={cs.buy}>
                                 <div className={cs.exch}>
-                                    <p >Покупка</p>
+                                    <p >BYN</p>
                                 </div>
 
                                 <div className={cs.dollar}>
-                                    <p style={{ fontSize: 22 }}>?</p>
+                                    <p style={{ fontSize: 22 }}>{this.state.BU}</p>
                                 </div>
                                 <div className={cs.euro}>
-                                    <p style={{ fontSize: 22 }}>?</p>
-                                </div>
-                            </div>
-                            <div className={cs.sell}>
-                                <div className={cs.exch}>
-                                    <p >Продажа</p>
-                                </div>
-
-                                <div className={cs.dollar}>
-                                    <p style={{ fontSize: 22 }}>?</p>
-                                </div>
-                                <div className={cs.euro}>
-                                    <p style={{ fontSize: 22 }}>?</p>
+                                    <p style={{ fontSize: 22 }}>{this.state.BE}</p>
                                 </div>
                             </div>
                         </div>

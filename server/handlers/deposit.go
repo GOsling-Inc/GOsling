@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"strconv"
 
 	"github.com/GOsling-Inc/GOsling/middleware"
@@ -8,11 +9,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type DepositHandler struct {
-	middleware *middleware.Middleware
+type IDepositHandler interface {
+	POST_NewDeposit(echo.Context) error
+	GET_User_Deposits(echo.Context) error
 }
 
-func NewDepositHandler(m *middleware.Middleware) *DepositHandler {
+type DepositHandler struct {
+	middleware middleware.IMiddleware
+}
+
+func NewDepositHandler(m middleware.IMiddleware) *DepositHandler {
 	return &DepositHandler{
 		middleware: m,
 	}
@@ -24,13 +30,17 @@ func (h *DepositHandler) POST_NewDeposit(c echo.Context) error {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
 
+	decoder := json.NewDecoder(c.Request().Body)
+	var t map[string]interface{}
+	decoder.Decode(&t)
+
 	beta_depos := models.Deposit{
 		UserId:    id,
-		AccountId: c.FormValue("AccountId"),
-		Period:    c.FormValue("Period"),
+		AccountId: t["AccountId"].(string),
+		Period:    t["Period"].(string),
 	}
-	beta_depos.Amount, _ = strconv.ParseFloat(c.FormValue("Amount"), 64)
-	beta_depos.Percent, _ = strconv.ParseFloat(c.FormValue("Percent"), 64)
+	beta_depos.Amount, _ = strconv.ParseFloat(t["Amount"].(string), 64)
+	beta_depos.Percent, _ = strconv.ParseFloat(t["Percent"].(string), 64)
 
 	code, err := h.middleware.CreateDeposit(beta_depos)
 	if err != nil {

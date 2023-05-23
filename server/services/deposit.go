@@ -8,11 +8,16 @@ import (
 	"github.com/GOsling-Inc/GOsling/models"
 )
 
-type DepositService struct {
-	database *database.Database
+type IDepositService interface {
+	CreateDeposit(models.Deposit) error
+	GetUserDeposits(string) ([]models.Deposit, error)
 }
 
-func NewDepositService(d *database.Database) *DepositService {
+type DepositService struct {
+	database database.IDatabase
+}
+
+func NewDepositService(d database.IDatabase) *DepositService {
 	return &DepositService{
 		database: d,
 	}

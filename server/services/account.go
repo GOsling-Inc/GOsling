@@ -3,8 +3,8 @@ package services
 import (
 	"encoding/json"
 	"errors"
-	"os"
 	"net/http"
+	"os"
 
 	"github.com/GOsling-Inc/GOsling/database"
 	"github.com/GOsling-Inc/GOsling/models"
@@ -15,11 +15,24 @@ var (
 	byn_eur float64
 )
 
-type AccountService struct {
-	database *database.Database
+type IAccountService interface {
+	AddAccount(string, models.Account) error
+	GetAccountById(string) (models.Account, error)
+	GetUserAccounts(string) ([]models.Account, error)
+	DeleteAccount(string) error
+	UserTransfers(string) []models.Trasfer
+	ProvideTransfer(models.Trasfer) error
+	ProvideExchange(models.Exchange) error
+	UpdateExchanges()
+	BYN_USD() float64
+	BYN_EUR() float64
 }
 
-func NewAccountService(d *database.Database) *AccountService {
+type AccountService struct {
+	database database.IDatabase
+}
+
+func NewAccountService(d database.IDatabase) *AccountService {
 	return &AccountService{
 		database: d,
 	}
@@ -55,6 +68,10 @@ func (s *AccountService) DeleteAccount(accountId string) error {
 	return nil
 }
 
+func (s *AccountService) UserTransfers(id string) []models.Trasfer {
+	return s.database.UserTransfers(id)
+}
+
 func (s *AccountService) ProvideTransfer(transfer models.Trasfer) error {
 	sender_acc, err := s.database.GetAccountById(transfer.Sender)
 	if err != nil || sender_acc.Amount < transfer.Amount {
@@ -80,14 +97,11 @@ func (s *AccountService) ProvideExchange(exchange models.Exchange) error {
 		return errors.New("sender account error, transaction cancelled")
 	}
 	reciever_acc, err := s.database.GetAccountById(exchange.Receiver)
-	if err != nil || reciever_acc.Unit == sender_acc.Unit {
+	if err != nil || reciever_acc.Unit == sender_acc.Unit || reciever_acc.State != "ACTIVE" {
 		return errors.New("reciever account error, transaction cancelled")
 	}
 	if sender_acc.UserId != reciever_acc.UserId {
 		return errors.New("incorrect account")
-	}
-	if sender_acc.State != "ACTIVE" || reciever_acc.State != "ACTIVE" {
-		return errors.New("one of accounts is not active")
 	}
 
 	if sender_acc.Unit == "BYN" && reciever_acc.Unit == "USD" {

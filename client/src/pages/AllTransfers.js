@@ -7,7 +7,9 @@ import photoArrow from "../img/arrow.png"
 class AllTransfers extends React.Component {
     constructor(props) {
         super(props);
-
+        this.state = {
+            transfers: []
+        };
         const cookies = new Cookies();
         fetch("http://localhost:1337/user/transfers", {
             method: "GET",
@@ -16,22 +18,19 @@ class AllTransfers extends React.Component {
                 'Content-type': 'application/json',
                 "Token": cookies.get('Token')
             },
-        }).then(res => res.json()).then(data => console.log(data))
-        this.state = {
-            transfers: []
-        };
+        }).then(res => res.json()).then(data => this.setState({ transfers: data.data }))
 
     }
 
 
 
     render() {
-        if (this.state.transfers.length > 0)
+        if (this.state.transfers != null)
             return (
                 <div>
                     {this.state.transfers.map((el) => (
                         <div className={cl.exampleHistory} key={el.id}>
-                            <p className={cl.aboutTransfer}>123121 <img src={photoArrow} className={cl.arrow} /> 123113 <b>:</b> 311 BYN</p>
+                            <p className={cl.aboutTransfer}>{el.sender} <img src={photoArrow} className={cl.arrow} /> {el.receiver} <b>:</b> {el.amount}</p>
                         </div>))}
                 </div>
             )

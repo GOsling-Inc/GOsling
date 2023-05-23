@@ -17,11 +17,25 @@ const (
 	signingKey = "ASIJj983Jf324FJj9fj20JFsif293JFfsdf23432"
 )
 
-type AuthMiddleware struct {
-	service *services.Service
+var sessions map[string]string = make(map[string]string)
+
+type IAuthMiddleware interface {
+	SignIn(*models.User) (int, error)
+	SignUp(*models.User) (int, error)
+	CreateJWT(string) (string, error)
+	Auth(http.Header) string
+	AuthManager(string) error
+	AuthAdmin(string) error
+	parseJWT(http.Header) string
+	parseToken(string) (string, error)
+	Validate(models.User) error
 }
 
-func NewAuthMiddleware(s *services.Service) *AuthMiddleware {
+type AuthMiddleware struct {
+	service services.IService
+}
+
+func NewAuthMiddleware(s services.IService) *AuthMiddleware {
 	return &AuthMiddleware{
 		service: s,
 	}
@@ -58,17 +72,52 @@ func (m *AuthMiddleware) CreateJWT(id string) (string, error) {
 		},
 		ID: id,
 	})
-
-	return token.SignedString([]byte(signingKey))
+	signedToken, err := token.SignedString([]byte(signingKey))
+	if err != nil {
+		return "", err
+	}
+	sessions[id] = signedToken
+	return signedToken, nil
 }
 
 func (m *AuthMiddleware) Auth(header http.Header) string {
 	id := m.parseJWT(header)
-	_, err := m.service.GetUser(id)
+	user, err := m.service.GetUser(id)
 	if err != nil {
 		return ""
 	}
+
+	session, ok := sessions[user.Id]
+	if !ok {
+		sessions[user.Id] = header["Token"][0]
+	} else {
+		if session != header["Token"][0] {
+			return ""
+		}
+	}
 	return id
+}
+
+func (m *AuthMiddleware) AuthManager(id string) error {
+	user, err := m.service.GetUser(id)
+	if err != nil {
+		return errors.New("incorrect id")
+	}
+	if user.Role == "user" {
+		return errors.New("access denied")
+	}
+	return nil
+}
+
+func (m *AuthMiddleware) AuthAdmin(id string) error {
+	user, err := m.service.GetUser(id)
+	if err != nil {
+		return errors.New("incorrect id")
+	}
+	if user.Role != "admin" {
+		return errors.New("access denied")
+	}
+	return nil
 }
 
 func (m *AuthMiddleware) parseJWT(header http.Header) string {
@@ -90,7 +139,6 @@ func (m *AuthMiddleware) parseToken(accessToken string) (string, error) {
 
 		return []byte(signingKey), nil
 	})
-
 	if err != nil {
 		return "", err
 	}
@@ -108,8 +156,4 @@ func (m *AuthMiddleware) Validate(user models.User) error {
 		validation.Field(&user.Email, validation.Required, is.Email),
 		validation.Field(&user.Password, validation.Required, validation.Length(8, 100)),
 	)
-}
-
-func (m *AuthMiddleware) DBTEST() error {
-	return m.service.DBTEST()
 }

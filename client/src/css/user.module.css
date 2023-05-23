@@ -229,16 +229,15 @@ body {
 
 .exampleHistory {
     width: 88%;
-    height: 35px;
+    height: 55px;
     background-color: #ececec;
     margin-left: 6%;
     margin-top: 15px;
     border-radius: 10px;
-
 }
 
 .aboutTransfer {
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
     letter-spacing: 1px;
     padding-top: 7px;

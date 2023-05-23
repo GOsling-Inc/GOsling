@@ -7,11 +7,16 @@ import (
 	"github.com/GOsling-Inc/GOsling/services"
 )
 
-type DepositMiddleware struct {
-	service *services.Service
+type IDepositMiddleware interface {
+	CreateDeposit(models.Deposit) (int, error)
+	GetUserDeposits(string) (int, []models.Deposit, error)
 }
 
-func NewDepositMiddleware(s *services.Service) *DepositMiddleware {
+type DepositMiddleware struct {
+	service services.IService
+}
+
+func NewDepositMiddleware(s services.IService) *DepositMiddleware {
 	return &DepositMiddleware{
 		service: s,
 	}

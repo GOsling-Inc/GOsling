@@ -8,6 +8,13 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+type IInsuranceDatabase interface {
+	AddInsurance(models.Insurance) error
+	GetUserInsurances(string) ([]models.Insurance, error)
+	GetInsuranceById(string) (models.Insurance, error)
+	UpdateInsurances() error
+}
+
 type InsuranceDatabase struct {
 	db *sqlx.DB
 }
@@ -20,7 +27,7 @@ func NewInsuranceDatabase(db *sqlx.DB) *InsuranceDatabase {
 
 func (d *InsuranceDatabase) AddInsurance(insurance models.Insurance) error {
 	var id string
-	query :="INSERT INTO insurances (accountid, userid, amount, remaining, part, period, deadline) values ($1, $2, $3, $4, $5, $6, $7) RETURNING id"
+	query := "INSERT INTO insurances (accountid, userid, amount, remaining, part, period, deadline) values ($1, $2, $3, $4, $5, $6, $7) RETURNING id"
 	return d.db.Get(&id, query, insurance.AccountId, insurance.UserId, insurance.Amount, insurance.Remaining, insurance.Part, insurance.Period, insurance.Deadline)
 }
 
@@ -31,11 +38,18 @@ func (d *InsuranceDatabase) GetUserInsurances(userId string) ([]models.Insurance
 	return insurances, err
 }
 
+func (d *InsuranceDatabase) GetInsuranceById(id string) (models.Insurance, error) {
+	var insurance models.Insurance
+	query := "SELECT * FROM insurances WHERE id=$1"
+	err := d.db.Get(&insurance, query, id)
+	return insurance, err
+}
+
 func (d *InsuranceDatabase) UpdateInsurances() error {
 	date := time.Now().Format("2006-01-02")
 	var insurances []models.Insurance
-	query := "SELECT * FROM insurances WHERE deadline=$1"
-	d.db.Select(&insurances, query, date)
+	query := "SELECT * FROM insurances WHERE deadline=$1 AND state = $2"
+	d.db.Select(&insurances, query, date, "ACTIVE")
 
 	ctx := context.Background()
 	for _, insurance := range insurances {

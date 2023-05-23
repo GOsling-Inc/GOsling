@@ -21,7 +21,7 @@ class Transfer extends React.Component {
                 'Content-type': 'application/json',
                 "Token": cookies.get('Token')
             },
-            body: JSON.stringify({ "Sender": this.state.Sender, "Receiver": this.state.Receiver, "sum": this.state.Amount })
+            body: JSON.stringify({ "Sender": this.state.Sender, "Receiver": this.state.Receiver, "Amount": this.state.Amount })
         })
         const data = await response.json()
         if (data["error"] == "") {

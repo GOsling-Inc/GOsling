@@ -8,23 +8,35 @@ import (
 	_ "github.com/lib/pq"
 )
 
+type IDatabase interface {
+	IUserDatabase
+	IAccountDatabase
+	ILoanDatabase
+	IDepositDatabase
+	IInsuranceDatabase
+	IInvestmentDatabase
+	IManageDatabase
+}
+
 type Database struct {
-	*UserDatabase
-	*AccountDatabase
-	*LoanDatabase
-	*DepositDatabase
-	*InsuranceDatabase
-	*InvestmentDatabase
+	IUserDatabase
+	IAccountDatabase
+	ILoanDatabase
+	IDepositDatabase
+	IInsuranceDatabase
+	IInvestmentDatabase
+	IManageDatabase
 }
 
 func New(db *sqlx.DB) *Database {
 	return &Database{
-		UserDatabase:    NewUserDatabase(db),
-		AccountDatabase: NewAccountDatabase(db),
-		LoanDatabase:    NewLoanDatabase(db),
-		DepositDatabase: NewDepositDatabase(db),
-		InsuranceDatabase: NewInsuranceDatabase(db),
-		InvestmentDatabase: NewInvestmentDatabase(db),
+		IUserDatabase:       NewUserDatabase(db),
+		IAccountDatabase:    NewAccountDatabase(db),
+		ILoanDatabase:       NewLoanDatabase(db),
+		IDepositDatabase:    NewDepositDatabase(db),
+		IInsuranceDatabase:  NewInsuranceDatabase(db),
+		IInvestmentDatabase: NewInvestmentDatabase(db),
+		IManageDatabase:     NewManageDatabase(db),
 	}
 }
 

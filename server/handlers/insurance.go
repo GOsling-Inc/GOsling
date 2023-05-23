@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"strconv"
 
 	"github.com/GOsling-Inc/GOsling/middleware"
@@ -8,11 +9,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type InsuranceHandler struct {
-	middleware *middleware.Middleware
+type IInsuranceHandler interface {
+	POST_NewInsurance(echo.Context) error
+	GET_User_Insurances(echo.Context) error
 }
 
-func NewInsuranceHandler(m *middleware.Middleware) *InsuranceHandler {
+type InsuranceHandler struct {
+	middleware middleware.IMiddleware
+}
+
+func NewInsuranceHandler(m middleware.IMiddleware) *InsuranceHandler {
 	return &InsuranceHandler{
 		middleware: m,
 	}
@@ -23,12 +29,17 @@ func (h *InsuranceHandler) POST_NewInsurance(c echo.Context) error {
 	if id == "" {
 		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
 	}
+
+	decoder := json.NewDecoder(c.Request().Body)
+	var t map[string]interface{}
+	decoder.Decode(&t)
+
 	insurance := models.Insurance{
 		UserId:    id,
-		AccountId: c.FormValue("AccountId"),
-		Period:    c.FormValue("Period"),
+		AccountId: t["AccountId"].(string),
+		Period:    t["Period"].(string),
 	}
-	insurance.Amount, _ = strconv.ParseFloat(c.FormValue("Amount"), 64)
+	insurance.Amount, _ = strconv.ParseFloat(t["Amount"].(string), 64)
 	code, err := h.middleware.CreateInsurance(insurance)
 	if err != nil {
 		return c.JSON(code, JSON{nil, err.Error()})

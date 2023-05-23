@@ -23,7 +23,7 @@ class Deposits extends React.Component {
                 'Content-type': 'application/json',
                 "Token": cookies.get('Token')
             },
-            body: JSON.stringify({ "AccountId": this.state.AccountId, "Period": this.state.Period, "Amount ": this.state.Amount, "Percent ": this.state.Percent })
+            body: JSON.stringify({ "AccountId": this.state.AccountId, "Period": this.state.Period, "Amount": this.state.Amount, "Percent": this.state.Percent })
         })
         const data = await response.json()
         if (data["error"] == "") {

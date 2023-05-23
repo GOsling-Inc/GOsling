@@ -9,7 +9,7 @@ import Сookies from 'universal-cookie';
 class NewAccount extends React.Component {
 constructor(props) {
         super(props);
-        this.state = { Name: "", Unit: "BYN", Type: "Базовый счёт", error: "" };
+        this.state = { Name: "", Unit: "BYN", Type: "BASIC", error: "" };
         this.onSubmit = this.onSubmit.bind(this)
     }
 

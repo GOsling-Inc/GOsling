@@ -2,17 +2,28 @@ package handlers
 
 import (
 	"encoding/json"
+	"strconv"
 
 	"github.com/GOsling-Inc/GOsling/middleware"
 	"github.com/GOsling-Inc/GOsling/models"
 	"github.com/labstack/echo/v4"
 )
 
-type AccountHandler struct {
-	middleware *middleware.Middleware
+type IAccountHandler interface {
+	GET_User_Accounts(c echo.Context) error
+	POST_Add_Account(c echo.Context) error
+	GET_User_Transfers(c echo.Context) error
+	POST_Delete_Account(c echo.Context) error
+	POST_Transfer(c echo.Context) error
+	POST_User_Exchange(c echo.Context) error
+	GET_Exchanges(c echo.Context) error
 }
 
-func NewAccountHandler(m *middleware.Middleware) *AccountHandler {
+type AccountHandler struct {
+	middleware middleware.IMiddleware
+}
+
+func NewAccountHandler(m middleware.IMiddleware) *AccountHandler {
 	return &AccountHandler{
 		middleware: m,
 	}
@@ -74,6 +85,16 @@ func (h *AccountHandler) POST_Delete_Account(c echo.Context) error {
 	return c.JSON(code, JSON{"ok", ""})
 }
 
+func (h *AccountHandler) GET_User_Transfers(c echo.Context) error {
+	id := h.middleware.Auth(c.Request().Header)
+	if id == "" {
+		return c.JSON(middleware.UNAUTHORIZED, JSON{nil, "invalid token"})
+	}
+
+	code, trs := h.middleware.UserTransfers(id)
+	return c.JSON(code, JSON{trs, ""})
+}
+
 func (h *AccountHandler) POST_Transfer(c echo.Context) error {
 	id := h.middleware.Auth(c.Request().Header)
 	if id == "" {
@@ -88,7 +109,7 @@ func (h *AccountHandler) POST_Transfer(c echo.Context) error {
 		Sender:   t["Sender"].(string),
 		Receiver: t["Receiver"].(string),
 	}
-	transfer.Amount, _ = t["Amount"].(float64)
+	transfer.Amount, _ = strconv.ParseFloat(t["Amount"].(string), 64)
 
 	code, err := h.middleware.ProvideTransfer(id, transfer)
 	if err != nil {
@@ -111,7 +132,7 @@ func (h *AccountHandler) POST_User_Exchange(c echo.Context) error {
 		Sender:   t["Sender"].(string),
 		Receiver: t["Receiver"].(string),
 	}
-	exc.SenderAmount, _ = t["Sender_amount"].(float64)
+	exc.SenderAmount, _ = strconv.ParseFloat(t["Sender_Amount"].(string), 64)
 
 	code, err := h.middleware.ProvideExchange(id, exc)
 	if err != nil {

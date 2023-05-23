@@ -21,7 +21,7 @@ class Insurance extends React.Component {
                 'Content-type': 'application/json',
                 "Token": cookies.get('Token')
             },
-            body: JSON.stringify({ "AccountId": this.state.AccountId, "Period ": this.state.Period, "Amount ": this.state.Amount })
+            body: JSON.stringify({ "AccountId": this.state.AccountId, "Period": this.state.Period, "Amount": this.state.Amount })
         })
         const data = await response.json()
         if (data["error"] == "") {
