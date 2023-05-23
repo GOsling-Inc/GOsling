@@ -4,6 +4,8 @@ import { NavLink } from "react-router-dom";
 import AllAccounts from './AllAccounts';
 import AllLoans from './AllLoans';
 import AllTransfers from './AllTransfers';
+import AllDeposits from './AllDeposits';
+import AllInsurances from './AllInsurances';
 
 
 class User extends React.Component {
@@ -39,9 +41,21 @@ class User extends React.Component {
                     <div className={cl.history}>
                         <p>Последние переводы</p>
                         <hr />
-
                         <AllTransfers />
+                    </div>
+                </div>
 
+                <div className={cl.together}>
+                    <div className={cl.actDeposit}>
+                        <p className={cl.actDepositTitle}>Активные вклады</p>
+                        <hr />
+                        <AllDeposits />
+                    </div>
+
+                    <div className={cl.actInsurance}>
+                        <p className={cl.actInsuranceText}>Активные страховки</p>
+                        <hr />
+                        <AllInsurances />
                     </div>
                 </div>
 
