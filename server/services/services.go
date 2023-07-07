@@ -1,13 +1,40 @@
 package services
 
-import "github.com/GOsling-Inc/GOsling/database"
+import (
+	"github.com/GOsling-Inc/GOsling/database"
+)
 
-type Service struct {
-	database *database.Database
+type IService interface {
+	IAuthService
+	IUserService
+	IAccountService
+	ILoanService
+	IDepositService
+	IInsuranceService
+	IInvestmentService
+	IManageService
 }
 
-func New(d *database.Database) *Service {
+type Service struct {
+	IAuthService
+	IUserService
+	IAccountService
+	ILoanService
+	IDepositService
+	IInsuranceService
+	IInvestmentService
+	IManageService
+}
+
+func New(d database.IDatabase) *Service {
 	return &Service{
-		database: d,
+		IAuthService:       NewAuthService(d),
+		IUserService:       NewUserService(d),
+		IAccountService:    NewAccountService(d),
+		ILoanService:       NewLoanService(d),
+		IDepositService:    NewDepositService(d),
+		IInsuranceService:  NewInsuranceService(d),
+		IInvestmentService: NewInvestmentService(d),
+		IManageService:     NewManageService(d),
 	}
 }

@@ -1,0 +1,340 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #ffffff;
+    color: #000000;
+    font-weight: 300;
+}
+
+.action {
+    width: 100%;
+    height: 50px;
+    backdrop-filter: blur(8px);
+    position: fixed;
+    top: 0;
+    display: flex;
+    padding: 0;
+}
+
+.action a {
+    width: 14.27%;
+    height: 60px;
+
+}
+
+.action a button {
+    background-color: #429f6d;
+    width: 100%;
+    height: 60px;
+    border: 0;
+    border-left: 1px solid #939292;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.action button:hover {
+    background-color: #c9c8c8;
+    cursor: pointer;
+}
+
+
+
+.event {
+    margin-top: 150px;
+    width: 86%;
+    height: 1150px;
+    margin-left: 7%;
+}
+
+.blocks {
+    float: left;
+    height: 0px;
+    width: 100%;
+
+}
+
+.actAccount {
+    background-color: #ffffff;
+    width: 60%;
+    height: 500px;
+    box-shadow: 0px 0px 12px 2px #bfbfbf;
+    overflow-x: hidden;
+    border-radius: 3%;
+}
+
+.actAccountTitle {
+    text-align: center;
+    font-size: 22px;
+    margin: 12px 0px;
+    letter-spacing: 2px;
+}
+
+.actAccount hr {
+    width: 80%;
+    margin-left: 10%;
+}
+
+.exampleAccount {
+    margin-top: 30px;
+    width: 70%;
+    height: 210px;
+    margin-left: 15%;
+    font-size: 18px;
+    letter-spacing: 1px;
+    box-shadow: 0px 0px 6px 2px #bfbfbf;
+    border-radius: 15px;
+
+}
+
+
+
+.divName {
+    height: 15%; 
+    width: 100%; 
+    border-radius: 15px 15px 0 0;
+    background-color: #f1f1f1;
+}
+
+.divName p{
+    margin-left: 3%; 
+    padding-top: 3px;
+}
+
+.balance {
+    height: 60%; 
+    width: 100%; 
+    font-size: 40px;
+}
+
+.balance hr{
+    width: 66%; 
+    margin-left: 17%;
+}
+
+.aboutAccount {
+    width: 100%;
+    height: 19px;
+}
+
+.numberAccount {
+    font-size: 14px; 
+    padding-top: 6px; 
+    float: left;
+    padding-left: 10px;
+}
+
+.remainderName {
+    font-size: 14px; 
+    padding-top: 6px; 
+    float: right;
+    padding-right: 15px;
+}
+
+.remainder {
+    text-align: center; 
+    padding-top: 15px;
+}
+
+.close {
+    height: 25%; 
+    width: 100%; 
+    background-color: #429f6d;
+    color: #ffffff;
+    border-radius:  0 0 15px 15px;
+}
+
+
+.close button{
+    float: left;
+    padding: 0.6% 1%;
+    margin-top: 12px;
+    margin-left: 15px;
+    letter-spacing: 1px;
+    font-size: 15px;
+    background-color: #429f6d;
+    color: #ffffff;
+    border: 0;
+
+}
+
+.close1 {
+    width: 15%;
+}
+
+.close2 {
+    width: 20%;
+}
+
+.close p{
+    margin-right: 3%; 
+    padding-top: 20px; 
+    float: right;
+}
+
+.close1:hover, .close2:hover{
+    cursor: pointer;
+    transform: scale(1.03);
+}
+
+
+
+
+.actLoan {
+    margin-top: 100px;
+    background-color: #ffffff;
+    width: 60%;
+    height: 500px;
+    box-shadow: 0px 0px 12px 2px #bfbfbf;
+    overflow-x: hidden;
+    border-radius: 3%;
+}
+
+.actLoanText {
+    text-align: center;
+    font-size: 22px;
+    margin: 12px 0px;
+    letter-spacing: 2px;
+}
+
+.actLoan hr {
+    width: 80%;
+    margin-left: 10%;
+}
+
+.history {
+    float: right;
+    background-color: #ffffff;
+    width: 25%;
+    height: 500px;
+    box-shadow: 0px 0px 12px 2px #bfbfbf;
+    overflow-x: hidden;
+    border-radius: 3%;
+    margin-top: 80px;
+}
+
+.history p:not(.aboutTransfer) {
+    text-align: center;
+    font-size: 22px;
+    margin: 10px 0px;
+    letter-spacing: 2px;
+}
+
+.history hr {
+    width: 86%;
+    margin-left: 7%;
+}
+
+.exampleHistory {
+    width: 88%;
+    height: 55px;
+    background-color: #ececec;
+    margin-left: 6%;
+    margin-top: 15px;
+    border-radius: 10px;
+}
+
+.aboutTransfer {
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+    padding-top: 7px;
+}
+
+.arrow {
+    width: 17px;
+    height: 12px;
+}
+
+.together {
+    height: 550px;
+    width: 100%;
+    margin-top: 40px;
+}
+
+.actDeposit {
+    float: left;
+    background-color: #ffffff;
+    width: 44%;
+    height: 500px;
+    box-shadow: 0px 0px 12px 2px #bfbfbf;
+    overflow-x: hidden;
+    border-radius: 3%;
+    margin-left: 4%;
+}
+
+.actDepositTitle {
+    text-align: center;
+    font-size: 22px;
+    margin: 12px 0px;
+    letter-spacing: 2px;
+}
+
+.actDeposit hr {
+    width: 80%;
+    margin-left: 10%;
+}
+
+.actInsurance {
+    float: right;
+    background-color: #ffffff;
+    width: 44%;
+    height: 500px;
+    box-shadow: 0px 0px 12px 2px #bfbfbf;
+    overflow-x: hidden;
+    border-radius: 3%;
+    margin-right: 4%;
+}
+
+.actInsuranceText {
+    text-align: center;
+    font-size: 22px;
+    margin: 12px 0px;
+    letter-spacing: 2px;
+}
+
+.actInsurance hr {
+    width: 80%;
+    margin-left: 10%;
+}
+
+
+
+
+
+
+
+
+
+.help {
+    margin-top: auto;
+    margin-bottom: 0    ;
+    width: 100%;
+    height: 40px;
+    background-color: #f0f0ef;
+    border-radius: 10px 10px 0 0;
+}
+
+.support {
+    color: #5e5e5e;
+    font-weight: bold;
+    font-size: 18px;
+    text-decoration: none;
+    float: left;
+    margin: 10px 50px;
+}
+
+.support:hover {
+    transform: scale(1.01);
+    color: #7e7e7e;
+}
+
+.info {
+    color: #4b4a4a;
+    font-size: 18px;
+    float: left;
+    margin: 10px auto;
+}

@@ -1,7 +1,6 @@
 package database
 
 import (
-	//"fmt"
 	"log"
 
 	"github.com/GOsling-Inc/GOsling/env"
@@ -9,13 +8,35 @@ import (
 	_ "github.com/lib/pq"
 )
 
+type IDatabase interface {
+	IUserDatabase
+	IAccountDatabase
+	ILoanDatabase
+	IDepositDatabase
+	IInsuranceDatabase
+	IInvestmentDatabase
+	IManageDatabase
+}
+
 type Database struct {
-	db *sqlx.DB
+	IUserDatabase
+	IAccountDatabase
+	ILoanDatabase
+	IDepositDatabase
+	IInsuranceDatabase
+	IInvestmentDatabase
+	IManageDatabase
 }
 
 func New(db *sqlx.DB) *Database {
 	return &Database{
-		db: db,
+		IUserDatabase:       NewUserDatabase(db),
+		IAccountDatabase:    NewAccountDatabase(db),
+		ILoanDatabase:       NewLoanDatabase(db),
+		IDepositDatabase:    NewDepositDatabase(db),
+		IInsuranceDatabase:  NewInsuranceDatabase(db),
+		IInvestmentDatabase: NewInvestmentDatabase(db),
+		IManageDatabase:     NewManageDatabase(db),
 	}
 }
 

@@ -1,0 +1,207 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #ffffff;
+    color: #000000;
+    font-weight: 300;
+}
+
+.headBack {
+    width: 100%;
+    height: 60px;
+    background-color: #429f6d;
+    backdrop-filter: blur(8px);
+    position: fixed;
+    top: 0;
+}
+
+.head {
+    float: left;
+    padding-top: 2px;
+    padding-left: 30px;
+    font-size: 40px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #ffffff;
+}
+
+.together{
+    width: 100%;
+    height: 405px;
+    margin-top: 160px;
+}
+
+.form {
+    width: 24%;
+    margin-left: 15%;
+    height: 380px;
+    border: 2px solid #000000;
+    border-radius: 6px;
+    padding-top: 20px;
+    float: left;
+}
+
+.author {
+    font-size: 30px;
+    text-align: center;
+    letter-spacing: 1px;
+    
+}
+
+.form hr{
+    width: 70%; 
+    margin-top: 8px; 
+    margin-left: 15%;
+}
+
+.name {
+    font-weight: 300;
+    margin-bottom: 10px;
+    margin-top: 25px;
+    margin-left: 16%;
+    width: 64%;
+    background: #ffffff;
+    color: #000000;
+    font-size: 16px;
+    padding: 10px 2%;
+    border: 0;
+    border-bottom: 4px solid #000000;
+    outline: none;
+    letter-spacing: 1px;
+}
+
+
+.open {
+    float: right;
+    font-weight: 300;
+    margin-top: 40px;
+    background: #ffffff;
+    color: #000000;
+    font-size: 15px;
+    padding: 10px 15px;
+    border-radius: 6%;
+    margin-right: 20px;
+    letter-spacing: 1px;
+}
+
+.open:hover{
+    transform: scale(1.01);
+    cursor: pointer;
+}
+
+
+
+
+.rate {
+    float: right;
+    width: 30%;
+    margin-right: 15%;
+    height: 380px;
+    border-radius: 6px;
+}
+
+.pRate{
+    font-size: 32px; 
+    margin-left: 4%; 
+    letter-spacing: 2px; 
+    position: relative; 
+    bottom: 15px;
+}
+
+.val {
+    float: left;
+    width: 40%;
+    height: 500px;
+
+}
+
+.exch {
+    width: 100%;
+    height: 40px;
+    background-color: #eaeaea;
+}
+
+.pValuta {
+    font-size: 20px; 
+    margin-left: 15%; 
+    letter-spacing: 1px; 
+    margin-top: 5px; 
+    padding-top: 5px;
+}
+
+.exch p:not(.exch .pValuta){
+    font-size: 20px; 
+    margin-left: 6%; 
+    letter-spacing: 1px; 
+    margin-top: 5px; 
+    padding-top: 5px;
+}
+
+.buy {
+    float: left;
+    width: 30%;
+    height: 500px;
+}
+
+.sell {
+    float: left;
+    width: 30%;
+    height: 500px;
+}
+
+.dollar {
+    width: 40%;
+    height: 80px;
+    font-size: 24px;
+    margin-left: 15%;
+}
+
+.euro {
+    width: 40%;
+    height: 80px;
+    font-size: 24px;
+    margin-left: 15%;
+}
+
+.dollar p, .euro p{
+    position: relative; 
+    top: 28px; 
+    letter-spacing: 1px;
+}
+
+
+
+.help {
+    margin-top: 148px;
+    margin-bottom: 0    ;
+    width: 100%;
+    height: 40px;
+    background-color: #f0f0ef;
+    border-radius: 10px 10px 0 0;
+}
+
+.support {
+    color: #5e5e5e;
+    font-weight: bold;
+    font-size: 18px;
+    text-decoration: none;
+    float: left;
+    margin: 10px 50px;
+}
+
+.support:hover {
+    transform: scale(1.01);
+    color: #7e7e7e;
+}
+
+.info {
+    color: #4b4a4a;
+    font-size: 18px;
+    float: left;
+    margin: 10px auto;
+}
+
+
